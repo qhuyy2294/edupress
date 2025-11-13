@@ -1,0 +1,300 @@
+
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f2f5; 
+  padding: 2rem;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
+}
+
+/* Thêm hiệu ứng gợn sóng (ripple) hoặc các chấm lấp lánh nhẹ nhàng trên nền */
+.auth-page::before,
+.auth-page::after {
+  content: '';
+  position: absolute;
+  background: radial-gradient(circle, rgba(0, 123, 255, 0.05) 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  animation: backgroundRipple 15s infinite ease-out;
+  z-index: 0;
+}
+
+.auth-page::before {
+  width: 400px;
+  height: 400px;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.auth-page::after {
+  width: 500px;
+  height: 500px;
+  bottom: 15%;
+  right: 15%;
+  animation-delay: 7.5s; /* Kích hoạt sau để tạo hiệu ứng không đồng bộ */
+}
+
+@keyframes backgroundRipple {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 480px;
+  z-index: 1;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 12px;
+  padding: 3rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+  position: relative;
+  overflow: hidden;
+  /* Animation khi card xuất hiện */
+  animation: fadeInScaleUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.auth-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  font-weight: 700;
+  /* Animation cho tiêu đề */
+  animation: slideInFromTop 0.8s ease-out forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-subtitle {
+  color: #666;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 1rem;
+  /* Animation cho phụ đề */
+  animation: slideInFromTop 0.8s ease-out forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #444;
+  font-size: 0.9rem;
+  /* Animation cho label */
+  animation: fadeIn 0.8s ease-out forwards;
+  animation-delay: 0.4s;
+  opacity: 0;
+}
+
+.form-input {
+  padding: 0.9rem 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  outline: none;
+  background-color: white;
+  /* Animation cho input */
+  animation: fadeInSlideUp 0.8s ease-out forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.form-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  transform: translateY(0) scale(1.01); /* Nhẹ nhàng phóng to khi focus */
+}
+
+/* Kích hoạt animation trễ cho input thứ hai */
+.form-group:nth-of-type(2) .form-input {
+    animation-delay: 0.6s;
+}
+.form-group:nth-of-type(2) label {
+    animation-delay: 0.5s;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.btn-submit {
+  padding: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+  /* Animation cho nút submit */
+  animation: fadeInSlideUp 0.8s ease-out forwards;
+  animation-delay: 0.7s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-3px); 
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3); 
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: translateY(0); 
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.btn-submit:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: #777;
+  font-size: 0.9rem;
+  /* Animation cho footer */
+  animation: fadeInSlideUp 0.8s ease-out forwards;
+  animation-delay: 0.8s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.auth-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.forgot-password-link {
+  text-align: right;
+  margin-top: 0.5rem;
+  /* Animation cho link quên mật khẩu */
+  animation: fadeIn 0.8s ease-out forwards;
+  animation-delay: 0.65s;
+  opacity: 0;
+}
+
+.forgot-password-link a {
+  color: #6c757d;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-link a:hover {
+  color: #495057;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-card {
+    padding: 2.5rem 2rem;
+  }
+  .auth-title {
+    font-size: 1.8rem;
+  }
+  .auth-subtitle {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 1rem;
+  }
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+  .auth-title {
+    font-size: 1.6rem;
+  }
+  .auth-subtitle {
+    font-size: 0.95rem;
+  }
+  .auth-footer {
+    font-size: 0.85rem;
+  }
+}

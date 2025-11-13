@@ -1,0 +1,96 @@
+======================================================================
+==           TÀI LIỆU MÔ TẢ CHI TIẾT DỰ ÁN - EDUPRESS              ==
+======================================================================
+
+1. TỔNG QUAN DỰ ÁN
+--------------------
+- Tên dự án: Hệ thống Website học online Edupress.
+- Mục tiêu: Xây dựng một nền tảng website thương mại điện tử chuyên về khóa học online. Hệ thống kết nối ba đối tượng chính:
+    + Khách hàng (Customer): Người tìm kiếm, mua và tham gia học.
+    + Nhà cung cấp khóa học (Course Provider): Người tạo, đăng tải và quản lý nội dung khóa học.
+    + Quản trị viên (Admin): Người quản lý, kiểm duyệt và vận hành toàn bộ hệ thống.
+- Công nghệ yêu cầu:
+    + Backend: Node.js (sử dụng Express.js framework).
+    + Frontend: ReactJS.
+    + Database: MongoDB (khuyến nghị sử dụng Mongoose để tương tác).
+
+2. PHÂN TÍCH VAI TRÒ VÀ CHỨC NĂNG CHI TIẾT
+------------------------------------------
+
+A. CUSTOMER - KHÁCH HÀNG
+-------------------------
+Mục tiêu: Cung cấp trải nghiệm mượt mà cho việc tìm kiếm, mua và học các khóa học.
+- (CT-QLTT01) Quản lý tài khoản cá nhân:
+    + Đăng ký tài khoản mới.
+    + Đăng nhập vào hệ thống.
+    + Chức năng "Quên mật khẩu".
+    + Xem và cập nhật thông tin cá nhân (họ tên, ảnh đại diện).
+    + Yêu cầu xóa tài khoản.
+- (CT-QLTTKH02 -> 05) Tương tác với khóa học:
+    + Xem danh sách tất cả các khóa học đang có trên hệ thống.
+    + Sử dụng bộ lọc, tìm kiếm để tìm khóa học theo tên, danh mục, giá tiền.
+    + Xem trang chi tiết của một khóa học (bao gồm mô tả, nội dung, thông tin nhà cung cấp, đánh giá từ học viên khác).
+    + Thực hiện đăng ký/mua khóa học.
+- (CT-QLKHCN01 -> 03) Quản lý khóa học cá nhân:
+    + Truy cập trang "Khóa học của tôi" để xem danh sách các khóa học đã mua.
+    + Vào xem nội dung bài học (video, tài liệu).
+    + Đánh giá (rate 1-5 sao) và viết bình luận cho khóa học đã hoàn thành.
+- (CT-NCC01) Nâng cấp vai trò:
+    + Gửi yêu cầu trở thành Nhà cung cấp khóa học (yêu cầu này cần Admin duyệt).
+
+B. COURSE PROVIDER - NHÀ CUNG CẤP KHÓA HỌC (NCC)
+------------------------------------------------
+Mục tiêu: Cung cấp công cụ mạnh mẽ để tạo, quản lý và theo dõi hiệu quả kinh doanh của các khóa học.
+- (NCC-QLKH01 -> 04) Quản lý khóa học:
+    + Tạo khóa học mới (nhập tên, mô tả, giá, danh mục, ảnh thumbnail).
+    + Xem danh sách các khóa học đã tạo.
+    + Chỉnh sửa thông tin khóa học.
+    + Xóa khóa học.
+    + Quản lý bài giảng: Thêm/sửa/xóa các bài học, upload video và tài liệu cho từng bài.
+- (NCC-QLUD01 -> 03) Quản lý ưu đãi:
+    + Tạo/sửa/xóa các mã giảm giá cho khóa học của mình.
+    + Tạo các chương trình ưu đãi, quà tặng kèm theo.
+- (NCC-BCDT01 -> 02) Thống kê và Báo cáo:
+    + Xem báo cáo doanh thu tổng quan.
+    + Xem báo cáo doanh thu chi tiết theo từng khóa học.
+
+C. ADMIN - QUẢN TRỊ VIÊN
+-------------------------
+Mục tiêu: Đảm bảo hệ thống vận hành trơn tru, nội dung chất lượng và quản lý người dùng hiệu quả.
+- (AD-QLND01 -> 03) Quản lý người dùng:
+    + Xem danh sách tất cả người dùng (Customer và Provider).
+    + Chỉnh sửa thông tin người dùng.
+    + Vô hiệu hóa/kích hoạt tài khoản người dùng.
+- (AD-QLD01, AD-KH01) Quản lý duyệt:
+    + Xem và phê duyệt/từ chối các yêu cầu đăng ký trở thành Nhà cung cấp khóa học.
+    + Xem và phê duyệt/từ chối các khóa học mới do NCC tạo trước khi hiển thị công khai.
+- (AD-KH03) Quản lý nội dung:
+    + Kiểm tra và quản lý nội dung các khóa học, bài giảng để đảm bảo chất lượng.
+- (AD-HT01 -> 04, AD-CT02) Quản trị hệ thống:
+    + Xem báo cáo tổng quan toàn hệ thống (số người dùng, số khóa học, tổng doanh thu).
+    + Gửi thông báo đến toàn bộ hoặc một nhóm người dùng.
+    + Quản lý tài chính, theo dõi giao dịch.
+    + Cung cấp hỗ trợ kỹ thuật.
+
+3. ĐỀ XUẤT CẤU TRÚC DATABASE (MONGODB)
+---------------------------------------
+- Collection `users`:
+    + fields: `fullName`, `email`, `password` (hashed), `role` ('customer', 'provider', 'admin'), `avatarUrl`, `status` ('active', 'pending_provider', 'inactive').
+- Collection `courses`:
+    + fields: `title`, `description`, `price`, `thumbnailUrl`, `category`, `providerId` (tham chiếu đến users), `status` ('pending', 'approved', 'rejected').
+- Collection `lessons`:
+    + fields: `title`, `videoUrl`, `courseId` (tham chiếu đến courses), `duration`.
+- Collection `enrollments`: (Bảng ghi lại việc mua khóa học)
+    + fields: `userId`, `courseId`, `enrollmentDate`, `progress` (tiến độ học).
+- Collection `reviews`:
+    + fields: `userId`, `courseId`, `rating` (1-5), `comment`, `createdAt`.
+- Collection `promotions`:
+    + fields: `code`, `discountPercentage`, `courseId`, `expiryDate`.
+
+4. YÊU CẦU PHI CHỨC NĂNG
+--------------------------
+- Giao diện: Thân thiện, dễ sử dụng, responsive (tương thích trên cả desktop và mobile).
+- Bảo mật: Mật khẩu người dùng phải được mã hóa. Phân quyền rõ ràng, người dùng không đúng vai trò không thể truy cập các chức năng bị cấm.
+- Hiệu năng: Tối ưu hóa tốc độ tải trang và thời gian phản hồi của API.
+
+
