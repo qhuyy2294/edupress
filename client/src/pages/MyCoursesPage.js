@@ -136,19 +136,19 @@ const MyCoursesPage = () => {
                     <div className="stat-number">
                       {courses.filter(c => c.status === 'approved').length}
                     </div>
-                    <div className="stat-label">Approved</div>
+                    <div className="stat-label">Đã duyệt</div>
                   </div>
                   <div className="stat-card">
                     <div className="stat-number">
                       {courses.filter(c => c.status === 'pending').length}
                     </div>
-                    <div className="stat-label">Pending</div>
+                    <div className="stat-label">Đang chờ</div>
                   </div>
                   <div className="stat-card">
                     <div className="stat-number">
                       {courses.reduce((sum, c) => sum + (c.enrollmentCount || 0), 0)}
                     </div>
-                    <div className="stat-label">Total Students</div>
+                    <div className="stat-label">Tổng số học viên</div>
                   </div>
                 </>
               )}

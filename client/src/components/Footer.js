@@ -14,30 +14,30 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-section">
           <h3>Edupress</h3>
-          <p>Your gateway to online learning excellence</p>
+          <p>Cổng thông tin của bạn đến với sự xuất sắc trong học tập trực tuyến</p>
         </div>
 
         <div className="footer-section">
-          <h4>Quick Links</h4>
+          <h4>Liên kết nhanh</h4>
           <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/courses">Courses</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/contact">Contact</a></li>
+            <li><a href="/courses">Khóa học</a></li>
+            <li><a href="/about">Giới thiệu về chúng tôi</a></li>
+            <li><a href="/contact">Liên hệ</a></li>
           </ul>
         </div>
 
         <div className="footer-section">
           <h4>Support</h4>
           <ul>
-            <li><a href="/help">Help Center</a></li>
-            <li><a href="/terms">Terms of Service</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/help">Trung tâm trợ giúp</a></li>
+            <li><a href="/terms">Điều khoản dịch vụ</a></li>
+            <li><a href="/privacy">Chính sách bảo mật</a></li>
           </ul>
         </div>
 
         <div className="footer-section">
-          <h4>Connect With Us</h4>
+          <h4>Kết nối với chúng tôi</h4>
           <div className="social-links">
             <a href="" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <FontAwesomeIcon icon={faFacebookF} />

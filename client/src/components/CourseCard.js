@@ -44,7 +44,7 @@ const CourseCard = ({ course }) => {
             )}
             {course.enrollmentCount > 0 && (
               <span className="enrollment-count">
-                👥 {course.enrollmentCount} students
+                👥 {course.enrollmentCount} học viên
               </span>
             )}
           </div>
