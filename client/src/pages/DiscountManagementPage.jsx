@@ -170,7 +170,7 @@ const DiscountManagementPage = () => {
 
   return (
     <div className="discount-management-page">
-      <div className="page-header">
+      <div className="page-header02">
         <h1>Discount Code Management</h1>
         <button
           className="btn btn-primary"

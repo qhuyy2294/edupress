@@ -82,7 +82,7 @@ const BecomeProviderPage = () => {
   return (
     <div className="become-provider-page">
       <div className="container">
-        <div className="page-header">
+        <div className="page-header04">
           <h1>🎓 Trở thành nhà cung cấp khóa học</h1>
           <p>Chia sẻ kiến ​​thức của bạn và kiếm tiền bằng cách tạo các khóa học trực tuyến</p>
         </div>

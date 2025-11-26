@@ -64,7 +64,7 @@ const RevenueReportPage = () => {
 
   return (
     <div className="revenue-report-page">
-      <div className="page-header">
+      <div className="page-header08">
         <h1>Revenue & Analytics</h1>
         <p>Track your course performance and earnings</p>
       </div>

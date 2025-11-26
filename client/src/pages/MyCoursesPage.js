@@ -76,7 +76,7 @@ const MyCoursesPage = () => {
   return (
     <div className="my-courses-page">
       <div className="container">
-        <div className="page-header">
+        <div className="page-header06">
           <div>
             <h1>
               {isProvider() ? '📚 My Courses' : '🎓 My Enrolled Courses'}

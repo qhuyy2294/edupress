@@ -120,7 +120,7 @@ const NotificationsPage = () => {
 
   return (
     <div className="notifications-page">
-      <div className="page-header">
+      <div className="page-header07">
         <h1>Thông báo</h1>
         {unreadCount > 0 && (
           <span className="unread-badge">{unreadCount} chưa đọc</span>

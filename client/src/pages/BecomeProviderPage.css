@@ -6,19 +6,19 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.page-header {
+.page-header04 {
   text-align: center;
   margin-bottom: 50px;
   color: white;
 }
 
-.page-header h1 {
+.page-header04 h1 {
   font-size: 3rem;
   margin-bottom: 15px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.page-header p {
+.page-header04 p {
   font-size: 1.3rem;
   opacity: 0.9;
 }
@@ -256,11 +256,11 @@
 }
 
 @media (max-width: 768px) {
-  .page-header h1 {
+  .page-header04 h1 {
     font-size: 2rem;
   }
 
-  .page-header p {
+  .page-header04 p {
     font-size: 1.1rem;
   }
 

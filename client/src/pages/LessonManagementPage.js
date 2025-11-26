@@ -155,7 +155,7 @@ const LessonManagementPage = () => {
           ← Back to My Courses
         </button>
 
-        <div className="page-header">
+        <div className="page-header03">
           <div>
             <h1>📝 Manage Lessons</h1>
             <p className="course-title">{course?.title}</p>

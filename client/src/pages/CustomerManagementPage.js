@@ -1,6 +1,6 @@
 /**
  * CustomerManagementPage Component
- * Admin page to manage all customers - view, search, filter, ban/unban
+ * Modern UI Version
  */
 
 import React, { useState, useEffect } from 'react';
@@ -8,6 +8,7 @@ import api from '../services/api';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './CustomerManagementPage.css';
+import { Link } from 'react-router-dom';
 
 const CustomerManagementPage = () => {
   const [customers, setCustomers] = useState([]);
@@ -17,8 +18,8 @@ const CustomerManagementPage = () => {
   
   // Filter states
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all'); // all, active, banned
-  const [roleFilter, setRoleFilter] = useState('all'); // all, customer, provider
+  const [statusFilter, setStatusFilter] = useState('all'); 
+  const [roleFilter, setRoleFilter] = useState('all'); 
   
   // Edit modal
   const [editingUser, setEditingUser] = useState(null);
@@ -33,237 +34,267 @@ const CustomerManagementPage = () => {
     try {
       setLoading(true);
       setError('');
-      
       const token = localStorage.getItem('token');
       const response = await api.get('/admin/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
-      // Backend returns { success, count, data } - we need the data array
       setCustomers(response.data.data || []);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load customers');
+      setError(err.response?.data?.message || 'Không thể tải danh sách người dùng');
     } finally {
       setLoading(false);
     }
   };
 
   const handleBanToggle = async (userId, currentStatus) => {
-    if (!window.confirm(`Are you sure you want to ${currentStatus === 'active' ? 'deactivate' : 'activate'} this user?`)) {
+    const actionText = currentStatus === 'active' ? 'vô hiệu hóa' : 'kích hoạt lại';
+    if (!window.confirm(`Bạn có chắc chắn muốn ${actionText} người dùng này không?`)) {
       return;
     }
-
     try {
-      setError('');
-      setSuccess('');
-      
+      setError(''); setSuccess('');
       const token = localStorage.getItem('token');
       await api.put(`/admin/users/${userId}/toggle-status`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
-      setSuccess(`User ${currentStatus === 'active' ? 'deactivated' : 'activated'} successfully`);
+      setSuccess(`Đã ${actionText} người dùng thành công`);
       fetchCustomers();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update user status');
+      setError(err.response?.data?.message || 'Cập nhật trạng thái thất bại');
     }
   };
 
   const handleEditClick = (user) => {
     setEditingUser(user);
     setEditForm({ fullName: user.fullName || '', email: user.email });
-    setError('');
-    setSuccess('');
+    setError(''); setSuccess('');
   };
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-    
     try {
-      setError('');
-      setSuccess('');
-      
+      setError(''); setSuccess('');
       const token = localStorage.getItem('token');
       await api.put(`/admin/users/${editingUser._id}`, editForm, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
-      setSuccess('User updated successfully');
+      setSuccess('Cập nhật thông tin thành công');
       setEditingUser(null);
       fetchCustomers();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update user');
+      setError(err.response?.data?.message || 'Cập nhật thất bại');
     }
   };
 
-  // Filter customers
+  const getRoleDisplay = (role) => {
+    switch(role) {
+      case 'admin': return 'Quản trị viên';
+      case 'provider': return 'Nhà cung cấp';
+      case 'customer': return 'Khách hàng';
+      default: return role;
+    }
+  };
+
+  const getStatusDisplay = (status) => {
+    return status === 'inactive' ? 'Đang khóa' : 'Hoạt động';
+  };
+
   const filteredCustomers = customers.filter(customer => {
-    // Search filter
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch = 
       customer.fullName?.toLowerCase().includes(searchLower) ||
       customer.email?.toLowerCase().includes(searchLower);
     
     if (!matchesSearch) return false;
-
-    // Status filter
     if (statusFilter !== 'all') {
       if (statusFilter === 'inactive' && customer.status !== 'inactive') return false;
       if (statusFilter === 'active' && customer.status !== 'active') return false;
     }
-
-    // Role filter
     if (roleFilter !== 'all' && customer.role !== roleFilter) return false;
-
     return true;
   });
 
-  if (loading) {
-    return <Loader />;
-  }
+  if (loading) return <Loader message="Đang tải dữ liệu..." />;
 
   return (
-    <div className="customer-management-page">
-      <div className="page-header">
-        <h1>Customer Management</h1>
-        <p>Manage all customers and providers</p>
-      </div>
-
-      {error && <Message type="error">{error}</Message>}
-      {success && <Message type="success">{success}</Message>}
-
-      {/* Filters */}
-      <div className="filters-section">
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="Search by name or email..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+    <div className="customer-management-page fade-in">
+      <div className="header-container01">
+        <div className="breadcrumb-nav">
+          <Link to="/admin/dashboard" className="btn-back">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Dashboard
+          </Link>
         </div>
 
-        <div className="filter-group">
-          <label>Status:</label>
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div>
-
-        <div className="filter-group">
-          <label>Role:</label>
-          <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
-            <option value="all">All</option>
-            <option value="customer">Customer</option>
-            <option value="provider">Provider</option>
-          </select>
-        </div>
-
-        <div className="filter-stats">
-          Showing {filteredCustomers.length} of {customers.length} users
+        <div className="page-header01">
+          <div className="title-wrapper">
+            <h1>Quản lý người dùng</h1>
+            <span className="user-count-badge">{filteredCustomers.length} Users</span>
+          </div>
+          <p>Theo dõi, quản lý và cập nhật thông tin thành viên hệ thống</p>
         </div>
       </div>
 
-      {/* Customers Table */}
-      <div className="table-container">
-        {filteredCustomers.length === 0 ? (
-          <Message type="info">No customers found</Message>
-        ) : (
-          <table className="customers-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Joined</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCustomers.map(customer => (
-                <tr key={customer._id} className={customer.status === 'inactive' ? 'inactive-row' : ''}>
-                  <td>
-                    <div className="user-info">
-                      {customer.avatarUrl ? (
-                        <img src={customer.avatarUrl} alt={customer.fullName} className="avatar-small" />
-                      ) : (
-                        <div className="avatar-placeholder-small">
-                          {customer.fullName?.charAt(0) || customer.email?.charAt(0) || 'U'}
-                        </div>
-                      )}
-                      <span>{customer.fullName || 'N/A'}</span>
-                    </div>
-                  </td>
-                  <td>{customer.email}</td>
-                  <td>
-                    <span className={`role-badge ${customer.role}`}>
-                      {customer.role}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`status-badge ${customer.status || 'active'}`}>
-                      {customer.status || 'active'}
-                    </span>
-                  </td>
-                  <td>{new Date(customer.createdAt).toLocaleDateString()}</td>
-                  <td>
-                    <div className="action-buttons">
-                      <button 
-                        className="btn-edit"
-                        onClick={() => handleEditClick(customer)}
-                        disabled={customer.role === 'admin'}
-                      >
-                        Edit
-                      </button>
-                      <button 
-                        className={`btn-ban ${customer.status === 'inactive' ? 'unban' : ''}`}
-                        onClick={() => handleBanToggle(customer._id, customer.status)}
-                        disabled={customer.role === 'admin'}
-                      >
-                        {customer.status === 'inactive' ? 'Activate' : 'Deactivate'}
-                      </button>
-                    </div>
-                  </td>
+      <div className="main-content-card">
+        {error && <Message type="error" message={error} />}
+        {success && <Message type="success" message={success} />}
+
+        {/* Filters Bar */}
+        <div className="filters-section">
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Tìm kiếm..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          <div className="filter-controls">
+            <div className="filter-group">
+              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                <option value="all">Tất cả trạng thái</option>
+                <option value="active">Đang hoạt động</option>
+                <option value="inactive">Đã khóa</option>
+              </select>
+            </div>
+
+            <div className="filter-group">
+              <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
+                <option value="all">Tất cả vai trò</option>
+                <option value="customer">Khách hàng</option>
+                <option value="provider">Nhà cung cấp</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Customers Table */}
+        <div className="table-container">
+          {filteredCustomers.length === 0 ? (
+            <div className="empty-state">
+              <img src="https://cdn-icons-png.flaticon.com/512/7486/7486754.png" alt="Empty" width="60" />
+              <p>Không tìm thấy người dùng nào phù hợp</p>
+            </div>
+          ) : (
+            <table className="customers-table">
+              <thead>
+                <tr>
+                  <th>Người dùng</th>
+                  <th>Vai trò</th>
+                  <th>Trạng thái</th>
+                  <th>Ngày tham gia</th>
+                  <th className="text-right">Hành động</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {filteredCustomers.map((customer, index) => (
+                  <tr 
+                    key={customer._id} 
+                    className={`table-row ${customer.status === 'inactive' ? 'row-inactive' : ''}`}
+                    style={{ animationDelay: `${index * 0.05}s` }} // Staggered animation
+                  >
+                    <td>
+                      <div className="user-profile">
+                        {customer.avatarUrl ? (
+                          <img src={customer.avatarUrl} alt="" className="avatar" />
+                        ) : (
+                          <div className={`avatar-placeholder gradient-${index % 3}`}>
+                            {customer.fullName?.charAt(0) || customer.email?.charAt(0)}
+                          </div>
+                        )}
+                        <div className="user-details">
+                          <span className="user-name">{customer.fullName || 'Chưa đặt tên'}</span>
+                          <span className="user-email">{customer.email}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`role-badge ${customer.role}`}>
+                        {getRoleDisplay(customer.role)}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`status-indicator ${customer.status || 'active'}`}>
+                        <span className="dot"></span>
+                        {getStatusDisplay(customer.status || 'active')}
+                      </span>
+                    </td>
+                    <td className="date-cell">{new Date(customer.createdAt).toLocaleDateString('vi-VN')}</td>
+                    <td>
+                      <div className="action-buttons">
+                        <button 
+                          className="btn-icon btn-edit-icon"
+                          onClick={() => handleEditClick(customer)}
+                          disabled={customer.role === 'admin'}
+                          title="Chỉnh sửa"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button 
+                          className={`btn-icon btn-ban-icon ${customer.status === 'inactive' ? 'is-banned' : ''}`}
+                          onClick={() => handleBanToggle(customer._id, customer.status)}
+                          disabled={customer.role === 'admin'}
+                          title={customer.status === 'inactive' ? 'Mở khóa' : 'Khóa tài khoản'}
+                        >
+                          {customer.status === 'inactive' ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                          )}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
 
-      {/* Edit Modal */}
+      {/* Modern Modal */}
       {editingUser && (
-        <div className="modal-overlay" onClick={() => setEditingUser(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>Edit User</h2>
+        <div className="modal-backdrop fade-in" onClick={() => setEditingUser(null)}>
+          <div className="modal-card slide-up" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Cập nhật thông tin</h2>
+              <button className="btn-close" onClick={() => setEditingUser(null)}>&times;</button>
+            </div>
+            
             <form onSubmit={handleEditSubmit}>
-              <div className="form-group">
-                <label>Full Name</label>
-                <input
-                  type="text"
-                  value={editForm.fullName}
-                  onChange={(e) => setEditForm({ ...editForm, fullName: e.target.value })}
-                  required
-                />
+              <div className="modal-body">
+                <div className="form-group">
+                  <label>Họ và tên</label>
+                  <input
+                    type="text"
+                    value={editForm.fullName}
+                    onChange={(e) => setEditForm({ ...editForm, fullName: e.target.value })}
+                    required
+                    placeholder="Nhập họ tên đầy đủ"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    value={editForm.email}
+                    onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                    required
+                    placeholder="name@example.com"
+                  />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label>Email</label>
-                <input
-                  type="email"
-                  value={editForm.email}
-                  onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                  required
-                />
-              </div>
-
-              <div className="modal-actions">
-                <button type="submit" className="btn-save">Save Changes</button>
-                <button type="button" className="btn-cancel" onClick={() => setEditingUser(null)}>
-                  Cancel
+              <div className="modal-footer">
+                <button type="button" className="btn-ghost" onClick={() => setEditingUser(null)}>
+                  Hủy bỏ
+                </button>
+                <button type="submit" className="btn-primary">
+                  Lưu thay đổi
                 </button>
               </div>
             </form>
