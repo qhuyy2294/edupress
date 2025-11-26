@@ -152,7 +152,9 @@ const AdminDashboard = () => {
                 <div className="stat-icon">💰</div>
                 <div className="stat-info">
                   <h3>Tổng doanh thu</h3>
-                  <p className="stat-number">${stats.revenue.toFixed(2)}</p>
+                  <p className="stat-number">
+                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(stats.revenue)}
+                    </p>
                   <div className="stat-details">
                     <span>Thu nhập nền tảng</span>
                   </div>
@@ -175,7 +177,7 @@ const AdminDashboard = () => {
                   <div className="alert alert-course">
                     <span className="alert-icon">📝</span>
                     <span className="alert-text">
-                      {pendingCourses.length} khóa học{pendingCourses.length > 1 ? 's' : ''} đang chờ được đánh giá
+                      {pendingCourses.length} khóa học{pendingCourses.length > 1 ? '' : ''} đang chờ được đánh giá
                     </span>
                   </div>
                 )}
