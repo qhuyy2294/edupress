@@ -57,12 +57,12 @@ const ProfilePage = () => {
     // Validate passwords if changing
     if (formData.newPassword) {
       if (formData.newPassword.length < 6) {
-        setError('New password must be at least 6 characters');
+        setError('Mật khẩu mới phải có ít nhất 6 ký tự');
         setLoading(false);
         return;
       }
       if (formData.newPassword !== formData.confirmPassword) {
-        setError('New passwords do not match');
+        setError('Mật khẩu mới không khớp');
         setLoading(false);
         return;
       }
@@ -82,7 +82,7 @@ const ProfilePage = () => {
       const result = await updateProfile(updateData);
       
       if (result.success) {
-        setSuccess('Profile updated successfully!');
+        setSuccess('Hồ sơ đã được cập nhật thành công!');
         // Clear password fields
         setFormData({
           ...formData,
@@ -91,28 +91,28 @@ const ProfilePage = () => {
           confirmPassword: '',
         });
       } else {
-        setError(result.message || 'Failed to update profile');
+        setError(result.message || 'Không cập nhật được hồ sơ');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred');
+      setError(err.response?.data?.message || 'Đã xảy ra lỗi');
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteAccount = async () => {
-    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa tài khoản của mình không? Thao tác này không thể hoàn tác.')) {
       return;
     }
 
     try {
       setLoading(true);
       await authService.deleteAccount();
-      alert('Your account has been deactivated. You will be logged out.');
+      alert('Tài khoản của bạn đã bị vô hiệu hóa. Bạn sẽ bị đăng xuất.');
       logout();
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete account');
+      setError(err.response?.data?.message || 'Không xóa được tài khoản');
       setLoading(false);
     }
   };
@@ -125,8 +125,8 @@ const ProfilePage = () => {
     <div className="profile-page">
       <div className="container">
         <div className="profile-header">
-          <h1>👤 My Profile</h1>
-          <p>Manage your personal information and account settings</p>
+          <h1>👤 Hồ sơ của tôi</h1>
+          <p>Quản lý thông tin cá nhân và cài đặt tài khoản của bạn</p>
         </div>
 
         <div className="profile-content">
@@ -146,21 +146,21 @@ const ProfilePage = () => {
                 <h2>{user.fullName}</h2>
                 <p className="user-email">{user.email}</p>
                 <span className={`user-role role-${user.role}`}>
-                  {user.role === 'customer' && '🎓 Customer'}
-                  {user.role === 'provider' && '👨‍🏫 Provider'}
-                  {user.role === 'admin' && '👨‍💼 Admin'}
+                  {user.role === 'customer' && '🎓 Học viên'}
+                  {user.role === 'provider' && '👨‍🏫 Nhà cung cấp'}
+                  {user.role === 'admin' && '👨‍💼 Quản lý'}
                 </span>
                 <span className={`user-status status-${user.status}`}>
-                  {user.status === 'active' && '✅ Active'}
-                  {user.status === 'pending_provider' && '⏳ Pending Provider Approval'}
-                  {user.status === 'inactive' && '❌ Inactive'}
+                  {user.status === 'active' && '✅ Kích hoạt'}
+                  {user.status === 'pending_provider' && '⏳ Đang chờ phê duyệt của nhà cung cấp'}
+                  {user.status === 'inactive' && '❌ Không hoạt động'}
                 </span>
               </div>
             </div>
 
             <div className="account-stats">
               <div className="stat-item">
-                <span className="stat-label">Member Since</span>
+                <span className="stat-label">Thành viên từ</span>
                 <span className="stat-value">
                   {new Date(user.createdAt).toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -173,14 +173,14 @@ const ProfilePage = () => {
 
           {/* Edit Profile Form */}
           <div className="profile-form-card">
-            <h3>Edit Profile</h3>
+            <h3>Chỉnh sửa hồ sơ</h3>
             
             {error && <Message type="error">{error}</Message>}
             {success && <Message type="success">{success}</Message>}
 
             <form onSubmit={handleSubmit} className="profile-form">
               <div className="form-group">
-                <label htmlFor="fullName">Full Name *</label>
+                <label htmlFor="fullName">Tên đầy đủ *</label>
                 <input
                   type="text"
                   id="fullName"
@@ -201,7 +201,7 @@ const ProfilePage = () => {
                   disabled
                   title="Email cannot be changed"
                 />
-                <small>Email cannot be changed</small>
+                <small>Email không thể thay đổi</small>
               </div>
 
               <div className="form-group">
@@ -217,31 +217,31 @@ const ProfilePage = () => {
               </div>
 
               <div className="form-divider">
-                <span>Change Password (Optional)</span>
+                <span>Đổi mật khẩu(Không bắt buộc)</span>
               </div>
 
               <div className="form-group">
-                <label htmlFor="newPassword">New Password</label>
+                <label htmlFor="newPassword">Mật khẩu mới</label>
                 <input
                   type="password"
                   id="newPassword"
                   name="newPassword"
                   value={formData.newPassword}
                   onChange={handleChange}
-                  placeholder="Leave blank to keep current password"
+                  placeholder="Để trống để giữ mật khẩu hiện tại"
                   minLength="6"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm New Password</label>
+                <label htmlFor="confirmPassword">Xác nhận mật khẩu mới</label>
                 <input
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  placeholder="Confirm your new password"
+                  placeholder="Xác nhận mật khẩu mới của bạn"
                   minLength="6"
                 />
               </div>
@@ -252,7 +252,7 @@ const ProfilePage = () => {
                   className="btn btn-primary"
                   disabled={loading}
                 >
-                  {loading ? 'Updating...' : 'Update Profile'}
+                  {loading ? 'Updating...' : 'Cập nhật hồ sơ'}
                 </button>
               </div>
             </form>
@@ -263,15 +263,14 @@ const ProfilePage = () => {
             <div className="danger-zone-card">
               <h3>⚠️ Danger Zone</h3>
               <p>
-                Once you delete your account, there is no going back. Your account will be
-                deactivated and you will lose access to all your enrolled courses.
+                Một khi bạn đã xóa tài khoản, bạn sẽ không thể quay lại. Tài khoản của bạn sẽ bị vô hiệu hóa và bạn sẽ mất quyền truy cập vào tất cả các khóa học đã đăng ký.
               </p>
               <button
                 onClick={handleDeleteAccount}
                 className="btn btn-danger"
                 disabled={loading}
               >
-                Delete My Account
+                XÓA TÀI KHOẢN
               </button>
             </div>
           )}

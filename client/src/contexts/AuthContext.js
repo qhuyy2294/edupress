@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
           setIsAuthenticated(true);
         }
       } catch (error) {
-        console.error('Error loading user from localStorage:', error);
+        console.error('Lỗi khi tải người dùng từ localStorage:', error);
       } finally {
         setLoading(false);
       }
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       const message =
-        error.response?.data?.message || 'Registration failed. Please try again.';
+        error.response?.data?.message || 'Đăng ký không thành công. Vui lòng thử lại.';
       return { success: false, message };
     }
   };
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       const message =
-        error.response?.data?.message || 'Login failed. Please check your credentials.';
+        error.response?.data?.message || 'Đăng nhập không thành công. Vui lòng kiểm tra thông tin đăng nhập của bạn.';
       return { success: false, message };
     }
   };
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       const message =
-        error.response?.data?.message || 'Profile update failed. Please try again.';
+        error.response?.data?.message || 'Cập nhật hồ sơ không thành công. Vui lòng thử lại.';
       return { success: false, message };
     }
   };

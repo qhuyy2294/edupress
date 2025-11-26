@@ -34,7 +34,7 @@ const NotificationsPage = () => {
       setNotifications(response.data.notifications);
       setUnreadCount(response.data.unreadCount);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load notifications');
+      setError(err.response?.data?.message || 'Không tải được thông báo');
     } finally {
       setLoading(false);
     }
@@ -46,7 +46,7 @@ const NotificationsPage = () => {
       await notificationService.markAsRead(notificationId);
       fetchNotifications();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to mark as read');
+      setError(err.response?.data?.message || 'Không thể đánh dấu là đã đọc');
     }
   };
 
@@ -55,30 +55,30 @@ const NotificationsPage = () => {
       setError('');
       setSuccess('');
       await notificationService.markAllAsRead();
-      setSuccess('All notifications marked as read');
+      setSuccess('Tất cả thông báo được đánh dấu là đã đọc');
       fetchNotifications();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to mark all as read');
+      setError(err.response?.data?.message || 'Không thể đánh dấu tất cả là đã đọc');
     }
   };
 
   const handleDelete = async (notificationId) => {
-    if (!window.confirm('Are you sure you want to delete this notification?')) {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa thông báo này không?')) {
       return;
     }
 
     try {
       setError('');
       await notificationService.deleteNotification(notificationId);
-      setSuccess('Notification deleted');
+      setSuccess('Thông báo đã bị xóa');
       fetchNotifications();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete notification');
+      setError(err.response?.data?.message || 'Không xóa được thông báo');
     }
   };
 
   const handleClearRead = async () => {
-    if (!window.confirm('Are you sure you want to clear all read notifications?')) {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa tất cả thông báo đã đọc không?')) {
       return;
     }
 
@@ -89,7 +89,7 @@ const NotificationsPage = () => {
       setSuccess(`Cleared ${response.data.deletedCount} read notifications`);
       fetchNotifications();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to clear notifications');
+      setError(err.response?.data?.message || 'Không xóa được thông báo');
     }
   };
 
@@ -121,9 +121,9 @@ const NotificationsPage = () => {
   return (
     <div className="notifications-page">
       <div className="page-header">
-        <h1>Notifications</h1>
+        <h1>Thông báo</h1>
         {unreadCount > 0 && (
-          <span className="unread-badge">{unreadCount} unread</span>
+          <span className="unread-badge">{unreadCount} chưa đọc</span>
         )}
       </div>
 
@@ -137,24 +137,24 @@ const NotificationsPage = () => {
             className={`tab ${filter === 'all' ? 'active' : ''}`}
             onClick={() => setFilter('all')}
           >
-            All
+            Tất cả
           </button>
           <button
             className={`tab ${filter === 'unread' ? 'active' : ''}`}
             onClick={() => setFilter('unread')}
           >
-            Unread ({unreadCount})
+            Chưa đọc ({unreadCount})
           </button>
         </div>
 
         <div className="action-buttons">
           {unreadCount > 0 && (
             <button className="btn-action" onClick={handleMarkAllAsRead}>
-              Mark all as read
+            Đánh dấu tất cả là đã đọc
             </button>
           )}
           <button className="btn-action" onClick={handleClearRead}>
-            Clear read
+            Xóa thông báo đã đọc
           </button>
         </div>
       </div>
@@ -164,8 +164,8 @@ const NotificationsPage = () => {
         {notifications.length === 0 ? (
           <div className="empty-state">
             <span className="empty-icon">📭</span>
-            <h3>No notifications</h3>
-            <p>You're all caught up!</p>
+            <h3>Không có thông báo</h3>
+            <p>Bạn không có thông báo nào</p>
           </div>
         ) : (
           notifications.map(notification => (
@@ -197,7 +197,7 @@ const NotificationsPage = () => {
               <div className="notification-actions">
                 {notification.link && (
                   <Link to={notification.link} className="btn-goto">
-                    Go to
+                    Đi đến
                   </Link>
                 )}
                 
@@ -206,7 +206,7 @@ const NotificationsPage = () => {
                     className="btn-mark-read"
                     onClick={() => handleMarkAsRead(notification._id)}
                   >
-                    Mark read
+                    Đánh dấu là đã đọc
                   </button>
                 )}
                 
@@ -214,7 +214,7 @@ const NotificationsPage = () => {
                   className="btn-delete"
                   onClick={() => handleDelete(notification._id)}
                 >
-                  Delete
+                  Xóa
                 </button>
               </div>
             </div>

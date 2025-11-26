@@ -26,7 +26,7 @@ const Header = () => {
 
         <nav className="nav">
           <Link to="/" className="nav-link">
-            Courses
+            Khóa học
           </Link>
 
           {isAuthenticated ? (
