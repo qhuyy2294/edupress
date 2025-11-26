@@ -34,10 +34,10 @@ const Header = () => {
               {user?.role === 'customer' && (
                 <>
                   <Link to="/my-courses" className="nav-link">
-                    My Courses
+                    Khóa học của tôi
                   </Link>
                   <Link to="/become-provider" className="nav-link">
-                    Become Provider
+                    Trở thành nhà cung cấp
                   </Link>
                 </>
               )}
@@ -45,49 +45,49 @@ const Header = () => {
               {user?.role === 'provider' && (
                 <>
                   <Link to="/my-courses" className="nav-link">
-                    My Courses
+                    Khóa học của tôi
                   </Link>
                   <Link to="/course/create" className="nav-link">
-                    Create Course
+                    Tạo khóa học mới
                   </Link>
                   <Link to="/provider/revenue" className="nav-link">
-                    Revenue Report
+                    Báo cáo doanh thu
                   </Link>
                   <Link to="/provider/discounts" className="nav-link">
-                    Discount Codes
+                    Mã giảm giá
                   </Link>
                 </>
               )}
 
               {user?.role === 'admin' && (
                 <Link to="/admin/dashboard" className="nav-link">
-                  Admin Dashboard
+                  Bảng điều khiển quản trị
                 </Link>
               )}
 
               <Link to="/notifications" className="nav-link">
-                🔔 Notifications
+                🔔 Thông báo
               </Link>
 
               <Link to="/profile" className="nav-link">
-                Profile
+                Hồ sơ
               </Link>
 
               <button onClick={handleLogout} className="btn btn-logout">
-                Logout
+                Đăng xuất
               </button>
 
               <span className="user-greeting">
-                Hello, {user?.fullName}
+                Xin chào, {user?.fullName}
               </span>
             </>
           ) : (
             <>
               <Link to="/login" className="nav-link">
-                Login
+                Đăng nhập
               </Link>
               <Link to="/register" className="btn btn-primary">
-                Sign Up
+                Đăng ký
               </Link>
             </>
           )}

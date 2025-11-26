@@ -20,7 +20,7 @@ const createCourse = asyncHandler(async (req, res) => {
   // Validate input
   if (!title || !description || !thumbnailUrl || !category) {
     res.status(400);
-    throw new Error('Please provide all required fields');
+    throw new Error('Vui lòng cung cấp tất cả các trường bắt buộc');
   }
 
   // Check if course with same title exists

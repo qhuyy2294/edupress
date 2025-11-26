@@ -159,7 +159,7 @@ const MyCoursesPage = () => {
                 <div key={course._id} className="course-item">
                   {isCustomer() && course.progress !== undefined && (
                     <div className="progress-badge">
-                      {course.progress}% Complete
+                      {course.progress}% Hoàn thành
                     </div>
                   )}
                   {isProvider() && (
@@ -174,19 +174,19 @@ const MyCoursesPage = () => {
                         to={`/course/${course._id}/lessons`}
                         className="btn btn-primary btn-sm"
                       >
-                        Manage Lessons
+                        Quản lý khóa học
                       </Link>
                       <Link
                         to={`/course/${course._id}/edit`}
                         className="btn btn-secondary btn-sm"
                       >
-                        Edit
+                        Chỉnh sửa
                       </Link>
                       <button
                         onClick={() => handleDelete(course._id)}
                         className="btn btn-danger btn-sm"
                       >
-                        Delete
+                        Xóa
                       </button>
                     </div>
                   )}

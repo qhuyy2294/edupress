@@ -61,7 +61,7 @@ const CreateCoursePage = () => {
         thumbnailUrl: course.thumbnailUrl || '',
       });
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load course');
+      setError(err.response?.data?.message || 'Không tải được khóa học');
     } finally {
       setFetchingCourse(false);
     }
@@ -71,7 +71,7 @@ const CreateCoursePage = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'price' ? parseFloat(value) || 0 : value,
+      [name]: name === 'Giá' ? parseFloat(value) || 0 : value,
     }));
   };
 
@@ -79,12 +79,12 @@ const CreateCoursePage = () => {
     e.preventDefault();
 
     if (!formData.title.trim() || !formData.description.trim()) {
-      setError('Please fill in all required fields');
+      setError('Vui lòng điền vào tất cả các trường bắt buộc');
       return;
     }
 
     if (formData.price < 0) {
-      setError('Price cannot be negative');
+      setError('Giá không thể âm');
       return;
     }
 
@@ -97,14 +97,14 @@ const CreateCoursePage = () => {
         setSuccessMessage('Course updated successfully!');
       } else {
         await courseService.createCourse(formData);
-        setSuccessMessage('Course created successfully! Waiting for admin approval.');
+        setSuccessMessage('Khóa học đã được tạo thành công! Đang chờ quản trị viên phê duyệt.');
       }
 
       setTimeout(() => {
         navigate('/my-courses');
       }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save course');
+      setError(err.response?.data?.message || 'Không lưu được khóa học');
     } finally {
       setLoading(false);
     }
@@ -119,17 +119,17 @@ const CreateCoursePage = () => {
       <div className="container">
         <div className="create-course-wrapper">
           <button className="btn-back" onClick={() => navigate('/my-courses')}>
-            ← Back to My Courses
+            ← Quay lại Khóa học của tôi
           </button>
 
           <div className="create-course-card">
             <h1 className="page-title">
-              {isEditMode ? 'Edit Course' : 'Create New Course'}
+              {isEditMode ? 'Chỉnh sửa khóa học' : 'Thêm khóa học'}
             </h1>
             <p className="page-subtitle">
               {isEditMode
-                ? 'Update your course information'
-                : 'Fill in the details to create your course. All courses must be approved by admin before going live.'}
+                ? 'Cập nhật thông tin khóa học của bạn'
+                : 'Điền thông tin để tạo khóa học. Tất cả khóa học phải được quản trị viên phê duyệt trước khi được phát hành.'}
             </p>
 
             {successMessage && <Message type="success" message={successMessage} />}
@@ -139,13 +139,13 @@ const CreateCoursePage = () => {
               {/* Title */}
               <div className="form-group">
                 <label className="form-label">
-                  Course Title <span className="required">*</span>
+                  Tên khóa học <span className="required">*</span>
                 </label>
                 <input
                   type="text"
                   name="title"
                   className="form-input"
-                  placeholder="Enter course title (e.g., Complete Web Development Bootcamp)"
+                  placeholder="Nhập tiêu đề khóa học (ví dụ: Khóa đào tạo phát triển web hoàn chỉnh)"
                   value={formData.title}
                   onChange={handleChange}
                   required
@@ -155,12 +155,12 @@ const CreateCoursePage = () => {
               {/* Description */}
               <div className="form-group">
                 <label className="form-label">
-                  Description <span className="required">*</span>
+                  Mô tả <span className="required">*</span>
                 </label>
                 <textarea
                   name="description"
                   className="form-textarea"
-                  placeholder="Describe what students will learn in this course..."
+                  placeholder="Mô tả những gì sinh viên sẽ học trong khóa học này..."
                   rows="6"
                   value={formData.description}
                   onChange={handleChange}
@@ -173,7 +173,7 @@ const CreateCoursePage = () => {
                 {/* Category */}
                 <div className="form-group">
                   <label className="form-label">
-                    Category <span className="required">*</span>
+                    Thể loại <span className="required">*</span>
                   </label>
                   <select
                     name="category"
@@ -193,20 +193,20 @@ const CreateCoursePage = () => {
                 {/* Price */}
                 <div className="form-group">
                   <label className="form-label">
-                    Price (USD) <span className="required">*</span>
+                    Giá (VND) <span className="required">*</span>
                   </label>
                   <input
                     type="number"
                     name="price"
                     className="form-input"
-                    placeholder="0.00"
+                    placeholder="0"
                     min="0"
-                    step="0.01"
+                    step="1000"
                     value={formData.price}
                     onChange={handleChange}
                     required
                   />
-                  <small className="form-hint">Enter 0 for free courses</small>
+                  <small className="form-hint">Nhập 0 cho các khóa học miễn phí</small>
                 </div>
               </div>
 
@@ -222,7 +222,7 @@ const CreateCoursePage = () => {
                   onChange={handleChange}
                 />
                 <small className="form-hint">
-                  Provide a direct link to your course thumbnail image
+                  Cung cấp liên kết trực tiếp đến hình ảnh thu nhỏ của khóa học
                 </small>
                 {formData.thumbnailUrl && (
                   <div className="thumbnail-preview">
@@ -245,14 +245,14 @@ const CreateCoursePage = () => {
                   onClick={() => navigate('/my-courses')}
                   disabled={loading}
                 >
-                  Cancel
+                  Hủy
                 </button>
                 <button type="submit" className="btn-submit" disabled={loading}>
                   {loading
                     ? 'Saving...'
                     : isEditMode
-                    ? 'Update Course'
-                    : 'Create Course'}
+                    ? 'Cập nhật khóa học'
+                    : 'Tạo khóa học'}
                 </button>
               </div>
             </form>
