@@ -29,6 +29,8 @@ import CourseManagementPage from '../pages/CourseManagementPage';
 import NotificationsPage from '../pages/NotificationsPage';
 import RevenueReportPage from '../pages/RevenueReportPage';
 import DiscountManagementPage from '../pages/DiscountManagementPage';
+// [NEW] Import trang đặt lại mật khẩu
+import ResetPasswordPage from '../pages/ResetPasswordPage'; 
 
 
 /**
@@ -114,6 +116,8 @@ const AppRouter = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            {/* [NEW] Route xử lý link đặt lại mật khẩu */}
+            <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
             <Route path="/course/:id" element={<CourseDetailPage />} />
 
             {/* Protected Routes - Admin */}

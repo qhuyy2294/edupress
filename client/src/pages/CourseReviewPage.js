@@ -52,7 +52,7 @@ const CourseReviewPage = () => {
         // No existing review - that's ok
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load course details');
+      setError(err.response?.data?.message || 'Không tải được thông tin chi tiết về khóa học');
     } finally {
       setLoading(false);
     }
@@ -62,12 +62,12 @@ const CourseReviewPage = () => {
     e.preventDefault();
 
     if (comment.trim().length < 10) {
-      setError('Review comment must be at least 10 characters long');
+      setError('Bình luận đánh giá phải dài ít nhất 10 ký tự');
       return;
     }
 
     if (comment.length > 500) {
-      setError('Review comment cannot exceed 500 characters');
+      setError('Bình luận đánh giá không được vượt quá 500 ký tự');
       return;
     }
 
@@ -81,7 +81,7 @@ const CourseReviewPage = () => {
           rating,
           comment,
         });
-        setSuccessMessage('Review updated successfully!');
+        setSuccessMessage('Đánh giá đã được cập nhật thành công!');
       } else {
         // Create new review
         await reviewService.createReview({
@@ -89,21 +89,21 @@ const CourseReviewPage = () => {
           rating,
           comment,
         });
-        setSuccessMessage('Review submitted successfully!');
+        setSuccessMessage('Đã gửi đánh giá thành công!');
       }
 
       setTimeout(() => {
         navigate(`/courses/${id}`);
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to submit review');
+      setError(err.response?.data?.message || 'Không thể gửi đánh giá');
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete your review?')) {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa đánh giá của mình không?')) {
       return;
     }
 
@@ -112,19 +112,19 @@ const CourseReviewPage = () => {
       setError('');
 
       await reviewService.deleteReview(existingReview._id);
-      setSuccessMessage('Review deleted successfully!');
+      setSuccessMessage('Đánh giá đã được xóa thành công!');
 
       setTimeout(() => {
         navigate(`/courses/${id}`);
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete review');
+      setError(err.response?.data?.message || 'Không xóa được đánh giá');
       setSubmitting(false);
     }
   };
 
   if (loading) {
-    return <Loader message="Loading..." />;
+    return <Loader message="Đang tải..." />;
   }
 
   if (error && !course) {
@@ -143,7 +143,7 @@ const CourseReviewPage = () => {
             className="btn-back"
             onClick={() => navigate(`/courses/${id}`)}
           >
-            ← Back to Course
+            ← Quay lại khóa học
           </button>
 
           <div className="course-info-header">
@@ -171,7 +171,7 @@ const CourseReviewPage = () => {
             <form onSubmit={handleSubmit}>
               {/* Rating Selection */}
               <div className="form-group">
-                <label className="form-label">Rating *</label>
+                <label className="form-label">Đánh giá *</label>
                 <div className="star-rating-input">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -199,17 +199,17 @@ const CourseReviewPage = () => {
 
               {/* Comment Textarea */}
               <div className="form-group">
-                <label className="form-label">Your Review *</label>
+                <label className="form-label">Đánh giá của bạn *</label>
                 <textarea
                   className="form-textarea"
-                  placeholder="Share your experience with this course... (10-500 characters)"
+                  placeholder="Chia sẻ kinh nghiệm của bạn với khóa học này... (10-500 ký tự)"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   rows="6"
                   required
                 />
                 <span className="char-count">
-                  {comment.length}/500 characters
+                  {comment.length}/500 ký tự
                 </span>
               </div>
 
@@ -221,7 +221,7 @@ const CourseReviewPage = () => {
                   onClick={() => navigate(`/courses/${id}`)}
                   disabled={submitting}
                 >
-                  Cancel
+                  Hủy
                 </button>
                 
                 {existingReview && (
@@ -231,7 +231,7 @@ const CourseReviewPage = () => {
                     onClick={handleDelete}
                     disabled={submitting}
                   >
-                    Delete Review
+                    Xóa Đánh giá
                   </button>
                 )}
 

@@ -35,7 +35,7 @@ const AdminDashboard = () => {
       setPendingProviders(providersRes.data);
       setPendingCourses(coursesRes.data);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load dashboard data');
+      setError(err.response?.data?.message || 'Có lỗi xảy ra khi tải dữ liệu bảng điều khiển');
     } finally {
       setLoading(false);
     }
@@ -44,45 +44,45 @@ const AdminDashboard = () => {
   const handleApproveProvider = async (id) => {
     try {
       await adminService.approveProvider(id);
-      setSuccessMessage('Provider approved successfully');
+      setSuccessMessage('Pnhà cung cấp đã được chấp thuận thành công');
       fetchDashboardData();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to approve provider');
+      setError(err.response?.data?.message || 'Không thể chấp thuận nhà cung cấp');
     }
   };
 
   const handleRejectProvider = async (id) => {
     try {
       await adminService.rejectProvider(id);
-      setSuccessMessage('Provider request rejected');
+      setSuccessMessage('Yêu cầu của nhà cung cấp bị từ chối');
       fetchDashboardData();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to reject provider');
+      setError(err.response?.data?.message || 'Không thể từ chối nhà cung cấp');
     }
   };
 
   const handleApproveCourse = async (id) => {
     try {
       await adminService.approveCourse(id);
-      setSuccessMessage('Course approved successfully');
+      setSuccessMessage('Khóa học đã được chấp thuận thành công');
       fetchDashboardData();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to approve course');
+      setError(err.response?.data?.message || 'Không thể chấp thuận khóa học');
     }
   };
 
   const handleRejectCourse = async (id) => {
     try {
       await adminService.rejectCourse(id);
-      setSuccessMessage('Course rejected');
+      setSuccessMessage('Khóa học bị từ chối');
       fetchDashboardData();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to reject course');
+      setError(err.response?.data?.message || 'Không thể từ chối khóa học');
     }
   };
 
   if (loading) {
-    return <Loader message="Loading dashboard..." />;
+    return <Loader message="Đang tải bảng điều khiển..." />;
   }
 
   return (
@@ -93,10 +93,10 @@ const AdminDashboard = () => {
         {/* Quick Actions */}
         <div className="quick-actions">
           <Link to="/admin/customers" className="action-btn">
-            <span>👥</span> Manage Customers
+            <span>👥</span> Quản lý khách hàng
           </Link>
           <Link to="/admin/courses" className="action-btn">
-            <span>📚</span> Manage Courses
+            <span>📚</span> Quản lý khóa học
           </Link>
         </div>
 
@@ -116,11 +116,11 @@ const AdminDashboard = () => {
               <div className="stat-card stat-users">
                 <div className="stat-icon">👥</div>
                 <div className="stat-info">
-                  <h3>Total Users</h3>
+                  <h3>Tổng số người dùng</h3>
                   <p className="stat-number">{stats.users.total}</p>
                   <div className="stat-details">
-                    <span>Customers: {stats.users.customers}</span>
-                    <span>Providers: {stats.users.providers}</span>
+                    <span>Khách hàng: {stats.users.customers}</span>
+                    <span>Nhà cung cấp: {stats.users.providers}</span>
                   </div>
                 </div>
               </div>
@@ -128,11 +128,11 @@ const AdminDashboard = () => {
               <div className="stat-card stat-courses">
                 <div className="stat-icon">📚</div>
                 <div className="stat-info">
-                  <h3>Total Courses</h3>
+                  <h3>Tổng số khóa học</h3>
                   <p className="stat-number">{stats.courses.total}</p>
                   <div className="stat-details">
-                    <span>Approved: {stats.courses.approved}</span>
-                    <span>Pending: {stats.courses.pending}</span>
+                    <span>Đã duyệt: {stats.courses.approved}</span>
+                    <span>Đang chờ: {stats.courses.pending}</span>
                   </div>
                 </div>
               </div>
@@ -140,7 +140,7 @@ const AdminDashboard = () => {
               <div className="stat-card stat-enrollments">
                 <div className="stat-icon">🎓</div>
                 <div className="stat-info">
-                  <h3>Enrollments</h3>
+                  <h3>Tuyển sinh</h3>
                   <p className="stat-number">{stats.enrollments}</p>
                   <div className="stat-details">
                     <span>Active learners</span>
@@ -151,10 +151,10 @@ const AdminDashboard = () => {
               <div className="stat-card stat-revenue">
                 <div className="stat-icon">💰</div>
                 <div className="stat-info">
-                  <h3>Total Revenue</h3>
+                  <h3>Tổng doanh thu</h3>
                   <p className="stat-number">${stats.revenue.toFixed(2)}</p>
                   <div className="stat-details">
-                    <span>Platform earnings</span>
+                    <span>Thu nhập nền tảng</span>
                   </div>
                 </div>
               </div>
@@ -167,7 +167,7 @@ const AdminDashboard = () => {
                   <div className="alert alert-provider">
                     <span className="alert-icon">👤</span>
                     <span className="alert-text">
-                      {pendingProviders.length} provider request{pendingProviders.length > 1 ? 's' : ''} waiting for approval
+                      {pendingProviders.length} yêu cầu của nhà cung cấp{pendingProviders.length > 1 ? 's' : ''} đang chờ phê duyệt
                     </span>
                   </div>
                 )}
@@ -175,7 +175,7 @@ const AdminDashboard = () => {
                   <div className="alert alert-course">
                     <span className="alert-icon">📝</span>
                     <span className="alert-text">
-                      {pendingCourses.length} course{pendingCourses.length > 1 ? 's' : ''} waiting for review
+                      {pendingCourses.length} khóa học{pendingCourses.length > 1 ? 's' : ''} đang chờ được đánh giá
                     </span>
                   </div>
                 )}
@@ -186,18 +186,18 @@ const AdminDashboard = () => {
 
         {/* Pending Provider Requests */}
         <div className="dashboard-section">
-          <h2>Pending Provider Requests ({pendingProviders.length})</h2>
+          <h2>Yêu cầu của nhà cung cấp đang chờ xử lý ({pendingProviders.length})</h2>
           {pendingProviders.length === 0 ? (
-            <p className="empty-message">No pending provider requests</p>
+            <p className="empty-message">Không có yêu cầu nhà cung cấp đang chờ xử lý</p>
           ) : (
             <div className="table-container">
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>Name</th>
+                    <th>Tên</th>
                     <th>Email</th>
-                    <th>Joined</th>
-                    <th>Actions</th>
+                    <th>Ngày tham gia</th>
+                    <th>Trạng thái</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -211,13 +211,13 @@ const AdminDashboard = () => {
                           onClick={() => handleApproveProvider(provider._id)}
                           className="btn-approve"
                         >
-                          Approve
+                          Đồng ý
                         </button>
                         <button
                           onClick={() => handleRejectProvider(provider._id)}
                           className="btn-reject"
                         >
-                          Reject
+                          Từ chối
                         </button>
                       </td>
                     </tr>
@@ -230,19 +230,19 @@ const AdminDashboard = () => {
 
         {/* Pending Courses */}
         <div className="dashboard-section">
-          <h2>Pending Courses ({pendingCourses.length})</h2>
+          <h2>Các khóa học đang chờ xử lý ({pendingCourses.length})</h2>
           {pendingCourses.length === 0 ? (
-            <p className="empty-message">No pending courses</p>
+            <p className="empty-message">Không có khóa học nào</p>
           ) : (
             <div className="table-container">
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Provider</th>
-                    <th>Actions</th>
+                    <th>Tiêu đề</th>
+                    <th>Thể loại</th>
+                    <th>Giá</th>
+                    <th>Nhà cung cấp</th>
+                    <th>Trạng thái</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -250,20 +250,20 @@ const AdminDashboard = () => {
                     <tr key={course._id}>
                       <td>{course.title}</td>
                       <td>{course.category}</td>
-                      <td>${course.price}</td>
+                      <td>{course.price}VND</td>
                       <td>{course.provider?.fullName}</td>
                       <td>
                         <button
                           onClick={() => handleApproveCourse(course._id)}
                           className="btn-approve"
                         >
-                          Approve
+                          Đồng ý
                         </button>
                         <button
                           onClick={() => handleRejectCourse(course._id)}
                           className="btn-reject"
                         >
-                          Reject
+                          Từ chối
                         </button>
                       </td>
                     </tr>

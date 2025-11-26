@@ -54,7 +54,7 @@ const CourseCard = ({ course }) => {
               {course.price === 0 ? 'Free' : `$${course.price}`}
             </span>
             <Link to={`/course/${course._id}`} className="btn-view-course">
-              View Course
+              Xem khóa học
             </Link>
           </div>
         </div>

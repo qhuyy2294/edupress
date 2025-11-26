@@ -25,10 +25,10 @@ const BecomeProviderPage = () => {
         <div className="container">
           <div className="status-card success">
             <div className="icon">✅</div>
-            <h2>You are already a Provider!</h2>
-            <p>Start creating and managing your courses.</p>
+            <h2>Bạn đã là Nhà cung cấp rồi!</h2>
+            <p>Bắt đầu tạo và quản lý khóa học của bạn.</p>
             <button onClick={() => navigate('/my-courses')} className="btn btn-primary">
-              Go to My Courses
+              Đi đến Khóa học của tôi
             </button>
           </div>
         </div>
@@ -42,11 +42,11 @@ const BecomeProviderPage = () => {
         <div className="container">
           <div className="status-card pending">
             <div className="icon">⏳</div>
-            <h2>Request Pending</h2>
-            <p>Your request to become a provider is being reviewed by our admin team.</p>
-            <p>You will be notified once your request is approved.</p>
+            <h2>Yêu cầu đang chờ xử lý</h2>
+            <p>Yêu cầu trở thành nhà cung cấp của bạn đang được nhóm quản trị của chúng tôi xem xét.</p>
+            <p>Bạn sẽ được thông báo khi yêu cầu của bạn được chấp thuận.</p>
             <button onClick={() => navigate('/')} className="btn btn-secondary">
-              Back to Home
+              Trở lại trang chủ
             </button>
           </div>
         </div>
@@ -55,7 +55,7 @@ const BecomeProviderPage = () => {
   }
 
   const handleSubmit = async () => {
-    if (!window.confirm('Are you sure you want to become a course provider? This will require admin approval.')) {
+    if (!window.confirm('Bạn có chắc chắn muốn trở thành nhà cung cấp khóa học không? Việc này cần được quản trị viên phê duyệt..')) {
       return;
     }
 
@@ -73,7 +73,7 @@ const BecomeProviderPage = () => {
         }, 2000);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to submit request');
+      setError(err.response?.data?.message || 'Không thể gửi yêu cầu');
     } finally {
       setLoading(false);
     }
@@ -83,8 +83,8 @@ const BecomeProviderPage = () => {
     <div className="become-provider-page">
       <div className="container">
         <div className="page-header">
-          <h1>🎓 Become a Course Provider</h1>
-          <p>Share your knowledge and earn by creating online courses</p>
+          <h1>🎓 Trở thành nhà cung cấp khóa học</h1>
+          <p>Chia sẻ kiến ​​thức của bạn và kiếm tiền bằng cách tạo các khóa học trực tuyến</p>
         </div>
 
         {error && <Message type="error">{error}</Message>}
@@ -93,48 +93,48 @@ const BecomeProviderPage = () => {
         <div className="content-grid">
           {/* Benefits Section */}
           <div className="benefits-card">
-            <h2>✨ Provider Benefits</h2>
+            <h2>✨ Lợi ích của nhà cung cấp</h2>
             <ul className="benefits-list">
               <li>
                 <span className="icon">💰</span>
                 <div>
-                  <strong>Earn Money</strong>
-                  <p>Get paid for every student who enrolls in your courses</p>
+                  <strong>Kiếm tiền</strong>
+                  <p>Được trả tiền cho mỗi học viên đăng ký khóa học của bạn</p>
                 </div>
               </li>
               <li>
                 <span className="icon">📚</span>
                 <div>
-                  <strong>Create Unlimited Courses</strong>
-                  <p>Share your expertise across multiple topics</p>
+                  <strong>Tạo khóa học không giới hạn</strong>
+                  <p>Chia sẻ chuyên môn của bạn về nhiều chủ đề</p>
                 </div>
               </li>
               <li>
                 <span className="icon">👥</span>
                 <div>
-                  <strong>Build Your Audience</strong>
-                  <p>Reach thousands of students worldwide</p>
+                  <strong>Xây dựng đối tượng của bạn</strong>
+                  <p>Tiếp cận hàng ngàn sinh viên trên toàn thế giới</p>
                 </div>
               </li>
               <li>
                 <span className="icon">📊</span>
                 <div>
-                  <strong>Track Your Success</strong>
-                  <p>Access detailed analytics and revenue reports</p>
+                  <strong>Theo dõi thành công của bạn</strong>
+                  <p>Truy cập phân tích chi tiết và báo cáo doanh thu</p>
                 </div>
               </li>
               <li>
                 <span className="icon">🎯</span>
                 <div>
-                  <strong>Flexible Schedule</strong>
-                  <p>Create and manage courses at your own pace</p>
+                  <strong>Lịch trình linh hoạt</strong>
+                  <p>Tạo và quản lý các khóa học theo tốc độ của riêng bạn</p>
                 </div>
               </li>
               <li>
                 <span className="icon">💎</span>
                 <div>
-                  <strong>Premium Features</strong>
-                  <p>Access advanced course management tools</p>
+                  <strong>Tính năng cao cấp</strong>
+                  <p>Truy cập các công cụ quản lý khóa học nâng cao</p>
                 </div>
               </li>
             </ul>
@@ -142,52 +142,52 @@ const BecomeProviderPage = () => {
 
           {/* Requirements Section */}
           <div className="requirements-card">
-            <h2>📋 Requirements</h2>
+            <h2>📋 Yêu cầu</h2>
             <div className="requirement-item">
               <span className="check">✓</span>
-              <p>Active account in good standing</p>
+              <p>Tài khoản đang hoạt động và có uy tín tốt</p>
             </div>
             <div className="requirement-item">
               <span className="check">✓</span>
-              <p>Expertise in your teaching subject</p>
+              <p>Chuyên môn trong môn học giảng dạy của bạn</p>
             </div>
             <div className="requirement-item">
               <span className="check">✓</span>
-              <p>Commitment to quality content</p>
+              <p>Cam kết về nội dung chất lượng</p>
             </div>
             <div className="requirement-item">
               <span className="check">✓</span>
-              <p>Admin approval required</p>
+              <p>Cần có sự chấp thuận của quản trị viên</p>
             </div>
 
-            <h2 style={{ marginTop: '30px' }}>⚙️ How It Works</h2>
+            <h2 style={{ marginTop: '30px' }}>⚙️ Nó hoạt động như thế nào</h2>
             <div className="steps">
               <div className="step">
                 <div className="step-number">1</div>
                 <div className="step-content">
-                  <h3>Submit Request</h3>
-                  <p>Click the button below to request provider access</p>
+                  <h3>Gửi yêu cầu</h3>
+                  <p>Nhấp vào nút bên dưới để yêu cầu quyền truy cập của nhà cung cấp</p>
                 </div>
               </div>
               <div className="step">
                 <div className="step-number">2</div>
                 <div className="step-content">
-                  <h3>Admin Review</h3>
-                  <p>Our team will review your request within 1-2 business days</p>
+                  <h3>Đánh giá của quản trị viên</h3>
+                  <p>Nhóm của chúng tôi sẽ xem xét yêu cầu của bạn trong vòng 1-2 ngày làm việc</p>
                 </div>
               </div>
               <div className="step">
                 <div className="step-number">3</div>
                 <div className="step-content">
-                  <h3>Get Approved</h3>
-                  <p>Once approved, you can start creating courses immediately</p>
+                  <h3>Được chấp thuận</h3>
+                  <p>Sau khi được chấp thuận, bạn có thể bắt đầu tạo khóa học ngay lập tức</p>
                 </div>
               </div>
               <div className="step">
                 <div className="step-number">4</div>
                 <div className="step-content">
-                  <h3>Start Teaching</h3>
-                  <p>Create your first course and start earning</p>
+                  <h3>Bắt đầu giảng dạy</h3>
+                  <p>Tạo khóa học đầu tiên của bạn và bắt đầu kiếm tiền</p>
                 </div>
               </div>
             </div>
@@ -201,7 +201,7 @@ const BecomeProviderPage = () => {
                 {loading ? 'Submitting...' : '🚀 Request Provider Access'}
               </button>
               <p className="note">
-                By submitting, you agree to follow our content guidelines and terms of service.
+                Bằng cách gửi, bạn đồng ý tuân theo hướng dẫn về nội dung và điều khoản dịch vụ của chúng tôi.
               </p>
             </div>
           </div>

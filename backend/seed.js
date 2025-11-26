@@ -191,6 +191,32 @@ const lessonsData = [
       { title: 'Mongoose ODM', videoUrl: 'https://youtube.com/watch?v=sample12', duration: 50 },
     ],
   },
+  {
+    courseIndex: 3,
+    lessons: [
+      { title: 'Nền Tảng Python & Cấu Trúc Dữ Liệu Cần Thiết', videoUrl: 'https://www.youtube.com/embed/xOuRE3IuEB8', duration: 40 },
+      { title: 'Xử Lý & Phân Tích Dữ Liệu với Pandas và NumPy', videoUrl: 'https://www.youtube.com/embed/FniLzpaSFGk', duration: 120 },
+      { title: 'Trực Quan Hóa Dữ Liệu (Matplotlib & Seaborn)', videoUrl: 'https://www.youtube.com/embed/39cge_JhVjI', duration: 50 },
+      { title: 'Giới Thiệu Machine Learning với Scikit-learn', videoUrl: 'https://www.youtube.com/embed/0B5eIE_1vpU', duration: 80 },
+    ],
+  },
+  {
+    courseIndex: 4,
+    lessons: [
+      { title: 'Giới thiệu về UI/UX', videoUrl: 'https://www.youtube.com/embed/vcWgOQRaKX0', duration: 30 },
+      { title: 'Thiết kế wireframe, prototype', videoUrl: 'https://www.youtube.com/embed/3rR8YsaxPaY', duration: 60 },
+      { title: 'Thiết kế chuyên sâu với Figma', videoUrl: 'https://www.youtube.com/embed/FTFaQWZBqQ8', duration: 45 },
+    ],
+  },
+    {
+    courseIndex: 5,
+    lessons: [
+      { title: 'Cơ bản về Cloud và AWS', videoUrl: 'https://www.youtube.com/embed/ogkbs9OZL5o', duration: 40 },
+      { title: 'AWS Global Infrastructure và chi tiết về Group, Roles và Policies', videoUrl: 'https://www.youtube.com/embed/fzNnGUKhu_0', duration: 60 },
+      { title: 'Setup kiến trúc AWS đơn giản với Subnet, Security Group, EC2 và RDS ', videoUrl: 'https://www.youtube.com/embed/fVhBPuI54o8', duration: 55 },
+      { title: 'AWS Compute Services: EC2, ECS, EKS và Lambda', videoUrl: 'https://www.youtube.com/embed/uNoY1NTUfQU', duration: 50 },
+    ],
+  },
 ];
 
 // Import data

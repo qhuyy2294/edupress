@@ -50,7 +50,7 @@ const CourseDetailPage = () => {
         setIsEnrolled(enrolled);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load course details');
+      setError(err.response?.data?.message || 'Không tải được thông tin chi tiết về khóa học');
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ const CourseDetailPage = () => {
       const response = await reviewService.getCourseReviews(id);
       setReviews(response.data);
     } catch (err) {
-      console.error('Failed to load reviews:', err);
+      console.error('Không tải được đánh giá:', err);
     }
   };
 
@@ -70,7 +70,7 @@ const CourseDetailPage = () => {
       const response = await reviewService.getMyReview(id);
       setMyReview(response.data);
     } catch (err) {
-      console.error('Failed to load my review:', err);
+      console.error('Không tải được bài đánh giá của tôi:', err);
     }
   };
 
@@ -84,19 +84,19 @@ const CourseDetailPage = () => {
       setEnrolling(true);
       setError('');
       await courseService.enrollInCourse(id);
-      setSuccessMessage('Successfully enrolled in the course!');
+      setSuccessMessage('Đã đăng ký khóa học thành công!');
       setTimeout(() => {
         navigate('/my-courses');
       }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to enroll in course');
+      setError(err.response?.data?.message || 'Không thể đăng ký khóa học');
     } finally {
       setEnrolling(false);
     }
   };
 
   if (loading) {
-    return <Loader message="Loading course details..." />;
+    return <Loader message="Đang tải thông tin chi tiết về khóa học..." />;
   }
 
   if (error && !course) {
@@ -118,20 +118,20 @@ const CourseDetailPage = () => {
             
             <div className="course-meta">
               <div className="meta-item">
-                <span className="meta-label">Instructor:</span>
+                <span className="meta-label">Giảng viên:</span>
                 <span className="meta-value">{course.provider?.fullName}</span>
               </div>
               {course.averageRating > 0 && (
                 <div className="meta-item">
-                  <span className="meta-label">Rating:</span>
+                  <span className="meta-label">Đánh giá:</span>
                   <span className="meta-value">
                     ⭐ {course.averageRating.toFixed(1)} ({course.totalReviews} reviews)
                   </span>
                 </div>
               )}
               <div className="meta-item">
-                <span className="meta-label">Students:</span>
-                <span className="meta-value">{course.enrollmentCount} enrolled</span>
+                <span className="meta-label">Học sinh:</span>
+                <span className="meta-value">{course.enrollmentCount} đã đăng ký</span>
               </div>
             </div>
           </div>
@@ -146,7 +146,7 @@ const CourseDetailPage = () => {
               
               <div className="course-price-section">
                 <h2 className="course-price">
-                  {course.price === 0 ? 'Free' : `$${course.price}`}
+                  {course.price === 0 ? 'Miễn phí' : `$${course.price}`}
                 </h2>
                 
                 {user?.role === 'customer' && (
@@ -155,7 +155,7 @@ const CourseDetailPage = () => {
                     disabled={enrolling}
                     className="btn-enroll"
                   >
-                    {enrolling ? 'Enrolling...' : 'Enroll Now'}
+                    {enrolling ? 'Đang đăng ký...' : 'Tham gia ngay'}
                   </button>
                 )}
                 
@@ -164,7 +164,7 @@ const CourseDetailPage = () => {
                     onClick={() => navigate('/login')}
                     className="btn-enroll"
                   >
-                    Login to Enroll
+                    Đăng nhập để tham gia
                   </button>
                 )}
               </div>
@@ -183,12 +183,12 @@ const CourseDetailPage = () => {
           )}
 
           <div className="course-details">
-            <h3>About This Course</h3>
+            <h3>Giới thiệu về khóa học này</h3>
             <p>{course.description}</p>
 
             {course.lessons && course.lessons.length > 0 && (
               <div className="course-lessons">
-                <h3>Course Content ({course.lessons.length} lessons)</h3>
+                <h3>Nội dung khóa học({course.lessons.length} lessons)</h3>
                 {/* <ul className="lessons-list">
                   {course.lessons.map((lesson, index) => (
                     <li key={lesson._id} className="lesson-item">
@@ -220,13 +220,13 @@ const CourseDetailPage = () => {
           {/* Reviews Section */}
           <div className="course-reviews-section">
             <div className="reviews-header">
-              <h3>Student Reviews</h3>
+              <h3>Đánh giá của học viên</h3>
               {isEnrolled && !myReview && (
                 <button
                   className="btn-write-review"
                   onClick={() => navigate(`/courses/${id}/review`)}
                 >
-                  Write a Review
+                  Viết đánh giá
                 </button>
               )}
               {isEnrolled && myReview && (
@@ -234,13 +234,13 @@ const CourseDetailPage = () => {
                   className="btn-edit-review"
                   onClick={() => navigate(`/courses/${id}/review`)}
                 >
-                  Edit My Review
+                  Chỉnh sửa đánh giá của tôi
                 </button>
               )}
             </div>
 
             {reviews.length === 0 ? (
-              <p className="no-reviews">No reviews yet. Be the first to review this course!</p>
+              <p className="no-reviews">Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá khóa học này!</p>
             ) : (
               <div className="reviews-list">
                 {reviews.map((review) => (

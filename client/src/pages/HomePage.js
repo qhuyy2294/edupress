@@ -52,9 +52,9 @@ const HomePage = () => {
       <section className="hero-section">
         <div className="hero-content">
           <h1>Welcome to Edupress</h1>
-          <p>Discover thousands of courses and start learning today!</p>
+          <p>Khám phá các khóa học và bắt đầu học ngay hôm nay!</p>
           <a href="#courses-section" className="hero-cta">
-            Explore Courses
+            Khám phá các khóa học
           </a>
         </div>
       </section>
@@ -80,7 +80,7 @@ const HomePage = () => {
               onChange={(e) => setCategory(e.target.value)}
               className="filter-select"
             >
-              <option value="">All Categories</option>
+              <option value="">Tất cả các danh mục</option>
               <option value="Web Development">Web Development</option>
               <option value="Mobile Development">Mobile Development</option>
               <option value="Data Science">Data Science</option>
@@ -94,12 +94,12 @@ const HomePage = () => {
               onChange={(e) => setSortBy(e.target.value)}
               className="filter-select"
             >
-              <option value="">Sort By</option>
-              <option value="newest">Newest</option>
-              <option value="price_asc">Price: Low to High</option>
-              <option value="price_desc">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
-              <option value="popular">Most Popular</option>
+              <option value="">Sắp xếp theo</option>
+              <option value="newest">Mới nhất</option>
+              <option value="price_asc">Giá: Từ thấp đến cao</option>
+              <option value="price_desc">Giá: Từ cao đến thấp</option>
+              <option value="rating">Đánh giá cao nhất</option>
+              <option value="popular">Phổ biến nhất</option>
             </select>
           </div>
         </div>
@@ -113,13 +113,14 @@ const HomePage = () => {
             <Loader message="Loading courses..." />
           ) : courses.length === 0 ? (
             <div className="no-courses">
-              <h3>No courses found</h3>
-              <p>Try adjusting your search or filters</p>
+              <h3>Không có khóa học nào </h3>
+              <p>Hãy thử điều chỉnh tìm kiếm hoặc bộ lọc của bạn</p>
             </div>
           ) : (
             <>
               <h2 className="section-title">
-                Available Courses ({courses.length})
+                Khóa học khả dụng
+                 ({courses.length})
               </h2>
               <div className="courses-grid">
                 {courses.map((course) => (

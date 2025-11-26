@@ -251,7 +251,7 @@ const enrollInCourse = asyncHandler(async (req, res) => {
 
   if (existingEnrollment) {
     res.status(400);
-    throw new Error('You are already enrolled in this course');
+    throw new Error('Bạn đã đăng ký khóa học này');
   }
 
   // Handle discount code if provided

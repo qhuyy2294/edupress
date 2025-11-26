@@ -52,7 +52,7 @@ const CourseManagementPage = () => {
       // Backend returns { success, count, data } - we need the data array
       setCourses(response.data.data || []);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load courses');
+      setError(err.response?.data?.message || 'Không tải được khóa học');
     } finally {
       setLoading(false);
     }
@@ -68,15 +68,15 @@ const CourseManagementPage = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      setSuccess('Course approved successfully');
+      setSuccess('Khóa học đã được phê duyệt thành công');
       fetchCourses();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to approve course');
+      setError(err.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại sau');
     }
   };
 
   const handleReject = async (courseId) => {
-    if (!window.confirm('Are you sure you want to reject this course?')) {
+    if (!window.confirm('Bạn có chắc chắn muốn từ chối khóa học này không?')) {
       return;
     }
 
@@ -89,15 +89,15 @@ const CourseManagementPage = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      setSuccess('Course rejected');
+      setSuccess('Khóa học bị từ chối');
       fetchCourses();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to reject course');
+      setError(err.response?.data?.message || 'Không thể từ chối khóa học');
     }
   };
 
   const handleDelete = async (courseId) => {
-    if (!window.confirm('Are you sure you want to DELETE this course? This action cannot be undone!')) {
+    if (!window.confirm('Bạn có chắc chắn muốn XÓA khóa học này không? Hành động này không thể hoàn tác!')) {
       return;
     }
 
@@ -110,10 +110,10 @@ const CourseManagementPage = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      setSuccess('Course deleted successfully');
+      setSuccess('Khóa học đã xóa thành công');
       fetchCourses();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete course');
+      setError(err.response?.data?.message || 'Không xóa được khóa học');
     }
   };
 
@@ -144,8 +144,8 @@ const CourseManagementPage = () => {
   return (
     <div className="course-management-page">
       <div className="page-header">
-        <h1>Course Management</h1>
-        <p>Manage all courses in the system</p>
+        <h1>Quản lý khóa học</h1>
+        <p>Quản lý tất cả các khóa học trong hệ thống</p>
       </div>
 
       {error && <Message type="error">{error}</Message>}
@@ -163,19 +163,19 @@ const CourseManagementPage = () => {
         </div>
 
         <div className="filter-group">
-          <label>Status:</label>
+          <label>Trạng thái:</label>
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            <option value="all">All</option>
-            <option value="approved">Approved</option>
-            <option value="pending">Pending</option>
-            <option value="rejected">Rejected</option>
+            <option value="all">Tất cả</option>
+            <option value="approved">Đã được duyệt</option>
+            <option value="pending">Đang chờ</option>
+            <option value="rejected">Bị từ chối</option>
           </select>
         </div>
 
         <div className="filter-group">
-          <label>Category:</label>
+          <label>Thể loại</label>
           <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
-            <option value="all">All Categories</option>
+            <option value="all">Tất cả thể loại</option>
             {categories.map(cat => (
               <option key={cat} value={cat}>{cat}</option>
             ))}
@@ -183,14 +183,14 @@ const CourseManagementPage = () => {
         </div>
 
         <div className="filter-stats">
-          Showing {filteredCourses.length} of {courses.length} courses
+          Hiển thị {filteredCourses.length} của {courses.length} khóa học
         </div>
       </div>
 
       {/* Courses Grid */}
       <div className="courses-grid">
         {filteredCourses.length === 0 ? (
-          <Message type="info">No courses found</Message>
+          <Message type="info">Không tìm thấy khóa học nào</Message>
         ) : (
           filteredCourses.map(course => (
             <div key={course._id} className="course-card">
@@ -220,20 +220,20 @@ const CourseManagementPage = () => {
                 </div>
 
                 <div className="instructor-info">
-                  <span className="label">Instructor:</span>
+                  <span className="label">Giảng viên:</span>
                   <span className="instructor-name">
                     {course.instructor?.fullName || 'N/A'}
                   </span>
                 </div>
 
                 <div className="course-stats">
-                  <span>👥 {course.enrollmentCount || 0} students</span>
+                  <span>👥 {course.enrollmentCount || 0} học viên </span>
                   <span>⭐ {course.averageRating?.toFixed(1) || 'N/A'}</span>
                 </div>
 
                 <div className="action-buttons">
                   <Link to={`/course/${course._id}`} className="btn-view" target="_blank">
-                    View
+                    Xem
                   </Link>
                   
                   {course.status === 'pending' && (
@@ -242,13 +242,13 @@ const CourseManagementPage = () => {
                         className="btn-approve"
                         onClick={() => handleApprove(course._id)}
                       >
-                        Approve
+                        Đồng ý
                       </button>
                       <button 
                         className="btn-reject"
                         onClick={() => handleReject(course._id)}
                       >
-                        Reject
+                        Từ chối
                       </button>
                     </>
                   )}
@@ -258,7 +258,7 @@ const CourseManagementPage = () => {
                       className="btn-approve"
                       onClick={() => handleApprove(course._id)}
                     >
-                      Approve
+                      Đồng ý
                     </button>
                   )}
 
@@ -266,7 +266,7 @@ const CourseManagementPage = () => {
                     className="btn-delete"
                     onClick={() => handleDelete(course._id)}
                   >
-                    Delete
+                    Xóa
                   </button>
                 </div>
               </div>

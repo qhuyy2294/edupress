@@ -102,10 +102,15 @@ const LessonPage = () => {
     }
   };
 
-  const isLessonCompleted = (lessonId) => {
-    return progress.some((p) => p.lesson._id === lessonId && p.completed);
-  };
-
+  // const isLessonCompleted = (lessonId) => {
+  //   return progress.some((p) => p.lesson._id === lessonId && p.completed);
+  // };
+const isLessonCompleted = (lessonId) => {
+  // Đảm bảo p.lesson tồn tại trước khi truy cập ._id
+  return progress.some(
+    (p) => p.lesson?._id === lessonId && p.completed
+  );
+};
   if (loading) {
     return <Loader message="Loading course..." />;
   }

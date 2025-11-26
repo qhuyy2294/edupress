@@ -49,7 +49,7 @@ const LoginPage = () => {
         setError(result.message);
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      setError('Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }

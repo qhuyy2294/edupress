@@ -5,6 +5,7 @@
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto'); // [ĐÃ SỬA] Cần import crypto
 
 const userSchema = new mongoose.Schema(
   {
@@ -44,6 +45,10 @@ const userSchema = new mongoose.Schema(
       enum: ['active', 'pending_provider', 'inactive'],
       default: 'active',
     },
+    // [ĐÃ SỬA] Thêm các trường cho Reset Password
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    passwordChangedAt: Date, 
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields
@@ -66,6 +71,25 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
+
+// [ĐÃ SỬA] Phương thức tạo Reset Token
+userSchema.methods.createPasswordChangedToken = function() {
+    // 1. Tạo token ngẫu nhiên (sẽ gửi đi qua email)
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    // 2. Băm token (LƯU VÀO DB để so sánh)
+    this.passwordResetToken = crypto
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+
+    // 3. Đặt thời gian hết hạn (15 phút)
+    this.passwordResetExpires = Date.now() + 15 * 60 * 1000; 
+
+    // Trả về token KHÔNG BĂM (sẽ gửi qua email)
+    return resetToken;
+};
+
 
 // Create and export the model
 const User = mongoose.model('User', userSchema);
