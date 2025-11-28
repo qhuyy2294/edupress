@@ -79,6 +79,34 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @desc    Delete user account
+ * @route   DELETE /api/admin/users/:id
+ * @access  Private (Admin only)
+ */
+const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const user = await User.findById(id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error('Không tìm thấy người dùng');
+  }
+
+  if (user.role === 'admin') {
+    res.status(400);
+    throw new Error('Không thể xóa người dùng với vai trò admin');
+  }
+
+  await User.findByIdAndDelete(id);
+
+  return res.status(200).json({
+    success: true,
+    message: 'Xóa người dùng thành công',
+  });
+});
+
+/**
  * @desc    Activate or deactivate user account
  * @route   PUT /api/admin/users/:id/toggle-status
  * @access  Private (Admin only)
@@ -403,6 +431,7 @@ const getSystemStats = asyncHandler(async (req, res) => {
 module.exports = {
   getAllUsers,
   updateUser,
+  deleteUser,
   toggleUserStatus,
   approveProviderRequest,
   rejectProviderRequest,

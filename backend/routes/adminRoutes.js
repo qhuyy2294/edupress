@@ -17,17 +17,21 @@ const {
   approveCourse,
   rejectCourse,
   getSystemStats,
+  deleteUser,
 } = require('../controllers/adminController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
+
 
 // All routes are protected and require admin role
 router.use(protect);
 router.use(authorize('admin'));
+router.delete('/users/:id', protect, authorize('admin'), deleteUser);
 
 // User management
 router.get('/users', getAllUsers);
 router.put('/users/:id', updateUser);
 router.put('/users/:id/toggle-status', toggleUserStatus);
+
 
 // Provider approval management
 router.get('/pending-providers', getPendingProviders);

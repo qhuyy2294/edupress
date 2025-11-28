@@ -162,11 +162,11 @@ const CourseManagementPage = () => {
       {success && <Message type="success">{success}</Message>}
 
       {/* Filters */}
-      <div className="filters-section">
+      <div className="filters-section01">
         <div className="search-box">
           <input
             type="text"
-            placeholder="Search by title, description, or instructor..."
+            placeholder="Tìm kiếm khóa học"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

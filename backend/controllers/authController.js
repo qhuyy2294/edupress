@@ -2,7 +2,6 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const sendMail = require('../ultils/sendMail');
-// [ĐÃ SỬA] Xóa import này nếu bạn không dùng các hàm đó. Nếu dùng thì phải tạo file /middlewares/jwt.js
 // const { generateAccessToken, generateRefreshToken } = require('../middlewares/jwt');
 const crypto = require('crypto');
 
@@ -78,7 +77,7 @@ const login = asyncHandler(async (req, res) => {
  // Xác thực đầu vào
   if (!email || !password) {
     res.status(400);
-    throw new Error('Please provide email and password');
+    throw new Error('Vui lòng điên đầy đủ thông tin email và mật khẩu');
   }
 // Kiểm tra người dùng (bao gồm mật khẩu để so sánh)
   const user = await User.findOne({ email }).select('+password'); //
@@ -90,7 +89,14 @@ const login = asyncHandler(async (req, res) => {
       throw new Error('Account is inactive. Please contact support.');
     }
 
-    res.json({
+    const token = generateToken(user._id);
+    // Thiết lập cookie tùy chọn nếu cần
+    const cookieOptions = {
+      httpOnly: true, 
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    };
+
+    res.cookie('token', token, cookieOptions).json({
       success: true,
       data: {
         _id: user._id,
@@ -99,7 +105,6 @@ const login = asyncHandler(async (req, res) => {
         role: user.role,
         avatarUrl: user.avatarUrl,
         status: user.status,
-        token: generateToken(user._id),
       },
       message: 'Login successful',
     });
@@ -301,5 +306,5 @@ module.exports = {
   updateProfile,
   forgotPassword,
   resetPassword,
-  getUsers, // [ĐÃ SỬA] Bổ sung getUsers vào export list
+  getUsers,
 };

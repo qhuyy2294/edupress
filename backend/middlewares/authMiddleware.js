@@ -1,28 +1,28 @@
-/**
- * Authentication & Authorization Middleware
- * Handles JWT verification and role-based access control
- */
-
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 
-/**
- * Protect routes - Verify JWT token
- * Middleware to authenticate users via JWT
- */
+
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
   // Check if token exists in Authorization header
-  if (
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  }
+  else if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
-    try {
-      // Get token from header (format: "Bearer <token>")
-      token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization.split(' ')[1];
+  }
 
+  if (!token) {
+    res.status(401);
+    throw new Error('Not authorized, no token provided');
+  }
+
+    try {
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -37,6 +37,7 @@ const protect = asyncHandler(async (req, res, next) => {
       // Check if user account is active
       if (req.user.status === 'inactive') {
         res.status(403);
+        res.clearCookie('token'); 
         throw new Error('Account is inactive. Please contact support.');
       }
 
@@ -46,13 +47,7 @@ const protect = asyncHandler(async (req, res, next) => {
       res.status(401);
       throw new Error('Not authorized, token failed');
     }
-  }
-
-  if (!token) {
-    res.status(401);
-    throw new Error('Not authorized, no token provided');
-  }
-});
+  });
 
 /**
  * Authorize roles - Check if user has required role

@@ -1,10 +1,6 @@
-/**
- * AdminDashboard Component
- * Admin dashboard for managing users, providers, and courses
- */
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FaUsers, FaBookOpen, FaUserGraduate, FaCoins } from 'react-icons/fa';
 import adminService from '../services/adminService';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -93,10 +89,10 @@ const AdminDashboard = () => {
         {/* Quick Actions */}
         <div className="quick-actions">
           <Link to="/admin/customers" className="action-btn">
-            <span>👥</span> Quản lý khách hàng
+            <span><FaUsers size={20} /></span> Quản lý người dùng
           </Link>
           <Link to="/admin/courses" className="action-btn">
-            <span>📚</span> Quản lý khóa học
+            <span><FaBookOpen size={20} /></span> Quản lý khóa học
           </Link>
         </div>
 
@@ -114,7 +110,7 @@ const AdminDashboard = () => {
           <>
             <div className="stats-grid">
               <div className="stat-card stat-users">
-                <div className="stat-icon">👥</div>
+                <div className="stat-icon"><FaUsers size={24} /></div>
                 <div className="stat-info">
                   <h3>Tổng số người dùng</h3>
                   <p className="stat-number">{stats.users.total}</p>
@@ -126,7 +122,7 @@ const AdminDashboard = () => {
               </div>
 
               <div className="stat-card stat-courses">
-                <div className="stat-icon">📚</div>
+                <div className="stat-icon"><FaBookOpen size={24} /></div>
                 <div className="stat-info">
                   <h3>Tổng số khóa học</h3>
                   <p className="stat-number">{stats.courses.total}</p>
@@ -138,7 +134,7 @@ const AdminDashboard = () => {
               </div>
 
               <div className="stat-card stat-enrollments">
-                <div className="stat-icon">🎓</div>
+                <div className="stat-icon"><FaUserGraduate size={24} /></div>
                 <div className="stat-info">
                   <h3>Tuyển sinh</h3>
                   <p className="stat-number">{stats.enrollments}</p>
@@ -149,14 +145,14 @@ const AdminDashboard = () => {
               </div>
 
               <div className="stat-card stat-revenue">
-                <div className="stat-icon">💰</div>
+                <div className="stat-icon"><FaCoins size={24} /></div>
                 <div className="stat-info">
                   <h3>Tổng doanh thu</h3>
                   <p className="stat-number">
                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(stats.revenue)}
                     </p>
                   <div className="stat-details">
-                    <span>Thu nhập nền tảng</span>
+                    <span>Thu nhập trên nền tảng</span>
                   </div>
                 </div>
               </div>
