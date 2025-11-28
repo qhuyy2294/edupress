@@ -25,7 +25,7 @@ const { protect, authorize } = require('../middlewares/authMiddleware');
 // All routes are protected and require admin role
 router.use(protect);
 router.use(authorize('admin'));
-router.delete('/users/:id', protect, authorize('admin'), deleteUser);
+// router.delete('/users/:id', protect, authorize('admin'), deleteUser);
 
 // User management
 router.get('/users', getAllUsers);

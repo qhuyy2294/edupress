@@ -24,13 +24,11 @@ const generateToken = (id) => {
 const register = asyncHandler(async (req, res) => {
   const { fullName, email, password } = req.body;
 
-  // Validate input
   if (!fullName || !email || !password) {
     res.status(400);
     throw new Error('Please provide all required fields');
   }
 
-  // Kiểm tra xem người dùng đã tồn tại chưa
   const userExists = await User.findOne({ email });
 
   if (userExists) {
@@ -38,12 +36,11 @@ const register = asyncHandler(async (req, res) => {
     throw new Error('User already exists with this email');
   }
 
-  // Tạo người dùng (mật khẩu sẽ được băm bằng phần mềm trung gian trước khi lưu)
   const user = await User.create({
     fullName,
     email,
     password,
-    role: 'customer', // Vai trò mặc định
+    role: 'customer',
   });
 
   if (user) {
@@ -74,29 +71,26 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
- // Xác thực đầu vào
   if (!email || !password) {
     res.status(400);
     throw new Error('Vui lòng điên đầy đủ thông tin email và mật khẩu');
   }
-// Kiểm tra người dùng (bao gồm mật khẩu để so sánh)
-  const user = await User.findOne({ email }).select('+password'); //
 
+  const user = await User.findOne({ email }).select('+password'); //
   if (user && (await user.matchPassword(password))) {
-// Kiểm tra xem tài khoản có hoạt động không
     if (user.status === 'inactive') {
       res.status(403);
       throw new Error('Account is inactive. Please contact support.');
     }
 
-    const token = generateToken(user._id);
-    // Thiết lập cookie tùy chọn nếu cần
-    const cookieOptions = {
-      httpOnly: true, 
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    };
+    // const token = generateToken(user._id);
+    // // Thiết lập cookie tùy chọn nếu cần
+    // const cookieOptions = {
+    //   httpOnly: true, 
+    //   expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    // };
 
-    res.cookie('token', token, cookieOptions).json({
+    res.json({
       success: true,
       data: {
         _id: user._id,
@@ -105,6 +99,7 @@ const login = asyncHandler(async (req, res) => {
         role: user.role,
         avatarUrl: user.avatarUrl,
         status: user.status,
+        token: generateToken(user._id),
       },
       message: 'Login successful',
     });
@@ -148,9 +143,9 @@ const updateProfile = asyncHandler(async (req, res) => {
     user.fullName = req.body.fullName || user.fullName;
     user.avatarUrl = req.body.avatarUrl || user.avatarUrl;
 
-// Chỉ cập nhật email nếu được cung cấp và khác
+
     if (req.body.email && req.body.email !== user.email) {
-// Kiểm tra xem email mới đã tồn tại chưa
+
       const emailExists = await User.findOne({ email: req.body.email });
       if (emailExists) {
         res.status(400);
@@ -159,7 +154,6 @@ const updateProfile = asyncHandler(async (req, res) => {
       user.email = req.body.email;
     }
 
-// Cập nhật mật khẩu nếu được cung cấp
     if (req.body.password) {
       user.password = req.body.password;
     }
@@ -191,7 +185,6 @@ const updateProfile = asyncHandler(async (req, res) => {
 * @access Public
 */
 const forgotPassword = asyncHandler(async (req, res) => {
-    // [ĐÃ SỬA] Lấy email từ body vì đây là POST request
     const { email } = req.body 
     
     if (!email) {
@@ -201,7 +194,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({ email });
     
-    // [ĐÃ SỬA] Không thông báo lỗi 'User not found' để tránh rò rỉ thông tin người dùng.
     if (!user) {
         return res.status(200).json({
             success: true,
@@ -210,17 +202,16 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
 
     const resetToken = user.createPasswordChangedToken()
-    // Lưu token đã băm vào DB (Không cần validate)
+
     await user.save({ validateBeforeSave: false }) 
 
-    // [ĐÃ SỬA] Sử dụng CLIENT_URL cho link frontend
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
     
     const html = `Xin vui lòng click vào link dưới đây để thay đổi mật khẩu của bạn. Link này sẽ hết hạn sau 15 phút kể từ bây giờ. <a href="${resetUrl}">Click here</a>`
 
     const data = {
-        email: user.email, // [ĐÃ SỬA] Dùng user.email
-        subject: 'Edupress - Yêu cầu Đặt lại Mật khẩu', // [BỔ SUNG] Thêm subject
+        email: user.email,
+        subject: 'Edupress - Yêu cầu Đặt lại Mật khẩu',
         html
     }
     
@@ -228,7 +219,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
         const rs = await sendMail(data);
         return res.status(200).json({
             success: true,
-            message: 'Liên kết đặt lại mật khẩu đã được gửi.', // [ĐÃ SỬA] Message rõ ràng hơn
+            message: 'Liên kết đặt lại mật khẩu đã được gửi.',
             rs
         });
     } catch (error) {
@@ -247,19 +238,16 @@ const forgotPassword = asyncHandler(async (req, res) => {
 * @access Public
 */
 const resetPassword = asyncHandler(async (req, res) => {
-    // [ĐÃ SỬA] Lấy token từ URL params
     const token = req.params.token; 
     const { password } = req.body;
     
-    if (!password || !token) { // [ĐÃ SỬA] Kiểm tra token và password
+    if (!password || !token) {
         res.status(400);
         throw new Error('Missing new password or reset token');
     }
 
-    // Băm token nhận được từ client để so sánh với DB
     const passwordResetToken = crypto.createHash('sha256').update(token).digest('hex')
     
-    // Tìm người dùng với token đã băm VÀ token chưa hết hạn
     const user = await User.findOne({ 
         passwordResetToken, 
         passwordResetExpires: { $gt: Date.now() } 
@@ -270,10 +258,8 @@ const resetPassword = asyncHandler(async (req, res) => {
         throw new Error('Token không hợp lệ hoặc đã hết hạn.');
     }
 
-    // Cập nhật mật khẩu mới (sẽ được băm qua middleware 'pre-save')
     user.password = password
-    
-    // Xóa các trường token
+  
     user.passwordResetToken = undefined
     user.passwordChangedAt = Date.now()
     user.passwordResetExpires = undefined

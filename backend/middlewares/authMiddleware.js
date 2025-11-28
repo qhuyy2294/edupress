@@ -5,24 +5,20 @@ const User = require('../models/userModel');
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
-
-  // Check if token exists in Authorization header
-  if (req.cookies && req.cookies.token) {
-    token = req.cookies.token;
-  }
-  else if (
+  
+  // if (req.cookies && req.cookies.token) {
+  //   token = req.cookies.token;
+  // }
+  if (
+    // Check if token exists in Authorization header
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
-    token = req.headers.authorization.split(' ')[1];
-  }
-
-  if (!token) {
-    res.status(401);
-    throw new Error('Not authorized, no token provided');
-  }
 
     try {
+      // Get token from header (format: "Bearer <token>")
+      token = req.headers.authorization.split(' ')[1];
+
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -37,7 +33,6 @@ const protect = asyncHandler(async (req, res, next) => {
       // Check if user account is active
       if (req.user.status === 'inactive') {
         res.status(403);
-        res.clearCookie('token'); 
         throw new Error('Account is inactive. Please contact support.');
       }
 
@@ -47,7 +42,13 @@ const protect = asyncHandler(async (req, res, next) => {
       res.status(401);
       throw new Error('Not authorized, token failed');
     }
-  });
+  }
+
+  if (!token) {
+    res.status(401);
+    throw new Error('Not authorized, no token provided');
+  }
+});
 
 /**
  * Authorize roles - Check if user has required role

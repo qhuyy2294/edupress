@@ -1,3 +1,8 @@
+/**
+ * CustomerManagementPage Component
+ * Modern UI Version
+ */
+
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import Loader from '../components/Loader';
@@ -22,15 +27,17 @@ const CustomerManagementPage = () => {
 
   useEffect(() => {
     fetchCustomers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCustomers = async () => {
     try {
       setLoading(true);
       setError('');
-
-      const response = await api.get('/admin/users');
-
+      const token = localStorage.getItem('token');
+      const response = await api.get('/admin/users', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setCustomers(response.data.data || []);
     } catch (err) {
       setError(err.response?.data?.message || 'Không thể tải danh sách người dùng');
@@ -39,19 +46,21 @@ const CustomerManagementPage = () => {
     }
   };
 
-  const handleDeleteUser = async (userId) => {
-    if (!window.confirm('CẢNH BÁO QUAN TRỌNG:\nBạn có chắc chắn muốn XÓA VĨNH VIỄN người dùng này?\nHành động này không thể hoàn tác!')) {
+  const handleBanToggle = async (userId, currentStatus) => {
+    const actionText = currentStatus === 'active' ? 'vô hiệu hóa' : 'kích hoạt lại';
+    if (!window.confirm(`Bạn có chắc chắn muốn ${actionText} người dùng này không?`)) {
       return;
     }
     try {
       setError(''); setSuccess('');
-      
-      await api.delete(`/admin/users/${userId}`);
-      
-      setSuccess('Đã xóa người dùng thành công');
-      fetchCustomers(); // Load lại danh sách
+      const token = localStorage.getItem('token');
+      await api.put(`/admin/users/${userId}/toggle-status`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSuccess(`Đã ${actionText} người dùng thành công`);
+      fetchCustomers();
     } catch (err) {
-      setError(err.response?.data?.message || 'Xóa thất bại');
+      setError(err.response?.data?.message || 'Cập nhật trạng thái thất bại');
     }
   };
 
@@ -65,8 +74,11 @@ const CustomerManagementPage = () => {
     e.preventDefault();
     try {
       setError(''); setSuccess('');
-      await api.put(`/admin/users/${editingUser._id}`, editForm);
-      setSuccess('Cập nhật thành công');
+      const token = localStorage.getItem('token');
+      await api.put(`/admin/users/${editingUser._id}`, editForm, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSuccess('Cập nhật thông tin thành công');
       setEditingUser(null);
       fetchCustomers();
     } catch (err) {
@@ -112,9 +124,10 @@ const CustomerManagementPage = () => {
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            Quay lại Dashboard
+            Dashboard
           </Link>
         </div>
+
         <div className="page-header01">
           <div className="title-wrapper">
             <h1>Quản lý người dùng</h1>
@@ -130,7 +143,7 @@ const CustomerManagementPage = () => {
 
         {/* Filters Bar */}
         <div className="filters-section">
-          <div className="search-box01">
+          <div className="search-box">
             <input
               type="text"
               placeholder="Tìm kiếm..."
@@ -144,7 +157,7 @@ const CustomerManagementPage = () => {
               <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                 <option value="all">Tất cả trạng thái</option>
                 <option value="active">Đang hoạt động</option>
-                <option value="inactive">Đã xóa</option>
+                <option value="inactive">Đã khóa</option>
               </select>
             </div>
 
@@ -181,7 +194,7 @@ const CustomerManagementPage = () => {
                   <tr 
                     key={customer._id} 
                     className={`table-row ${customer.status === 'inactive' ? 'row-inactive' : ''}`}
-                    style={{ animationDelay: `${index * 0.05}s` }} 
+                    style={{ animationDelay: `${index * 0.05}s` }} // Staggered animation
                   >
                     <td>
                       <div className="user-profile">
@@ -220,19 +233,17 @@ const CustomerManagementPage = () => {
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </button>
-                        
                         <button 
-                          className="btn-icon btn-delete-icon"
-                          onClick={() => handleDeleteUser(customer._id)}
+                          className={`btn-icon btn-ban-icon ${customer.status === 'inactive' ? 'is-banned' : ''}`}
+                          onClick={() => handleBanToggle(customer._id, customer.status)}
                           disabled={customer.role === 'admin'}
-                          title="Xóa vĩnh viễn"
+                          title={customer.status === 'inactive' ? 'Mở khóa' : 'Khóa tài khoản'}
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                          </svg>
+                          {customer.status === 'inactive' ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                          )}
                         </button>
                       </div>
                     </td>
@@ -244,6 +255,7 @@ const CustomerManagementPage = () => {
         </div>
       </div>
 
+      {/* Modern Modal */}
       {editingUser && (
         <div className="modal-backdrop fade-in" onClick={() => setEditingUser(null)}>
           <div className="modal-card slide-up" onClick={(e) => e.stopPropagation()}>
