@@ -25,9 +25,9 @@ const Header = () => {
         </Link>
 
         <nav className="nav">
-          <Link to="/" className="nav-link">
+          {/* <Link to="/" className="nav-link">
             Khóa học
-          </Link>
+          </Link> */}
 
           {isAuthenticated ? (
             <>

@@ -10,6 +10,8 @@ import courseService from '../services/courseService';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './CourseReviewPage.css';
+import { FaStar } from 'react-icons/fa';
+import { MdStar, MdStarBorder } from 'react-icons/md';
 
 const CourseReviewPage = () => {
   const { id } = useParams();
@@ -170,8 +172,8 @@ const CourseReviewPage = () => {
 
             <form onSubmit={handleSubmit}>
               {/* Rating Selection */}
-              <div className="form-group">
-                <label className="form-label">Đánh giá *</label>
+              <div className="form-group01">
+                <label className="form-label01">Đánh giá *</label>
                 <div className="star-rating-input">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -184,22 +186,22 @@ const CourseReviewPage = () => {
                       onMouseEnter={() => setHoveredRating(star)}
                       onMouseLeave={() => setHoveredRating(0)}
                     >
-                      {star <= (hoveredRating || rating) ? '⭐' : '☆'}
+                      {star <= (hoveredRating || rating) ? <MdStar size={40} color="#ffc107" /> : <MdStarBorder size={40} color="#cbd5e1" />}
                     </button>
                   ))}
-                  <span className="rating-text">
+                  {/* <span className="rating-text">
                     {rating === 1 && 'Poor'}
                     {rating === 2 && 'Fair'}
                     {rating === 3 && 'Good'}
                     {rating === 4 && 'Very Good'}
                     {rating === 5 && 'Excellent'}
-                  </span>
+                  </span> */}
                 </div>
               </div>
 
               {/* Comment Textarea */}
-              <div className="form-group">
-                <label className="form-label">Đánh giá của bạn *</label>
+              <div className="form-group01">
+                <label className="form-label01">Đánh giá của bạn *</label>
                 <textarea
                   className="form-textarea"
                   placeholder="Chia sẻ kinh nghiệm của bạn với khóa học này... (10-500 ký tự)"
@@ -214,10 +216,10 @@ const CourseReviewPage = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="form-actions">
+              <div className="form-actions01">
                 <button
                   type="button"
-                  className="btn-cancel"
+                  className="btn-cancel01"
                   onClick={() => navigate(`/courses/${id}`)}
                   disabled={submitting}
                 >
@@ -227,7 +229,7 @@ const CourseReviewPage = () => {
                 {existingReview && (
                   <button
                     type="button"
-                    className="btn-delete"
+                    className="btn-delete01"
                     onClick={handleDelete}
                     disabled={submitting}
                   >
@@ -237,7 +239,7 @@ const CourseReviewPage = () => {
 
                 <button
                   type="submit"
-                  className="btn-submit"
+                  className="btn-submit01"
                   disabled={submitting}
                 >
                   {submitting

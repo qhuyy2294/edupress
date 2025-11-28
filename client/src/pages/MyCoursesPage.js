@@ -79,7 +79,7 @@ const MyCoursesPage = () => {
         <div className="page-header06">
           <div>
             <h1>
-              {isProvider() ? '📚 Các khóa học của tôi' : '🎓 Các khóa học tôi đã đăng ký'}
+              {isProvider() ? '📚 Các khóa học của tôi' : 'Các khóa học đã đăng ký'}
             </h1>
             <p className="page-subtitle">
               {isProvider()
@@ -127,7 +127,7 @@ const MyCoursesPage = () => {
               <div className="stat-card">
                 <div className="stat-number">{courses.length}</div>
                 <div className="stat-label">
-                  {isProvider() ? 'Tổng số khóa học' : 'Các khóa học đã đăng ký'}
+                  {isProvider() ? 'Tổng số khóa học' : 'Khóa học đã đăng ký'}
                 </div>
               </div>
               {isProvider() && (
@@ -155,53 +155,53 @@ const MyCoursesPage = () => {
             </div>
 
             <div className="courses-grid">
-              {courses.map(course => (
-                <div key={course._id} className="course-item">
-                  {isCustomer() && course.progress !== undefined && (
-                    <div className="progress-badge">
-                      {course.progress}% Hoàn thành
-                    </div>
-                  )}
-                  {isProvider() && (
-                    <div className={`status-badge status-${course.status}`}>
-                      {course.status}
-                    </div>
-                  )}
-                  <CourseCard course={course} />
-                  {isProvider() && (
-                    <div className="course-actions">
-                      <Link
-                        to={`/course/${course._id}/lessons`}
-                        className="btn btn-primary btn-sm"
-                      >
-                        Quản lý khóa học
-                      </Link>
-                      <Link
-                        to={`/course/${course._id}/edit`}
-                        className="btn btn-secondary btn-sm"
-                      >
-                        Chỉnh sửa
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(course._id)}
-                        className="btn btn-danger btn-sm"
-                      >
-                        Xóa
-                      </button>
-                    </div>
-                  )}
-                  {!isProvider() && course.lessons && course.lessons.length > 0 && (
-                    <div className="course-actions">
-                      <Link
-                        to={`/courses/${course._id}/lessons/${course.lessons[0]._id}`}
-                        className="btn btn-primary btn-sm"
-                      >
-                        Tiếp tục học →
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              ))}
+                {courses.map(course => (
+                  <div key={course._id} className="course-item">
+                    {isCustomer() && course.progress !== undefined && (
+                      <div className="progress-badge">
+                        {course.progress}% Hoàn thành
+                      </div>
+                    )}
+                    {isProvider() && (
+                      <div className={`status-badge status-${course.status}`}>
+                        {course.status}
+                      </div>
+                    )}
+                    <CourseCard course={course} />
+                    {isProvider() && (
+                      <div className="course-actions">
+                        <Link
+                          to={`/course/${course._id}/lessons`}
+                          className="btn btn-primary btn-sm"
+                        >
+                          Quản lý khóa học
+                        </Link>
+                        <Link
+                          to={`/course/${course._id}/edit`}
+                          className="btn btn-secondary btn-sm"
+                        >
+                          Chỉnh sửa
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(course._id)}
+                          className="btn btn-danger btn-sm"
+                        >
+                          Xóa
+                        </button>
+                      </div>
+                    )}
+                    {!isProvider() && course.lessons && course.lessons.length > 0 && (
+                      <div className="course-actions">
+                        <Link
+                          to={`/courses/${course._id}/lessons/${course.lessons[0]._id}`}
+                          className="btn btn-primary btn-sm"
+                        >
+                          Tiếp tục học →
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                ))}
             </div>
           </>
         )}

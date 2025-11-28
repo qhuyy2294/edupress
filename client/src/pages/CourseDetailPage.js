@@ -1,8 +1,3 @@
-/**
- * CourseDetailPage Component
- * Detailed view of a single course
- */
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
@@ -11,6 +6,8 @@ import reviewService from '../services/reviewService';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './CourseDetailPage.css';
+import { MdStar, MdStarBorder } from "react-icons/md";
+
 
 const CourseDetailPage = () => {
   const { id } = useParams();
@@ -107,14 +104,55 @@ const CourseDetailPage = () => {
     );
   }
 
+  const calculateRatingStats = (reviews) => {
+    if (!reviews || reviews.length === 0) {
+      return {
+        average: 0,
+        total: 0,
+        distribution: [
+          { star: 5, count: 0, percent: 0 },
+          { star: 4, count: 0, percent: 0 },
+          { star: 3, count: 0, percent: 0 },
+          { star: 2, count: 0, percent: 0 },
+          { star: 1, count: 0, percent: 0 },
+        ]
+      };
+    }
+    const total = reviews.length;
+    // Tính điểm trung bình
+    const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+    const average = (sum / total).toFixed(1); 
+    // Tính toán phân phối đánh giá
+    const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+  
+    reviews.forEach(review => {
+      const round = Math.round(review.rating); // Làm tròn điểm đánh giá
+      if (counts[round] !== undefined) {
+        counts[round]++;
+      }
+    });
+
+    const distribution = Object.keys(counts)
+      .sort((a, b) => b - a) // Sắp xếp từ cao đến thấp
+      .map(star => ({
+        star: parseInt(star), // Số sao
+        count: counts[star], // Số lượng đánh giá
+        percent: ((counts[star] / total) * 100).toFixed(0) // Tính phần trăm
+      }));
+
+    return { average, total, distribution }; // Trả về điểm trung bình, tổng số đánh giá và phân phối
+  };
+  // Gọi hàm tính toán mỗi khi reviews thay đổi (hoặc tính trực tiếp khi render)
+  const stats = calculateRatingStats(reviews);
+
   return (
     <div className="course-detail-page">
       <div className="course-hero">
         <div className="container">
           <div className="course-hero-content">
             <span className="course-category-badge">{course.category}</span>
-            <h1 className="course-title">{course.title}</h1>
-            <p className="course-description">{course.description}</p>
+            <h1 className="course-title01">{course.title}</h1>
+            <p className="course-description01">{course.description}</p>
             
             <div className="course-meta">
               <div className="meta-item">
@@ -144,8 +182,8 @@ const CourseDetailPage = () => {
                 className="course-thumbnail"
               />
               
-              <div className="course-price-section">
-                <h2 className="course-price">
+              <div className="course-price-section01">
+                <h2 className="course-price01">
                   {course.price === 0 ? 'Miễn phí' : `$${course.price}`}
                 </h2>
                 
@@ -221,14 +259,14 @@ const CourseDetailPage = () => {
           <div className="course-reviews-section">
             <div className="reviews-header">
               <h3>Đánh giá của học viên</h3>
-              {isEnrolled && !myReview && (
+              {/* {isEnrolled && !myReview && ( */}
                 <button
                   className="btn-write-review"
                   onClick={() => navigate(`/courses/${id}/review`)}
                 >
                   Viết đánh giá
                 </button>
-              )}
+              {/* )} */}
               {isEnrolled && myReview && (
                 <button
                   className="btn-edit-review"
@@ -243,34 +281,59 @@ const CourseDetailPage = () => {
               <p className="no-reviews">Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá khóa học này!</p>
             ) : (
               <div className="reviews-list">
+                <div className="rating-bars">
+                  {stats.distribution.map((item) => (
+                    <div key={item.star} className="rating-bar-item">
+                      <div className="star-label">{item.star} sao</div>
+                      <div className="progress-bar-bg">
+                        <div 
+                          className="progress-bar-fill" 
+                          style={{ width: `${item.percent}%` }} 
+                        ></div>
+                      </div>
+                      <div className="rating-count">
+                        {item.percent}% ({item.count})
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
                 {reviews.map((review) => (
                   <div key={review._id} className="review-card">
-                    <div className="review-header">
-                      <div className="reviewer-info">
-                        {review.user.avatarUrl ? (
-                          <img
-                            src={review.user.avatarUrl}
-                            alt={review.user.fullName}
-                            className="reviewer-avatar"
-                          />
-                        ) : (
-                          <div className="reviewer-avatar-placeholder">
-                            {review.user.fullName.charAt(0).toUpperCase()}
-                          </div>
-                        )}
-                        <div>
-                          <h4 className="reviewer-name">{review.user.fullName}</h4>
-                          <div className="review-rating">
-                            {'⭐'.repeat(review.rating)}
-                            {'☆'.repeat(5 - review.rating)}
-                          </div>
+                    <div className="review-avatar-section">
+                      {review.user.avatarUrl ? (
+                        <img
+                          src={review.user.avatarUrl}
+                          alt={review.user.fullName}
+                          className="reviewer-avatar"
+                        />
+                      ) : (
+                        <div className="reviewer-avatar-placeholder">
+                          {review.user.fullName.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="review-content">
+                      <div className="review-header">
+                        <h4 className="reviewer-name">{review.user.fullName}</h4>
+                        <span className="review-date">
+                          {review.createdAt ? new Date(review.createdAt).toLocaleDateString('vi-VN') : 'Gần đây'}
+                        </span>
+                      </div>
+                      <div className="review-row">
+                        <p className="review-comment">{review.comment}</p>
+                        <div className="review-rating">
+                          {[...Array(5)].map((_, index) => {
+                            return index < review.rating ? (
+                              <MdStar key={index} size={18} color="#ffc107" />
+                              ) : (
+                              <MdStarBorder key={index} size={18} color="#cbd5e1" />
+                            );
+                          })}
                         </div>
                       </div>
-                      <span className="review-date">
-                        {new Date(review.createdAt).toLocaleDateString()}
-                      </span>
                     </div>
-                    <p className="review-comment">{review.comment}</p>
                   </div>
                 ))}
               </div>

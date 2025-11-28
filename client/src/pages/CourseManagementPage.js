@@ -217,7 +217,7 @@ const CourseManagementPage = () => {
 
               <div className="course-content">
                 <h3>{course.title}</h3>
-                <p className="course-description">
+                <p className="course-description02">
                   {course.description?.substring(0, 100)}
                   {course.description?.length > 100 ? '...' : ''}
                 </p>

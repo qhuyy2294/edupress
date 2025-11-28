@@ -158,7 +158,7 @@ const LessonManagementPage = () => {
         <div className="page-header03">
           <div>
             <h1>📝 Manage Lessons</h1>
-            <p className="course-title">{course?.title}</p>
+            <p className="course-title02">{course?.title}</p>
           </div>
           <button className="btn-add-lesson" onClick={handleAddLesson}>
             + Add Lesson
