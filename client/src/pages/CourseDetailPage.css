@@ -19,44 +19,39 @@
 
 .course-category-badge {
   display: inline-block;
-  background-color: #f7f7f7; /* Thay đổi nền trắng sáng */
-  color: #667eea; /* Đổi màu chữ thành màu tím/xanh của theme */
+  background-color: #f7f7f7; 
+  color: #667eea; 
   padding: 0.5rem 1.2rem;
   border-radius: 25px;
   font-size: 0.95rem;
   font-weight: 600;
-  margin-bottom: 1.5rem; /* Tăng khoảng cách với tiêu đề */
+  margin-bottom: 1.5rem; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
-/* ... (Giữ nguyên các phần khác) ... */
 
 .course-title {
   font-size: 2.5rem; 
   margin-bottom: 1rem;
   font-weight: bold;
-  /* Chỉnh màu tiêu đề thành màu trắng tinh khiết */
   color: #FFFFFF; 
-  /* Tùy chọn: Thêm bóng mờ nhẹ để nổi bật */
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); 
 }
 
 .course-description {
   font-size: 1.2rem;
   line-height: 1.6;
-  /* Chỉnh màu mô tả thành màu trắng sáng và thiết lập lại độ mờ */
-  color: #F0F0FF; /* Màu trắng hơi ngả xanh/tím */
+  color: #F0F0FF; 
   opacity: 0.95; 
   margin-bottom: 2rem;
 }
 
-/* ... (Các phần khác) ... */
+
 .course-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 3rem; /* Tăng khoảng cách giữa các mục */
-  padding-top: 1rem; /* Tạo khoảng cách với mô tả */
-  border-top: 1px solid rgba(255, 255, 255, 0.3); /* Thêm đường kẻ mờ */
+  gap: 3rem; 
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.3); 
 }
 
 .meta-item {
@@ -66,17 +61,17 @@
 }
 
 .meta-label {
-  font-size: 1rem; /* Tăng kích thước */
-  opacity: 0.9; /* Giữ độ mờ nhẹ */
+  font-size: 1rem; 
+  opacity: 0.9;
   font-weight: 500;
-  color: #d1d1d1; /* Màu trắng xám nhẹ */
+  color: #d1d1d1;
 }
 
 .meta-value {
-  font-size: 1.3rem; /* Tăng kích thước font để nổi bật */
-  font-weight: 700; /* Làm chữ đậm */
-  color: #ffda79; /* Màu vàng sáng, nổi bật trên nền tím/xanh */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Thêm bóng nhẹ cho chữ */
+  font-size: 1.3rem; 
+  font-weight: 700; 
+  color: #ffda79; 
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
 }
 
 .course-sidebar {

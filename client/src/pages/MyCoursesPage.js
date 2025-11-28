@@ -50,14 +50,14 @@ const MyCoursesPage = () => {
         }
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load courses');
+      setError(err.response?.data?.message || 'Không tải được khóa học');
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (courseId) => {
-    if (!window.confirm('Are you sure you want to delete this course?')) {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa khóa học này không?')) {
       return;
     }
 
@@ -65,12 +65,12 @@ const MyCoursesPage = () => {
       await courseService.deleteCourse(courseId);
       setCourses(courses.filter(course => course._id !== courseId));
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete course');
+      setError(err.response?.data?.message || 'Không xóa được khóa học');
     }
   };
 
   if (loading) {
-    return <Loader message="Loading your courses..." />;
+    return <Loader message="Đang tải khóa học của bạn..." />;
   }
 
   return (
@@ -79,21 +79,21 @@ const MyCoursesPage = () => {
         <div className="page-header06">
           <div>
             <h1>
-              {isProvider() ? '📚 My Courses' : '🎓 My Enrolled Courses'}
+              {isProvider() ? '📚 Các khóa học của tôi' : '🎓 Các khóa học tôi đã đăng ký'}
             </h1>
             <p className="page-subtitle">
               {isProvider()
-                ? 'Manage your courses and track their performance'
-                : 'Continue learning from where you left off'}
+                ? 'Quản lý các khóa học của bạn và theo dõi hiệu suất của chúng'
+                : 'Tiếp tục học từ nơi bạn dừng lại'}
             </p>
           </div>
           {isProvider() && (
             <div className="provider-actions">
               <Link to="/provider/revenue" className="btn btn-secondary">
-                📊 View Revenue
+                📊 Xem doanh thu
               </Link>
               <Link to="/course/create" className="btn btn-primary">
-                + Create New Course
+                + Tạo khóa học mới
               </Link>
             </div>
           )}
@@ -107,18 +107,18 @@ const MyCoursesPage = () => {
               {isProvider() ? '📝' : '🎯'}
             </div>
             <h2>
-              {isProvider() ? 'No courses yet' : 'No enrolled courses'}
+              {isProvider() ? 'Chưa có khóa học nào' : 'Không có khóa học nào được đăng ký'}
             </h2>
             <p>
               {isProvider()
-                ? 'Start creating your first course to share your knowledge'
-                : 'Explore our course catalog and start learning today'}
+                ? 'Bắt đầu tạo khóa học đầu tiên của bạn để chia sẻ kiến ​​thức'
+                : 'Khám phá danh mục khóa học của chúng tôi và bắt đầu học ngay hôm nay'}
             </p>
             <Link
               to={isProvider() ? '/create-course' : '/'}
               className="btn btn-primary"
             >
-              {isProvider() ? 'Create Course' : 'Browse Courses'}
+              {isProvider() ? 'Tạo khóa học' : 'Duyệt các khóa học'}
             </Link>
           </div>
         ) : (
@@ -127,7 +127,7 @@ const MyCoursesPage = () => {
               <div className="stat-card">
                 <div className="stat-number">{courses.length}</div>
                 <div className="stat-label">
-                  {isProvider() ? 'Total Courses' : 'Enrolled Courses'}
+                  {isProvider() ? 'Tổng số khóa học' : 'Các khóa học đã đăng ký'}
                 </div>
               </div>
               {isProvider() && (
@@ -196,7 +196,7 @@ const MyCoursesPage = () => {
                         to={`/courses/${course._id}/lessons/${course.lessons[0]._id}`}
                         className="btn btn-primary btn-sm"
                       >
-                        Continue Learning →
+                        Tiếp tục học →
                       </Link>
                     </div>
                   )}

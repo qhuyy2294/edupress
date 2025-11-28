@@ -145,13 +145,14 @@
   font-weight: bold;
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: fit-content; 
 }
 
-/* Status Badge */
 .status-badge {
   position: absolute;
   top: 10px;
-  right: 10px;
+  left: 10px;
+  right: auto;
   padding: 8px 15px;
   border-radius: 20px;
   font-size: 0.85rem;
@@ -159,11 +160,18 @@
   text-transform: uppercase;
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: fit-content; 
 }
 
 .status-approved {
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
   color: white;
+}
+
+.status-pending,
+.status-rejected {
+  left: auto;
+  right: 10px;
 }
 
 .status-pending {
@@ -175,7 +183,6 @@
   background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
   color: white;
 }
-
 /* Course Actions */
 .course-actions {
   display: flex;

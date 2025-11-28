@@ -65,8 +65,8 @@ const RevenueReportPage = () => {
   return (
     <div className="revenue-report-page">
       <div className="page-header08">
-        <h1>Revenue & Analytics</h1>
-        <p>Track your course performance and earnings</p>
+        <h1>Doanh thu & Phân tích</h1>
+        <p>Theo dõi hiệu suất khóa học và thu nhập của bạn</p>
       </div>
 
       {error && <Message type="error">{error}</Message>}
@@ -76,7 +76,7 @@ const RevenueReportPage = () => {
         <div className="summary-card card-courses">
           <div className="card-icon">📚</div>
           <div className="card-content">
-            <h3>Total Courses</h3>
+            <h3>Tổng số khóa học</h3>
             <p className="stat-value">{totalStats.totalCourses}</p>
           </div>
         </div>
@@ -84,7 +84,7 @@ const RevenueReportPage = () => {
         <div className="summary-card card-students">
           <div className="card-icon">👥</div>
           <div className="card-content">
-            <h3>Total Students</h3>
+            <h3>Tổng số học viên</h3>
             <p className="stat-value">{totalStats.totalEnrollments}</p>
           </div>
         </div>
@@ -92,7 +92,7 @@ const RevenueReportPage = () => {
         <div className="summary-card card-revenue">
           <div className="card-icon">💰</div>
           <div className="card-content">
-            <h3>Total Revenue</h3>
+            <h3>Tổng doanh thu</h3>
             <p className="stat-value">${totalStats.totalRevenue.toFixed(2)}</p>
           </div>
         </div>
@@ -100,7 +100,7 @@ const RevenueReportPage = () => {
         <div className="summary-card card-rating">
           <div className="card-icon">⭐</div>
           <div className="card-content">
-            <h3>Average Rating</h3>
+            <h3>Đánh giá trung bình</h3>
             <p className="stat-value">{totalStats.averageRating.toFixed(1)}</p>
           </div>
         </div>
@@ -108,22 +108,22 @@ const RevenueReportPage = () => {
 
       {/* Course Performance Table */}
       <div className="performance-section">
-        <h2>Course Performance</h2>
+        <h2>Hiệu suất khóa học</h2>
         
         {courses.length === 0 ? (
-          <Message type="info">No courses found. Create your first course to start earning!</Message>
+          <Message type="info">Không tìm thấy khóa học nào. Hãy tạo khóa học đầu tiên của bạn để bắt đầu kiếm tiền!</Message>
         ) : (
           <div className="table-container">
             <table className="performance-table">
               <thead>
                 <tr>
-                  <th>Course</th>
-                  <th>Status</th>
-                  <th>Price</th>
-                  <th>Students</th>
-                  <th>Revenue</th>
-                  <th>Rating</th>
-                  <th>Reviews</th>
+                  <th>Khóa học</th>
+                  <th>Trạng thái</th>
+                  <th>Giá</th>
+                  <th>Học viên</th>
+                  <th>Doanh thu</th>
+                  <th>Đánh giá</th>
+                  <th>Nhận xét</th>
                 </tr>
               </thead>
               <tbody>
@@ -177,7 +177,7 @@ const RevenueReportPage = () => {
           <div className="top-performers-grid">
             {/* Most Students */}
             <div className="top-card">
-              <h3>🏆 Most Students</h3>
+              <h3>🏆 Nhiều học viên nhất</h3>
               {courses
                 .sort((a, b) => (b.enrollmentCount || 0) - (a.enrollmentCount || 0))
                 .slice(0, 3)
@@ -192,7 +192,7 @@ const RevenueReportPage = () => {
 
             {/* Highest Revenue */}
             <div className="top-card">
-              <h3>💵 Highest Revenue</h3>
+              <h3>💵 Doanh thu cao nhất</h3>
               {courses
                 .sort((a, b) => {
                   const revenueA = (a.enrollmentCount || 0) * (a.price || 0);
@@ -214,7 +214,7 @@ const RevenueReportPage = () => {
 
             {/* Best Rated */}
             <div className="top-card">
-              <h3>⭐ Best Rated</h3>
+              <h3>⭐ Đánh giá cao nhất</h3>
               {courses
                 .filter(c => c.averageRating > 0)
                 .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
