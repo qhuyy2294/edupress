@@ -293,8 +293,8 @@ const enrollInCourse = asyncHandler(async (req, res) => {
   await Notification.createNotification(
     req.user._id,
     'enrollment',
-    'Enrollment Successful!',
-    `You have successfully enrolled in "${course.title}". Start learning now!`,
+    'Đăng ký khóa học thành công!',
+    `Bạn đã đăng ký tham gia khóa học "${course.title} thành công!". Vào học ngay bây giờ!`,
     `/courses/${course._id}/lessons`,
     course._id
   );

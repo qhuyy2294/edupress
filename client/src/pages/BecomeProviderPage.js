@@ -1,8 +1,3 @@
-/**
- * BecomeProviderPage Component
- * Customer request to become a course provider
- */
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
@@ -69,7 +64,7 @@ const BecomeProviderPage = () => {
       if (response.data.success) {
         setSuccess(response.data.message);
         setTimeout(() => {
-          window.location.reload(); // Reload to update user status
+          window.location.reload();
         }, 2000);
       }
     } catch (err) {
