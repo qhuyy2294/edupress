@@ -27,7 +27,7 @@ const createCourse = asyncHandler(async (req, res) => {
   const courseExists = await Course.findOne({ title });
   if (courseExists) {
     res.status(400);
-    throw new Error('Course with this title already exists');
+    throw new Error('Khóa học có tiêu đề này đã tồn tại');
   }
 
   // Create course
@@ -44,7 +44,7 @@ const createCourse = asyncHandler(async (req, res) => {
   res.status(201).json({
     success: true,
     data: course,
-    message: 'Course created successfully. Waiting for admin approval.',
+    message: 'Khóa học đã được tạo thành công. Đang chờ quản trị viên phê duyệt.',
   });
 });
 
@@ -120,7 +120,7 @@ const getCourseById = asyncHandler(async (req, res) => {
 
   if (!course) {
     res.status(404);
-    throw new Error('Course not found');
+    throw new Error('Không tìm thấy khóa học');
   }
 
   // Only show approved courses to non-owners
@@ -129,7 +129,7 @@ const getCourseById = asyncHandler(async (req, res) => {
     (!req.user || req.user._id.toString() !== course.provider._id.toString())
   ) {
     res.status(403);
-    throw new Error('Course is not available');
+    throw new Error('Khóa học không có sẵn');
   }
 
   res.json({
@@ -148,13 +148,13 @@ const updateCourse = asyncHandler(async (req, res) => {
 
   if (!course) {
     res.status(404);
-    throw new Error('Course not found');
+    throw new Error('Không tìm thấy khóa học');
   }
 
   // Check if user is the course owner
   if (course.provider.toString() !== req.user._id.toString()) {
     res.status(403);
-    throw new Error('You are not authorized to update this course');
+    throw new Error('Bạn không được phép cập nhật khóa học này');
   }
 
   // Update fields
@@ -176,7 +176,7 @@ const updateCourse = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     data: updatedCourse,
-    message: 'Course updated successfully',
+    message: 'Khóa học đã được cập nhật thành công',
   });
 });
 
@@ -190,20 +190,20 @@ const deleteCourse = asyncHandler(async (req, res) => {
 
   if (!course) {
     res.status(404);
-    throw new Error('Course not found');
+    throw new Error('Không tìm thấy khóa học');
   }
 
   // Check if user is the course owner
   if (course.provider.toString() !== req.user._id.toString()) {
     res.status(403);
-    throw new Error('You are not authorized to delete this course');
+    throw new Error('Bạn không được phép xóa khóa học này');
   }
 
   await course.deleteOne();
 
   res.json({
     success: true,
-    message: 'Course deleted successfully',
+    message: 'Khóa học đã xóa thành công',
   });
 });
 
@@ -240,7 +240,7 @@ const enrollInCourse = asyncHandler(async (req, res) => {
 
   if (course.status !== 'approved') {
     res.status(400);
-    throw new Error('This course is not available for enrollment');
+    throw new Error('Khóa học này không có sẵn để đăng ký');
   }
 
   // Check if already enrolled
@@ -303,8 +303,8 @@ const enrollInCourse = asyncHandler(async (req, res) => {
   await Notification.createNotification(
     course.provider,
     'enrollment',
-    'New Student Enrolled!',
-    `A new student has enrolled in your course "${course.title}".`,
+    'Sinh viên mới đã đăng ký!',
+    `Một học viên mới đã đăng ký khóa học "${course.title}" của bạn.`,
     `/course/${course._id}`,
     course._id
   );
@@ -312,7 +312,7 @@ const enrollInCourse = asyncHandler(async (req, res) => {
   res.status(201).json({
     success: true,
     data: enrollment,
-    message: 'Successfully enrolled in the course',
+    message: 'Đã đăng ký khóa học thành công',
   });
 });
 
