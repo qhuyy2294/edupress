@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import courseService from '../services/courseService';
+import progressService from '../services/progressService'
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import CourseCard from '../components/CourseCard';
@@ -20,7 +21,6 @@ const MyCoursesPage = () => {
 
   useEffect(() => {
     fetchMyCourses();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchMyCourses = async () => {
@@ -30,24 +30,34 @@ const MyCoursesPage = () => {
 
       let response;
       if (isProvider()) {
-        // Provider: Get courses they created
         response = await courseService.getMyCourses();
+        setCourses(response.data);
+        
       } else if (isCustomer()) {
-        // Customer: Get enrolled courses
-        response = await courseService.getEnrolledCourses();
-      }
 
-      if (response.success) {
-        // If customer, extract course from enrollment
-        if (isCustomer()) {
-          setCourses(response.data.map(enrollment => ({
+        const enrolledResponse = await courseService.getEnrolledCourses();
+        
+        let initialCourses = enrolledResponse.data.map(enrollment => ({
             ...enrollment.course,
-            progress: enrollment.progress,
             enrollmentDate: enrollment.enrollmentDate,
-          })));
-        } else {
-          setCourses(response.data);
-        }
+            completionPercentage: 0,
+        }));
+        const coursesWithProgress = await Promise.all(
+            initialCourses.map(async (course) => {
+                try {
+                    const progressResponse = await progressService.getCourseProgress(course._id);
+                    return {
+                        ...course,
+                        completionPercentage: progressResponse.data.completionPercentage,
+                    };
+                } catch (err) {
+                    console.error(`Failed to fetch progress for course ${course._id}:`, err);
+                    return course;
+                }
+            })
+        );
+
+        setCourses(coursesWithProgress);
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Không tải được khóa học');
@@ -157,9 +167,10 @@ const MyCoursesPage = () => {
             <div className="courses-grid">
                 {courses.map(course => (
                   <div key={course._id} className="course-item">
-                    {isCustomer() && course.progress !== undefined && (
+                    {/* Sử dụng completionPercentage */}
+                    {isCustomer() && course.completionPercentage !== undefined && (
                       <div className="progress-badge">
-                        {course.progress}% Hoàn thành
+                        {course.completionPercentage}% Hoàn thành
                       </div>
                     )}
                     {isProvider() && (
