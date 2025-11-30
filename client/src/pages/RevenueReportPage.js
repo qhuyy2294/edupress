@@ -9,6 +9,14 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './RevenueReportPage.css';
 
+// HÀM ĐỊNH DẠNG SỐ TIỀN ĐƯỢC THÊM TRỰC TIẾP VÀO ĐÂY
+const formatVnd = (number) => {
+  if (typeof number !== 'number') return number;
+  // Sử dụng locale 'vi-VN' để định dạng dấu chấm là dấu phân cách hàng nghìn.
+  return new Intl.NumberFormat('vi-VN').format(number);
+};
+// KẾT THÚC HÀM ĐỊNH DẠNG
+
 const RevenueReportPage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +46,7 @@ const RevenueReportPage = () => {
       const stats = coursesData.reduce(
         (acc, course) => {
           acc.totalEnrollments += course.enrollmentCount || 0;
+          // Revenue calculation here uses raw numbers
           acc.totalRevenue += (course.enrollmentCount || 0) * (course.price || 0);
           acc.averageRating += course.averageRating || 0;
           return acc;
@@ -93,7 +102,7 @@ const RevenueReportPage = () => {
           <div className="card-icon">💰</div>
           <div className="card-content">
             <h3>Tổng doanh thu</h3>
-            <p className="stat-value">${totalStats.totalRevenue.toFixed(2)}</p>
+            <p className="stat-value">{formatVnd(totalStats.totalRevenue)} ₫</p>
           </div>
         </div>
 
@@ -143,14 +152,16 @@ const RevenueReportPage = () => {
                         </span>
                       </td>
                       <td className="price-cell">
+                        {/* SỬA CHỖ NÀY: Áp dụng formatVnd cho Giá */}
                         {course.price === 0 ? (
                           <span className="free-badge">Free</span>
                         ) : (
-                          `$${course.price}`
+                          `${formatVnd(course.price)} VND`
                         )}
                       </td>
                       <td className="number-cell">{course.enrollmentCount || 0}</td>
-                      <td className="revenue-cell">${revenue.toFixed(2)}</td>
+                      {/* SỬA CHỖ NÀY: Áp dụng formatVnd cho Doanh thu */}
+                      <td className="revenue-cell">{formatVnd(revenue)} VND</td>
                       <td className="rating-cell">
                         {course.averageRating ? (
                           <>
@@ -185,7 +196,7 @@ const RevenueReportPage = () => {
                   <div key={course._id} className="top-item">
                     <span className="rank">#{index + 1}</span>
                     <span className="course-name">{course.title}</span>
-                    <span className="course-value">{course.enrollmentCount || 0} students</span>
+                    <span className="course-value">{course.enrollmentCount || 0} học viên</span>
                   </div>
                 ))}
             </div>
@@ -206,7 +217,8 @@ const RevenueReportPage = () => {
                     <div key={course._id} className="top-item">
                       <span className="rank">#{index + 1}</span>
                       <span className="course-name">{course.title}</span>
-                      <span className="course-value">${revenue.toFixed(2)}</span>
+                      {/* SỬA CHỖ NÀY: Áp dụng formatVnd cho Top Revenue */}
+                      <span className="course-value">{formatVnd(revenue)} VND</span>
                     </div>
                   );
                 })}

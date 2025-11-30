@@ -7,6 +7,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './CourseCard.css';
 
+// HÀM ĐỊNH DẠNG SỐ TIỀN ĐƯỢC THÊM TRỰC TIẾP VÀO ĐÂY
+const formatVnd = (number) => {
+  if (typeof number !== 'number') return number;
+  // Sử dụng locale 'vi-VN' để định dạng dấu chấm là dấu phân cách hàng nghìn.
+  return new Intl.NumberFormat('vi-VN').format(number);
+};
+
 const CourseCard = ({ course }) => {
   return (
     <div className="course-card">
@@ -51,7 +58,7 @@ const CourseCard = ({ course }) => {
 
           <div className="course-price-section">
             <span className="course-price">
-              {course.price === 0 ? 'Free' : `$${course.price}`}
+              {course.price === 0 ? 'Free' : `${formatVnd(course.price)} ₫`}
             </span>
             <Link to={`/course/${course._id}`} className="btn-view-course">
               Xem khóa học
