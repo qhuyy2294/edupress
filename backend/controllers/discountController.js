@@ -1,8 +1,3 @@
-/**
- * Discount Controller
- * Handle discount code operations for providers
- */
-
 const Discount = require('../models/discountModel');
 const Course = require('../models/courseModel');
 const { validationResult } = require('express-validator');

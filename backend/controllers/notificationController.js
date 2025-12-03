@@ -1,8 +1,3 @@
-/**
- * Notification Controller
- * Handle notification CRUD operations
- */
-
 const asyncHandler = require('express-async-handler');
 const Notification = require('../models/notificationModel');
 

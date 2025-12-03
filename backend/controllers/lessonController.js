@@ -1,8 +1,3 @@
-/**
- * Lesson Controller
- * Handles lesson CRUD operations for providers
- */
-
 const asyncHandler = require('express-async-handler');
 const Lesson = require('../models/lessonModel');
 const Course = require('../models/courseModel');

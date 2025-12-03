@@ -1,8 +1,3 @@
-/**
- * Review Controller
- * Handles course review operations
- */
-
 const asyncHandler = require('express-async-handler');
 const Review = require('../models/reviewModel');
 const Course = require('../models/courseModel');
