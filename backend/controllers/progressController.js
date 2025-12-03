@@ -16,16 +16,27 @@ const Lesson = require('../models/lessonModel');
  */
 const getCourseProgress = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
+  // Lấy thông tin khóa học
+  const course = await Course.findById(courseId);
+  // Phân quyền truy cập
+  const isOwner = req.user.role === 'provider' 
+    &&
+  // Kiểm tra nếu người dùng là Chủ khóa học
+  course.provider.toString() === req.user._id.toString();
+  const isAdmin = req.user.role === 'admin';
 
-  // Check if user is enrolled
-  const enrollment = await Enrollment.findOne({
-    user: req.user._id,
-    course: courseId,
-  });
+  // Nếu không phải Admin và cũng không phải Chủ khóa học -> Bắt buộc check enrollment
+  if (!isOwner && !isAdmin) {
+    // Check if user is enrolled
+    const enrollment = await Enrollment.findOne({
+      user: req.user._id,
+      course: courseId,
+    });
 
-  if (!enrollment) {
-    res.status(403);
-    throw new Error('You must be enrolled in this course');
+    if (!enrollment) {
+      res.status(403);
+      throw new Error('You must be enrolled in this course!');
+    }
   }
 
   const progress = await Progress.getCourseProgress(req.user._id, courseId);
@@ -66,7 +77,7 @@ const markLessonAccessed = asyncHandler(async (req, res) => {
 
   if (!enrollment) {
     res.status(403);
-    throw new Error('You must be enrolled in this course');
+    throw new Error('You must be enrolled in this course!!!');
   }
 
   // Find or create progress record
@@ -115,7 +126,7 @@ const markLessonCompleted = asyncHandler(async (req, res) => {
 
   if (!enrollment) {
     res.status(403);
-    throw new Error('You must be enrolled in this course');
+    throw new Error('You must be enrolled in this course!!!!!');
   }
 
   // Find or create progress record
@@ -168,15 +179,22 @@ const getLessonProgress = asyncHandler(async (req, res) => {
     throw new Error('Lesson not found');
   }
 
-  // Check enrollment
-  const enrollment = await Enrollment.findOne({
-    user: req.user._id,
-    course: lesson.course,
-  });
+  // Kiểm tra nếu người dùng là Chủ khóa học hoặc Admin
+  const isOwner = req.user.role === 'provider' && lesson.provider.toString() === req.user._id.toString();
+  const isAdmin = req.user.role === 'admin';
 
-  if (!enrollment) {
-    res.status(403);
-    throw new Error('You must be enrolled in this course');
+  // Nếu không phải Admin và cũng không phải Chủ khóa học -> Bắt buộc check enrollment
+  if (!isOwner && !isAdmin) {
+  // Check enrollment
+    const enrollment = await Enrollment.findOne({
+      user: req.user._id,
+      course: lesson.course,
+    });
+
+    if (!enrollment) {
+      res.status(403);
+      throw new Error('You must be enrolled in this course!!');
+    }
   }
 
   const progress = await Progress.findOne({
