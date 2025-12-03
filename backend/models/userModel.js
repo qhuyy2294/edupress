@@ -57,6 +57,13 @@ const userSchema = new mongoose.Schema(
 
 // Pre-save middleware to hash password
 userSchema.pre('save', async function (next) {
+  // Tự động tạo avatarUrl khi chưa có
+  if (!this.avatarUrl) {
+    const name = this.fullName ? encodeURIComponent(this.fullName) : 'User';
+    
+    this.avatarUrl = `https://ui-avatars.com/api/?name=${name}&background=random`;
+  }
+
   // Only hash the password if it has been modified (or is new)
   if (!this.isModified('password')) {
     next();
