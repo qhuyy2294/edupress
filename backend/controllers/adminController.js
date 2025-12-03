@@ -117,7 +117,7 @@ const toggleUserStatus = asyncHandler(async (req, res) => {
   // Prevent admin from deactivating themselves
   if (user._id.toString() === req.user._id.toString()) {
     res.status(400);
-    throw new Error('You cannot deactivate your own account');
+    throw new Error('Bạn không thể hủy kích hoạt tài khoản của chính mình');
   }
 
   // Toggle status
@@ -127,7 +127,7 @@ const toggleUserStatus = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     data: user,
-    message: `User account ${user.status === 'active' ? 'activated' : 'deactivated'} successfully`,
+    message: `Tài khoản người dùng ${user.status === 'hoạt động' ? 'đã kích hoạt' : 'đã hủy kích hoạt'} thành công`,
   });
 });
 
@@ -146,7 +146,7 @@ const approveProviderRequest = asyncHandler(async (req, res) => {
 
   if (user.status !== 'pending_provider') {
     res.status(400);
-    throw new Error('No pending provider request for this user');
+    throw new Error('Không có yêu cầu nhà cung cấp đang chờ xử lý cho người dùng này');
   }
 
   // Update user role and status
@@ -158,8 +158,8 @@ const approveProviderRequest = asyncHandler(async (req, res) => {
   await Notification.createNotification(
     user._id,
     'provider_approved',
-    'Provider Request Approved! 🎉',
-    'Congratulations! Your provider request has been approved. You can now create and manage courses.',
+    'Yêu cầu của nhà cung cấp đã được chấp thuận! 🎉',
+    'Xin chúc mừng! Yêu cầu nhà cung cấp của bạn đã được chấp thuận. Bây giờ bạn có thể tạo và quản lý khóa học.',
     '/course/create'
   );
 
@@ -196,8 +196,8 @@ const rejectProviderRequest = asyncHandler(async (req, res) => {
   await Notification.createNotification(
     user._id,
     'provider_rejected',
-    'Provider Request Not Approved',
-    'Unfortunately, your provider request was not approved at this time. Please contact support for more information.',
+    'Yêu cầu của nhà cung cấp không được chấp thuận',
+    'Rất tiếc, yêu cầu nhà cung cấp của bạn hiện chưa được chấp thuận. Vui lòng liên hệ bộ phận hỗ trợ để biết thêm thông tin.',
     '/profile'
   );
 
@@ -309,8 +309,8 @@ const approveCourse = asyncHandler(async (req, res) => {
   await Notification.createNotification(
     course.provider._id,
     'course_approved',
-    'Course Approved! ✅',
-    `Your course "${course.title}" has been approved and is now live on the platform!`,
+    'Khóa học đã được chấp thuận! ✅',
+    `Khóa học "${course.title}" của bạn đã được phê duyệt và hiện đang hoạt động trên nền tảng!`,
     `/course/${course._id}`,
     course._id
   );
@@ -318,7 +318,7 @@ const approveCourse = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     data: course,
-    message: 'Course approved successfully',
+    message: 'Khóa học đã được chấp thuận thành công',
   });
 });
 
@@ -345,8 +345,8 @@ const rejectCourse = asyncHandler(async (req, res) => {
   await Notification.createNotification(
     course.provider._id,
     'course_rejected',
-    'Course Not Approved',
-    `Your course "${course.title}" was not approved. Please review our course guidelines and resubmit after making necessary changes.`,
+    'Khóa học không được chấp thuận',
+    `Khóa học "${course.title}" của bạn chưa được duyệt. Vui lòng xem lại hướng dẫn khóa học và gửi lại sau khi thực hiện các thay đổi cần thiết.`,
     `/course/${course._id}/edit`,
     course._id
   );

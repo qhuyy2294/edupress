@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
     },
     avatarUrl: {
       type: String,
-      default: 'default_avatar.png',
+      // [ĐÃ SỬA] Xóa default, để logic tạo avatar xử lý trong controller
     },
     status: {
       type: String,

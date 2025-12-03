@@ -1,40 +1,41 @@
-/* MyCoursesPage.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* MyCoursesPage.css - Phiên bản chỉnh sửa: Badge nhỏ gọn & Bố cục nút căn phải */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root {
   --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
   --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   --secondary-color: #64748b;
-  --success-color: #10b981;
+  --success-color: #10b981; /* Màu xanh lá cho Approved */
   --warning-color: #f59e0b;
   --danger-color: #ef4444;
-  --bg-color: #f8fafc;
+  --bg-color: #f4f7f9; /* Cải tiến màu nền */
   --card-bg: #ffffff;
   --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --text-secondary: #475569; /* Cải tiến màu secondary */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08); /* Cải tiến bóng đổ */
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.15);
   --radius-lg: 16px;
   --radius-md: 12px;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* Base Layout & Animation */
 .my-courses-page {
-  min-height: calc(100vh - 80px); /* Adjust based on navbar */
+  min-height: calc(100vh - 80px);
   padding: 60px 0;
   background-color: var(--bg-color);
-  background-image: radial-gradient(#e0e7ff 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(#e0e7ff 0.5px, transparent 0.5px);
+  background-size: 20px 20px; 
   font-family: 'Poppins', sans-serif;
   color: var(--text-primary);
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
 /* Keyframes for Animations */
@@ -49,44 +50,48 @@
   }
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 /* Header Section */
 .page-header06 {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 20px;
-  animation: fadeInUp 0.6s ease-out;
+  margin-bottom: 30px; 
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page-header06 h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 12px;
-  letter-spacing: -0.5px;
+  font-size: 2.5rem; 
+  font-weight: 800; 
+  margin-bottom: 8px;
+  letter-spacing: -1px;
   background: var(--primary-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .page-subtitle {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 700px;
   line-height: 1.6;
 }
 
 /* Provider Actions */
 .provider-actions {
   display: flex;
-  gap: 16px;
+  gap: 12px;
 }
 
 /* Stats Section */
 .courses-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
   margin-bottom: 50px;
   animation: fadeInUp 0.8s ease-out;
 }
@@ -94,9 +99,9 @@
 .stat-card {
   background: var(--card-bg);
   padding: 24px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md); 
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid #e0e7ff; 
   transition: var(--transition);
   position: relative;
   overflow: hidden;
@@ -116,7 +121,7 @@
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md); 
 }
 
 .stat-card:hover::before {
@@ -124,19 +129,19 @@
 }
 
 .stat-number {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--primary-color); 
   margin-bottom: 4px;
   line-height: 1;
 }
 
 .stat-label {
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600; 
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.75px;
 }
 
 /* Empty State */
@@ -147,18 +152,13 @@
   text-align: center;
   box-shadow: var(--shadow-md);
   animation: fadeInUp 0.6s ease-out;
-  border: 2px dashed #e2e8f0;
+  border: 2px dashed #a8c1f0; 
 }
 
 .empty-icon {
   font-size: 4rem;
   margin-bottom: 24px;
   animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
 }
 
 .empty-state h2 {
@@ -178,8 +178,8 @@
 /* Courses Grid */
 .courses-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
   padding-bottom: 40px;
 }
 
@@ -190,72 +190,77 @@
   transition: var(--transition);
   position: relative;
   overflow: hidden;
-  border: 1px solid #f1f5f9;
+  border: 1px solid rgba(0, 0, 0, 0.05); 
   display: flex;
   flex-direction: column;
-  animation: fadeInUp 1s ease-out;
+  animation: fadeInUp 0.8s ease-out;
   animation-fill-mode: both;
 }
 
-/* Stagger animation for grid items if possible via JS, otherwise generic delay */
 .course-item:nth-child(1) { animation-delay: 0.1s; }
 .course-item:nth-child(2) { animation-delay: 0.2s; }
 .course-item:nth-child(3) { animation-delay: 0.3s; }
 .course-item:nth-child(4) { animation-delay: 0.4s; }
 
 .course-item:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-10px); 
+  box-shadow: var(--shadow-lg); 
+  border-color: var(--primary-dark);
 }
 
-/* Badges */
+/* Badges - ĐIỀU CHỈNH ĐỂ TRÔNG NHỎ GỌN HƠN */
 .progress-badge,
 .status-badge {
   position: absolute;
   top: 16px;
-  padding: 6px 14px;
-  border-radius: 30px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  
+  /* CÁC THAY ĐỔI LÀM CHO BADGE NHỎ GỌN */
+  padding: 4px 10px; 
+  border-radius: 20px; 
+  font-size: 0.65rem; 
+  font-weight: 600; 
+  
   z-index: 10;
   backdrop-filter: blur(8px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  letter-spacing: 0.5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ hơn */
+  letter-spacing: 0.2px;
+  text-shadow: none; 
+  border: 1px solid rgba(255, 255, 255, 0.5); 
 }
 
+/* PROGRESS BADGE (Customer) */
 .progress-badge {
   left: 16px;
-  background: rgba(99, 102, 241, 0.9); /* Primary with opacity */
+  background: rgba(99, 102, 241, 0.9);
   color: white;
 }
 
+/* STATUS BADGE (Provider) - Vị trí: Trên cùng bên trái */
 .status-badge {
-  left: 16px;
+  left: 16px; 
+  right: auto;
   text-transform: uppercase;
 }
 
 /* Status Colors */
 .status-approved {
-  background: rgba(16, 185, 129, 0.9);
+  /* Màu xanh tươi sáng hơn */
+  background: linear-gradient(45deg, #10b981 0%, #059669 100%); 
   color: white;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
 }
 
 .status-pending {
-  right: 16px;
-  left: auto;
-  background: rgba(245, 158, 11, 0.9);
+  background: rgba(245, 158, 11, 0.95);
   color: white;
 }
 
 .status-rejected {
-  right: 16px;
-  left: auto;
-  background: rgba(239, 68, 68, 0.9);
+  background: rgba(239, 68, 68, 0.95);
   color: white;
 }
 
 /* Course Card Content Override */
-/* Assuming CourseCard renders an image and text. We make sure it fits. */
 .course-item > div:first-of-type {
   flex: 1;
 }
@@ -263,22 +268,43 @@
 /* Course Actions */
 .course-actions {
   padding: 16px;
-  background: white;
+  background: #fcfcfc;
   border-top: 1px solid #f1f5f9;
+  
+  /* Bố cục chính: Dọc */
   display: flex;
-  gap: 12px;
-  align-items: center;
+  flex-direction: column; 
+  gap: 10px; 
+  align-items: stretch;
 }
 
-/* Buttons */
+/* Nút Quản lý khóa học (btn-primary) */
+/* Đã chiếm 100% width do align-items: stretch */
+
+/* Nhóm Chỉnh sửa và Xóa - Vị trí: Căn phải */
+.edit-delete-group {
+    /* Đảm bảo nhóm này đã được bọc trong file JS */
+    display: flex;
+    gap: 10px;
+    margin-left: auto; /* Đẩy nhóm sang phải */
+    width: auto; /* Chỉ rộng bằng nội dung */
+}
+
+.edit-delete-group .btn {
+    flex: 0 0 auto; /* Không cho phép nút co giãn */
+    min-width: 100px; /* Chiều rộng tối thiểu cho nút */
+}
+
+
+/* Buttons - Tinh chỉnh các nút */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px;
+  padding: 10px 18px;
   border-radius: var(--radius-md);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: var(--transition);
   text-decoration: none;
@@ -286,45 +312,54 @@
   outline: none;
 }
 
+/* 1. Nút Quản lý khóa học (Primary) */
 .btn-primary {
   background: var(--primary-gradient);
   color: white;
-  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+  text-transform: uppercase;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 12px -1px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 6px 15px rgba(99, 102, 241, 0.5); 
+  opacity: 0.95;
 }
 
+/* 2. Nút Chỉnh sửa (Secondary) */
 .btn-secondary {
-  background: white;
-  color: var(--text-secondary);
-  border: 1px solid #e2e8f0;
+  background: #ffffff; 
+  color: var(--primary-dark); 
+  border: 1px solid var(--primary-color); 
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
-  background: #f8fafc;
-  color: var(--primary-color);
+  background: var(--primary-color); 
+  color: white; 
   border-color: var(--primary-color);
   transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
 }
 
+/* 3. Nút Xóa (Danger) */
 .btn-danger {
-  background: #fee2e2;
+  background: #fef2f2; 
   color: var(--danger-color);
+  border: 1px solid var(--danger-color); 
+  font-weight: 700;
 }
 
 .btn-danger:hover {
   background: var(--danger-color);
   color: white;
   transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
 }
 
 .btn-sm {
-  padding: 8px 16px;
-  font-size: 0.85rem;
-  flex: 1;
+  padding: 8px 14px;
+  font-size: 0.8rem;
 }
 
 /* Responsive Design */
@@ -343,14 +378,18 @@
     grid-template-columns: 1fr;
   }
 
-  .course-actions {
-    flex-direction: column;
-  }
-
-  .course-actions .btn {
+  .edit-delete-group {
+    /* Trên mobile, căn giữa và để các nút chiếm toàn bộ chiều rộng */
     width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
   }
 
+  .edit-delete-group .btn {
+      flex: 1; 
+      min-width: unset;
+  }
+  
   .provider-actions {
     width: 100%;
   }

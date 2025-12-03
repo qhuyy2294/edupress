@@ -193,7 +193,7 @@ const BecomeProviderPage = () => {
                 className="btn btn-primary btn-large"
                 disabled={loading}
               >
-                {loading ? 'Submitting...' : '🚀 Request Provider Access'}
+                {loading ? 'Đang gửi...' : '🚀 Yêu cầu quyền truy cập của nhà cung cấp'}
               </button>
               <p className="note">
                 Bằng cách gửi, bạn đồng ý tuân theo hướng dẫn về nội dung và điều khoản dịch vụ của chúng tôi.

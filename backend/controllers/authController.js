@@ -17,6 +17,22 @@ const generateToken = (id) => {
 };
 
 /**
+ * Hàm tạo URL Avatar từ tên người dùng sử dụng UI-Avatars API
+ * @param {string} fullName Tên đầy đủ của người dùng
+ * @returns {string} URL UI Avatars
+ */
+const generateAvatarUrl = (fullName) => {
+  // Thay thế khoảng trắng bằng dấu cộng và mã hóa URL
+  const name = encodeURIComponent(fullName.trim().replace(/\s+/g, ' '));
+  // Chọn màu nền ngẫu nhiên trong số các màu đẹp (Hex codes)
+  const colors = ['3498db', '27ae60', 'e74c3c', '9b59b6', 'f39c12', '16a085', 'f1c40f', '8e44ad'];
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  
+  // Trả về URL API, API sẽ tự động lấy 2 chữ cái đầu (initials)
+  return `https://ui-avatars.com/api/?name=${name}&background=${randomColor}&color=fff&size=128`;
+};
+
+/**
 * @desc Đăng ký người dùng mới
 * @route POST /api/auth/register
 * @access Public
@@ -36,11 +52,15 @@ const register = asyncHandler(async (req, res) => {
     throw new Error('User already exists with this email');
   }
 
+  // Tự động tạo avatarUrl khi đăng ký
+  const avatarUrl = generateAvatarUrl(fullName);
+  
   const user = await User.create({
     fullName,
     email,
     password,
     role: 'customer',
+    avatarUrl: avatarUrl, // Gán URL avatar mới tạo
   });
 
   if (user) {
@@ -141,8 +161,11 @@ const updateProfile = asyncHandler(async (req, res) => {
 
   if (user) {
     user.fullName = req.body.fullName || user.fullName;
-    user.avatarUrl = req.body.avatarUrl || user.avatarUrl;
-
+    
+    // Nếu avatarUrl KHÔNG được gửi lên, KHÔNG tạo lại. Nếu có gửi, thì cập nhật.
+    if (req.body.avatarUrl !== undefined) {
+        user.avatarUrl = req.body.avatarUrl; 
+    }
 
     if (req.body.email && req.body.email !== user.email) {
 

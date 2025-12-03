@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import courseService from '../services/courseService';
+import progressService from '../services/progressService'
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import CourseCard from '../components/CourseCard';
@@ -20,7 +21,6 @@ const MyCoursesPage = () => {
 
   useEffect(() => {
     fetchMyCourses();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchMyCourses = async () => {
@@ -30,24 +30,34 @@ const MyCoursesPage = () => {
 
       let response;
       if (isProvider()) {
-        // Provider: Get courses they created
         response = await courseService.getMyCourses();
+        setCourses(response.data);
+        
       } else if (isCustomer()) {
-        // Customer: Get enrolled courses
-        response = await courseService.getEnrolledCourses();
-      }
 
-      if (response.success) {
-        // If customer, extract course from enrollment
-        if (isCustomer()) {
-          setCourses(response.data.map(enrollment => ({
+        const enrolledResponse = await courseService.getEnrolledCourses();
+        
+        let initialCourses = enrolledResponse.data.map(enrollment => ({
             ...enrollment.course,
-            progress: enrollment.progress,
             enrollmentDate: enrollment.enrollmentDate,
-          })));
-        } else {
-          setCourses(response.data);
-        }
+            completionPercentage: 0,
+        }));
+        const coursesWithProgress = await Promise.all(
+            initialCourses.map(async (course) => {
+                try {
+                    const progressResponse = await progressService.getCourseProgress(course._id);
+                    return {
+                        ...course,
+                        completionPercentage: progressResponse.data.completionPercentage,
+                    };
+                } catch (err) {
+                    console.error(`Failed to fetch progress for course ${course._id}:`, err);
+                    return course;
+                }
+            })
+        );
+
+        setCourses(coursesWithProgress);
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Không tải được khóa học');
@@ -89,9 +99,11 @@ const MyCoursesPage = () => {
           </div>
           {isProvider() && (
             <div className="provider-actions">
+              {/*
               <Link to="/provider/revenue" className="btn btn-secondary">
                 📊 Xem doanh thu
               </Link>
+              */}
               <Link to="/course/create" className="btn btn-primary">
                 + Tạo khóa học mới
               </Link>
@@ -157,9 +169,10 @@ const MyCoursesPage = () => {
             <div className="courses-grid">
                 {courses.map(course => (
                   <div key={course._id} className="course-item">
-                    {isCustomer() && course.progress !== undefined && (
+                    {/* Sử dụng completionPercentage */}
+                    {isCustomer() && course.completionPercentage !== undefined && (
                       <div className="progress-badge">
-                        {course.progress}% Hoàn thành
+                        {course.completionPercentage}% Hoàn thành
                       </div>
                     )}
                     {isProvider() && (
@@ -170,24 +183,28 @@ const MyCoursesPage = () => {
                     <CourseCard course={course} />
                     {isProvider() && (
                       <div className="course-actions">
+                        {/* Nút Quản lý khóa học (Full width) */}
                         <Link
                           to={`/course/${course._id}/lessons`}
                           className="btn btn-primary btn-sm"
                         >
                           Quản lý khóa học
                         </Link>
-                        <Link
-                          to={`/course/${course._id}/edit`}
-                          className="btn btn-secondary btn-sm"
-                        >
-                          Chỉnh sửa
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(course._id)}
-                          className="btn btn-danger btn-sm"
-                        >
-                          Xóa
-                        </button>
+                        {/* Nhóm Chỉnh sửa và Xóa (Căn phải) */}
+                        <div className="edit-delete-group">
+                            <Link
+                              to={`/course/${course._id}/edit`}
+                              className="btn btn-secondary btn-sm"
+                            >
+                              Chỉnh sửa
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(course._id)}
+                              className="btn btn-danger btn-sm"
+                            >
+                              Xóa
+                            </button>
+                        </div>
                       </div>
                     )}
                     {!isProvider() && course.lessons && course.lessons.length > 0 && (
