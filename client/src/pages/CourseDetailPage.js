@@ -184,7 +184,7 @@ const CourseDetailPage = () => {
               
               <div className="course-price-section01">
                 <h2 className="course-price01">
-                  {course.price === 0 ? 'Miễn phí' : `$${course.price}`}
+                  {course.price === 0 ? 'Miễn phí' : `${course.price}₫`}
                 </h2>
                 
                 {user?.role === 'customer' && (

@@ -99,9 +99,11 @@ const MyCoursesPage = () => {
           </div>
           {isProvider() && (
             <div className="provider-actions">
+              {/*
               <Link to="/provider/revenue" className="btn btn-secondary">
                 📊 Xem doanh thu
               </Link>
+              */}
               <Link to="/course/create" className="btn btn-primary">
                 + Tạo khóa học mới
               </Link>

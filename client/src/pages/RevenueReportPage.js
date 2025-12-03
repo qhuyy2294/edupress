@@ -152,16 +152,14 @@ const RevenueReportPage = () => {
                         </span>
                       </td>
                       <td className="price-cell">
-                        {/* SỬA CHỖ NÀY: Áp dụng formatVnd cho Giá */}
                         {course.price === 0 ? (
                           <span className="free-badge">Free</span>
                         ) : (
-                          `${formatVnd(course.price)} VND`
+                          `${formatVnd(course.price)} ₫`
                         )}
                       </td>
                       <td className="number-cell">{course.enrollmentCount || 0}</td>
-                      {/* SỬA CHỖ NÀY: Áp dụng formatVnd cho Doanh thu */}
-                      <td className="revenue-cell">{formatVnd(revenue)} VND</td>
+                      <td className="revenue-cell">{formatVnd(revenue)} ₫</td>
                       <td className="rating-cell">
                         {course.averageRating ? (
                           <>
@@ -217,8 +215,7 @@ const RevenueReportPage = () => {
                     <div key={course._id} className="top-item">
                       <span className="rank">#{index + 1}</span>
                       <span className="course-name">{course.title}</span>
-                      {/* SỬA CHỖ NÀY: Áp dụng formatVnd cho Top Revenue */}
-                      <span className="course-value">{formatVnd(revenue)} VND</span>
+                      <span className="course-value">{formatVnd(revenue)} ₫</span>
                     </div>
                   );
                 })}

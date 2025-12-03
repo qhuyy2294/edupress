@@ -39,6 +39,18 @@ const connectDB = async () => {
   }
 };
 
+/**
+ * Hàm tạo URL Avatar từ tên người dùng cho dữ liệu mẫu
+ * @param {string} fullName Tên đầy đủ của người dùng
+ * @param {string} background Mã màu hex (không có #)
+ * @returns {string} URL UI Avatars
+ */
+const generateSeedAvatarUrl = (fullName, background) => {
+    // API UI-Avatars sẽ tự động lấy initials 
+    const name = encodeURIComponent(fullName.trim().replace(/\s+/g, ' '));
+    return `https://ui-avatars.com/api/?name=${name}&background=${background}&color=fff`;
+}
+
 // Sample Users Data
 const users = [
   {
@@ -47,7 +59,8 @@ const users = [
     password: 'admin123',
     role: 'admin',
     status: 'active',
-    avatarUrl: 'https://ui-avatars.com/api/?name=Admin+System&background=3498db&color=fff',
+    // Sử dụng hàm helper: Admin System -> AS
+    avatarUrl: generateSeedAvatarUrl('Admin System', '3498db'),
   },
   {
     fullName: 'Le Quang Huy',
@@ -55,7 +68,8 @@ const users = [
     password: 'provider123',
     role: 'provider',
     status: 'active',
-    avatarUrl: 'https://ui-avatars.com/api/?name=Nguyen+Van+An&background=27ae60&color=fff',
+    // Sử dụng hàm helper: Le Quang Huy -> LH
+    avatarUrl: generateSeedAvatarUrl('Le Quang Huy', '27ae60'),
   },
   {
     fullName: 'Tran Thi Binh',
@@ -63,7 +77,8 @@ const users = [
     password: 'provider123',
     role: 'provider',
     status: 'active',
-    avatarUrl: 'https://ui-avatars.com/api/?name=Tran+Thi+Binh&background=e74c3c&color=fff',
+    // Sử dụng hàm helper: Tran Thi Binh -> TB
+    avatarUrl: generateSeedAvatarUrl('Tran Thi Binh', 'e74c3c'),
   },
   {
     fullName: 'Le Van Cuong',
@@ -71,7 +86,8 @@ const users = [
     password: 'customer123',
     role: 'customer',
     status: 'active',
-    avatarUrl: 'https://ui-avatars.com/api/?name=Le+Van+Cuong&background=9b59b6&color=fff',
+    // Sử dụng hàm helper: Le Van Cuong -> LC
+    avatarUrl: generateSeedAvatarUrl('Le Van Cuong', '9b59b6'),
   },
   {
     fullName: 'Pham Thi Dung',
@@ -79,7 +95,8 @@ const users = [
     password: 'customer123',
     role: 'customer',
     status: 'active',
-    avatarUrl: 'https://ui-avatars.com/api/?name=Pham+Thi+Dung&background=f39c12&color=fff',
+    // Sử dụng hàm helper: Pham Thi Dung -> PD
+    avatarUrl: generateSeedAvatarUrl('Pham Thi Dung', 'f39c12'),
   },
   {
     fullName: 'Hoang Van En',
@@ -87,12 +104,14 @@ const users = [
     password: 'customer123',
     role: 'customer',
     status: 'pending_provider',
-    avatarUrl: 'https://ui-avatars.com/api/?name=Hoang+Van+En&background=16a085&color=fff',
+    // Sử dụng hàm helper: Hoang Van En -> HE
+    avatarUrl: generateSeedAvatarUrl('Hoang Van En', '16a085'),
   },
 ];
 
 // Sample Courses Data (sẽ gán provider sau khi tạo users)
 const coursesData = [
+// ... (nội dung coursesData không thay đổi) ...
   {
     title: 'React - Xây dựng ứng dụng Web hiện đại',
     description: 'Học React từ cơ bản đến nâng cao. Xây dựng các ứng dụng web SPA với React, React Router, Hooks và Context API. Phù hợp cho người mới bắt đầu.',
@@ -161,6 +180,7 @@ const coursesData = [
 
 // Sample Lessons Data
 const lessonsData = [
+// ... (nội dung lessonsData không thay đổi) ...
   // Lessons cho course React
   {
     courseIndex: 0,
@@ -221,6 +241,7 @@ const lessonsData = [
 
 // Import data
 const importData = async () => {
+// ... (nội dung importData không thay đổi) ...
   try {
     // Xóa dữ liệu cũ
     console.log('🗑️  Đang xóa dữ liệu cũ...');
