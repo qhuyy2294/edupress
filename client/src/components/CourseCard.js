@@ -16,10 +16,10 @@ const CourseCard = ({ course }) => {
       <div className="course-card">
         <div className="course-image">
           <img src={course.thumbnailUrl} alt={course.title} />
-          <span className="course-category">{course.category}</span>
+          <span className="course-category01">{course.category}</span>
         </div>
 
-        <div className="course-content">
+        <div className="course-content01">
           <h3 className="course-title">{course.title}</h3>
         
           <p className="course-description">

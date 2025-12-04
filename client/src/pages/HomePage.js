@@ -1,8 +1,3 @@
-/**
- * HomePage Component
- * Main landing page displaying all approved courses
- */
-
 import React, { useState, useEffect } from 'react';
 import CourseCard from '../components/CourseCard';
 import Loader from '../components/Loader';
@@ -87,6 +82,7 @@ const HomePage = () => {
               <option value="Business">Business</option>
               <option value="Design">Design</option>
               <option value="Marketing">Marketing</option>
+              <option value="Other">Other</option>
             </select>
 
             <select
@@ -120,7 +116,7 @@ const HomePage = () => {
             <>
               <h2 className="section-title">
                 Khóa học khả dụng
-                 ({courses.length})
+                ({courses.length})
               </h2>
               <div className="courses-grid">
                 {courses.map((course) => (

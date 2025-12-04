@@ -330,11 +330,27 @@
   border-radius: 50%;
 }
 
-.status-indicator.active .dot { background-color: var(--success-color); box-shadow: 0 0 0 2px #d1fae5; }
-.status-indicator.active { color: #065f46; }
+.status-indicator.active .dot { 
+  background-color: var(--success-color); 
+  box-shadow: 0 0 0 2px #d1fae5; 
+}
+.status-indicator.active { 
+  color: #065f46; 
+}
 
-.status-indicator.inactive .dot { background-color: var(--text-light); }
-.status-indicator.inactive { color: var(--text-light); }
+.status-indicator.inactive .dot { 
+  background-color: var(--danger-color); 
+}
+.status-indicator.inactive { 
+  color: var(--danger-color); 
+}
+
+.status-indicator.pending_provider .dot {
+  background-color: var(--warning-color);
+}
+.status-indicator.pending_provider {
+  color: var(--warning-color);
+}
 
 .row-inactive .user-name, 
 .row-inactive .user-email {

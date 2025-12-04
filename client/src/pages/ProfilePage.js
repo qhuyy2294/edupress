@@ -160,7 +160,7 @@ const ProfilePage = () => {
 
             <div className="account-stats">
               <div className="stat-item">
-                <span className="stat-label">Thành viên từ</span>
+                <span className="stat-label01">Thành viên từ</span>
                 <span className="stat-value">
                   {new Date(user.createdAt).toLocaleDateString('en-US', {
                     year: 'numeric',

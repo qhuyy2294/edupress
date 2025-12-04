@@ -20,7 +20,7 @@ const Message = ({ type = 'info', message, onClose }) => {
       <span className="message-text">{message}</span>
       {onClose && (
         <button className="message-close" onClick={onClose}>
-          ×
+          × 
         </button>
       )}
     </div>

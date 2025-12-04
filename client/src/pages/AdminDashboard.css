@@ -301,35 +301,35 @@ body {
 }
 
 /* Buttons in Table */
-.btn-approve,
-.btn-reject {
+.btn-approve1,
+.btn-reject1 {
   padding: 0.4rem 0.875rem;
   border: none;
   border-radius: 6px;
-  font-weight: 500;
-  font-size: 0.85rem;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   margin-right: 0.5rem;
   transition: all 0.2s;
 }
 
 /* Soft button style */
-.btn-approve {
+.btn-approve1 {
   background-color: var(--success-bg);
   color: var(--success-text);
 }
 
-.btn-approve:hover {
+.btn-approve1:hover {
   background-color: #a7f3d0;
   transform: translateY(-1px);
 }
 
-.btn-reject {
+.btn-reject1 {
   background-color: var(--danger-bg);
   color: var(--danger-text);
 }
 
-.btn-reject:hover {
+.btn-reject1:hover {
   background-color: #fecaca;
   transform: translateY(-1px);
 }

@@ -143,7 +143,7 @@ const isLessonCompleted = (lessonId) => {
                 />
               ) : (
                 <div className="no-video">
-                  <p>📹 Video not available</p>
+                  <p>Video not available</p>
                 </div>
               )}
             </div>
@@ -161,7 +161,7 @@ const isLessonCompleted = (lessonId) => {
                   onClick={handleMarkComplete}
                   disabled={isLessonCompleted(currentLesson._id)}
                 >
-                  {isLessonCompleted(currentLesson._id) ? '✓ Completed' : 'Mark as Complete'}
+                  {isLessonCompleted(currentLesson._id) ? 'Completed' : 'Mark as Complete'}
                 </button>
               </div>
 
@@ -173,7 +173,8 @@ const isLessonCompleted = (lessonId) => {
               )}
             </div>
           </>
-        ) : (
+        ) : 
+        (
           <div className="no-lesson-selected">
             <p>Select a lesson from the sidebar to start learning</p>
           </div>
@@ -183,7 +184,7 @@ const isLessonCompleted = (lessonId) => {
       {/* Sidebar with Lesson List */}
       <div className="lessons-sidebar">
         <div className="course-header-sidebar">
-          <button className="btn-back" onClick={() => navigate(`/courses/${courseId}`)}>
+          <button className="btn-back" onClick={() => navigate(`/course/${courseId}`)}>
             ← Back to Course
           </button>
           <h3>{course.title}</h3>

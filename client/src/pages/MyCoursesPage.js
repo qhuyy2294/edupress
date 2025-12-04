@@ -136,28 +136,28 @@ const MyCoursesPage = () => {
         ) : (
           <>
             <div className="courses-stats">
-              <div className="stat-card">
-                <div className="stat-number">{courses.length}</div>
+              <div className="stat-card01">
+                <div className="stat-number01">{courses.length}</div>
                 <div className="stat-label">
                   {isProvider() ? 'Tổng số khóa học' : 'Khóa học đã đăng ký'}
                 </div>
               </div>
               {isProvider() && (
                 <>
-                  <div className="stat-card">
-                    <div className="stat-number">
+                  <div className="stat-card01">
+                    <div className="stat-number01">
                       {courses.filter(c => c.status === 'approved').length}
                     </div>
                     <div className="stat-label">Đã duyệt</div>
                   </div>
-                  <div className="stat-card">
-                    <div className="stat-number">
+                  <div className="stat-card01">
+                    <div className="stat-number01">
                       {courses.filter(c => c.status === 'pending').length}
                     </div>
                     <div className="stat-label">Đang chờ</div>
                   </div>
-                  <div className="stat-card">
-                    <div className="stat-number">
+                  <div className="stat-card01">
+                    <div className="stat-number01">
                       {courses.reduce((sum, c) => sum + (c.enrollmentCount || 0), 0)}
                     </div>
                     <div className="stat-label">Tổng số học viên</div>

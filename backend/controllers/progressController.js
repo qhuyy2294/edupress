@@ -16,13 +16,13 @@ const Lesson = require('../models/lessonModel');
  */
 const getCourseProgress = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
+
   // Lấy thông tin khóa học
   const course = await Course.findById(courseId);
+
   // Phân quyền truy cập
   const isOwner = req.user.role === 'provider' 
-    &&
-  // Kiểm tra nếu người dùng là Chủ khóa học
-  course.provider.toString() === req.user._id.toString();
+    && course.provider.toString() === req.user._id.toString(); // Kiểm tra nếu người dùng là Chủ khóa học
   const isAdmin = req.user.role === 'admin';
 
   // Nếu không phải Admin và cũng không phải Chủ khóa học -> Bắt buộc check enrollment

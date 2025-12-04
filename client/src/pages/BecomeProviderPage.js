@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import api from '../services/api';
-import Message from '../components/Message';
+// import Message from '../components/Message';
 import './BecomeProviderPage.css';
 
 const BecomeProviderPage = () => {
@@ -82,8 +82,8 @@ const BecomeProviderPage = () => {
           <p>Chia sẻ kiến ​​thức của bạn và kiếm tiền bằng cách tạo các khóa học trực tuyến</p>
         </div>
 
-        {error && <Message type="error">{error}</Message>}
-        {success && <Message type="success">{success}</Message>}
+        {/* {error && <Message type="error">{error}</Message>}
+        {success && <Message type="success">{success}</Message>} */}
 
         <div className="content-grid">
           {/* Benefits Section */}
@@ -193,7 +193,7 @@ const BecomeProviderPage = () => {
                 className="btn btn-primary btn-large"
                 disabled={loading}
               >
-                {loading ? 'Đang gửi...' : '🚀 Yêu cầu quyền truy cập của nhà cung cấp'}
+                {loading ? 'Đang gửi...' : 'Yêu cầu quyền truy cập của nhà cung cấp'}
               </button>
               <p className="note">
                 Bằng cách gửi, bạn đồng ý tuân theo hướng dẫn về nội dung và điều khoản dịch vụ của chúng tôi.

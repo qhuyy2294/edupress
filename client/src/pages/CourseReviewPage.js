@@ -10,7 +10,6 @@ import courseService from '../services/courseService';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './CourseReviewPage.css';
-import { FaStar } from 'react-icons/fa';
 import { MdStar, MdStarBorder } from 'react-icons/md';
 
 const CourseReviewPage = () => {
@@ -143,7 +142,8 @@ const CourseReviewPage = () => {
         <div className="review-form-wrapper">
           <button
             className="btn-back"
-            onClick={() => navigate(`/courses/${id}`)}
+            onClick={() => navigate(`/course/${id}`)
+            }
           >
             ← Quay lại khóa học
           </button>

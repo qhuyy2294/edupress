@@ -207,13 +207,13 @@ const AdminDashboard = () => {
                       <td>
                         <button
                           onClick={() => handleApproveProvider(provider._id)}
-                          className="btn-approve"
+                          className="btn-approve1"
                         >
                           Đồng ý
                         </button>
                         <button
                           onClick={() => handleRejectProvider(provider._id)}
-                          className="btn-reject"
+                          className="btn-reject1"
                         >
                           Từ chối
                         </button>
@@ -253,13 +253,13 @@ const AdminDashboard = () => {
                       <td>
                         <button
                           onClick={() => handleApproveCourse(course._id)}
-                          className="btn-approve"
+                          className="btn-approve1"
                         >
                           Đồng ý
                         </button>
                         <button
                           onClick={() => handleRejectCourse(course._id)}
-                          className="btn-reject"
+                          className="btn-reject1"
                         >
                           Từ chối
                         </button>
