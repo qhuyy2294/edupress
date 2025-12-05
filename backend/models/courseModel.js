@@ -44,6 +44,10 @@ const courseSchema = new mongoose.Schema(
       enum: ['pending', 'approved', 'rejected'],
       default: 'pending',
     },
+    enrollmentStudents: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    }],
     // Additional useful fields
     enrollmentCount: {
       type: Number,

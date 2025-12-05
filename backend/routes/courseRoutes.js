@@ -15,7 +15,7 @@ const {
   enrollInCourse,
   getEnrolledCourses,
 } = require('../controllers/courseController');
-const { protect, authorize } = require('../middlewares/authMiddleware');
+const { protect, authorize, optionalProtect } = require('../middlewares/authMiddleware');
 
 // IMPORTANT: Specific routes must come BEFORE dynamic routes (/:id)
 
@@ -27,7 +27,7 @@ router.get('/customer/enrolled', protect, authorize('customer'), getEnrolledCour
 
 // Public routes
 router.get('/', getAllCourses);
-router.get('/:id', getCourseById);
+router.get('/:id', optionalProtect, getCourseById);
 
 // Protected routes for course management
 router.post('/', protect, authorize('provider'), createCourse);

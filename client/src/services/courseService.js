@@ -14,8 +14,14 @@ const courseService = {
   },
 
   // Get single course by ID
-  getCourseById: async (id) => {
-    const response = await api.get(`/courses/${id}`);
+  getCourseById: async (id, token) => {
+    const config = {
+      headers: {
+        // Nếu có token thì gắn vào, không thì thôi
+        Authorization: token ? `Bearer ${token}` : '',
+      },
+    };
+    const response = await api.get(`/courses/${id}`, config);
     return response.data;
   },
 

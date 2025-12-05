@@ -50,6 +50,25 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
+// Middleware để lấy token nếu có, nhưng không bắt buộc
+const optionalProtect = asyncHandler(async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select('-password');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  next();
+});
+
 /**
  * Authorize roles - Check if user has required role
  * @param {...string} roles - Allowed roles
@@ -74,5 +93,6 @@ const authorize = (...roles) => {
 
 module.exports = {
   protect,
+  optionalProtect,
   authorize,
 };
