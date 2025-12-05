@@ -138,6 +138,18 @@
   color: #94a3b8;
 }
 
+.btn-downgrade-icon {
+  color: #1a16f9;
+  background-color: #fefefe;
+  border: 1px solid #ffffff;
+}
+
+.btn-downgrade-icon:hover {
+  background-color: #d9c7ff;
+  color: #580cc2;
+  transform: translateY(-2px);
+}
+
 /* Main Card */
 .main-content-card {
   max-width: 1200px;
@@ -369,7 +381,7 @@
   justify-content: flex-end;
 }
 
-.btn-icon {
+.btn-icon01 {
   width: 36px;
   height: 36px;
   border-radius: 8px;
@@ -415,7 +427,7 @@
   color: white;
 }
 
-.btn-icon:disabled {
+.btn-icon01:disabled {
   opacity: 0.3;
   cursor: not-allowed;
   transform: none;

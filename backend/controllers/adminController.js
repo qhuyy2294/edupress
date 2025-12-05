@@ -73,6 +73,29 @@ const updateUser = asyncHandler(async (req, res) => {
   });
 });
 
+const downgradeToCustomer = asyncHandler( async (req, res) => {
+    try {
+        // if (req.user.role !== 'admin') {
+        //     return res.status(403).json({ 
+        //         success: false, 
+        //         message: "Bạn không có quyền thực hiện hành động này!." 
+        //     });
+        // }
+
+        const userId = req.params.id;
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            role: 'customer',
+            vendor_request_status: 0 
+        }, { new: true });
+
+        res.status(200).json({ success: true, message: "Thành công", data: updatedUser });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+
+
 // /**
 //  * @desc    Delete user account
 //  * @route   DELETE /api/admin/users/:id
@@ -426,6 +449,7 @@ const getSystemStats = asyncHandler(async (req, res) => {
 module.exports = {
   getAllUsers,
   updateUser,
+  downgradeToCustomer,
   // deleteUser,
   toggleUserStatus,
   approveProviderRequest,
