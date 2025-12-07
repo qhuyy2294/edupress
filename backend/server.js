@@ -23,6 +23,8 @@ require('./models/reviewModel');
 require('./models/progressModel');
 require('./models/notificationModel');
 require('./models/discountModel');
+require('./models/cartModel');
+require('./models/orderModel');
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
@@ -34,6 +36,8 @@ const progressRoutes = require('./routes/progressRoutes');
 const lessonRoutes = require('./routes/lessonRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const discountRoutes = require('./routes/discountRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 // Import error handling middleware
 const { errorHandler } = require('./middlewares/errorMiddleware');
@@ -86,7 +90,9 @@ app.get('/', (req, res) => {
       progress: '/api/progress',
       lessons: '/api/lessons',
       notifications: '/api/notifications',
-      discounts: '/api/discounts'
+      discounts: '/api/discounts',
+      cart: '/api/cart',
+      orders: '/api/orders'
     }
   });
 });
@@ -101,6 +107,8 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/discounts', discountRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders', orderRoutes);
 
 // // Serve static assets in production
 // if (process.env.NODE_ENV === 'production') {

@@ -12,8 +12,8 @@ const formatVnd = (number) => {
 
 const CourseCard = ({ course }) => {
   return (
-    <Link to={`/course/${course._id}`}>
-      <div className="course-card">
+    <div className="course-card">
+      <Link to={`/course/${course._id}`}>
         <div className="course-image">
           <img src={course.thumbnailUrl} alt={course.title} />
           <span className="course-category01">{course.category}</span>
@@ -54,18 +54,18 @@ const CourseCard = ({ course }) => {
               )}
             </div>
 
-          <div className="course-price-section">
-            <span className="course-price">
-              {course.price === 0 ? 'Free' : `${formatVnd(course.price)} ₫`}
-            </span>
-            <Link to={`/course/${course._id}`} className="btn-view-course">
-              Xem khóa học
-            </Link>
+            <div className="course-price-section">
+              <span className="course-price">
+                {course.price === 0 ? 'Free' : `${formatVnd(course.price)} ₫`}
+              </span>
+              <span className="btn-view-course">
+                Xem khóa học
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

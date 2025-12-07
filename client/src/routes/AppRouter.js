@@ -29,8 +29,12 @@ import CourseManagementPage from '../pages/CourseManagementPage';
 import NotificationsPage from '../pages/NotificationsPage';
 import RevenueReportPage from '../pages/RevenueReportPage';
 import DiscountManagementPage from '../pages/DiscountManagementPage';
-// [NEW] Import trang đặt lại mật khẩu
-import ResetPasswordPage from '../pages/ResetPasswordPage'; 
+import ResetPasswordPage from '../pages/ResetPasswordPage';
+// [NEW] Cart & Order pages
+import CartPage from '../pages/CartPage';
+import CheckoutPage from '../pages/CheckoutPage';
+import OrderHistoryPage from '../pages/OrderHistoryPage';
+import OrderManagementPage from '../pages/OrderManagementPage'; 
 
 
 /**
@@ -145,6 +149,14 @@ const AppRouter = () => {
                 </AdminRoute>
               }
             />
+            <Route
+              path="/admin/orders"
+              element={
+                <AdminRoute>
+                  <OrderManagementPage />
+                </AdminRoute>
+              }
+            />
 
             {/* Protected Routes - My Courses (Provider & Customer) */}
             <Route
@@ -193,6 +205,32 @@ const AppRouter = () => {
                 <ProtectedRoute>
                   <LessonPage />
                 </ProtectedRoute>
+              }
+            />
+
+            {/* Protected Routes - Cart & Orders (Customer Only) */}
+            <Route
+              path="/cart"
+              element={
+                <CustomerRoute>
+                  <CartPage />
+                </CustomerRoute>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <CustomerRoute>
+                  <CheckoutPage />
+                </CustomerRoute>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <CustomerRoute>
+                  <OrderHistoryPage />
+                </CustomerRoute>
               }
             />
 

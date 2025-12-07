@@ -4,7 +4,9 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import useAuth from '../hooks/useAuth';
 import courseService from '../services/courseService';
+import orderService from '../services/orderService';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './RevenueReportPage.css';
@@ -18,7 +20,9 @@ const formatVnd = (number) => {
 // KẾT THÚC HÀM ĐỊNH DẠNG
 
 const RevenueReportPage = () => {
+  const { user } = useAuth();
   const [courses, setCourses] = useState([]);
+  const [revenueStats, setRevenueStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [totalStats, setTotalStats] = useState({
@@ -29,18 +33,22 @@ const RevenueReportPage = () => {
   });
 
   useEffect(() => {
-    fetchProviderCourses();
+    fetchData();
   }, []);
 
-  const fetchProviderCourses = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
       setError('');
 
+      // Fetch courses
       const response = await courseService.getMyCourses();
       const coursesData = response.data;
-      
       setCourses(coursesData);
+
+      // Fetch revenue stats from orders
+      const revenueData = await orderService.getRevenueStats();
+      setRevenueStats(revenueData);
 
       // Calculate total stats
       const stats = coursesData.reduce(
@@ -80,6 +88,43 @@ const RevenueReportPage = () => {
 
       {error && <Message type="error">{error}</Message>}
 
+      {/* Revenue Stats from Orders */}
+      {revenueStats && (
+        <div className="revenue-breakdown">
+          <h2>Thống kê doanh thu từ đơn hàng đã duyệt</h2>
+          <div className="summary-grid">
+            <div className="summary-card card-revenue">
+              <div className="card-icon">💵</div>
+              <div className="card-content">
+                <h3>Tổng doanh thu</h3>
+                <p className="stat-value">{formatVnd(revenueStats.totalRevenue)} ₫</p>
+                <span className="stat-detail">{revenueStats.totalOrders} đơn hàng</span>
+              </div>
+            </div>
+
+            <div className="summary-card card-provider">
+              <div className="card-icon">💰</div>
+              <div className="card-content">
+                <h3>{user?.role === 'admin' ? 'Provider nhận (90%)' : 'Bạn nhận (90%)'}</h3>
+                <p className="stat-value">{formatVnd(revenueStats.providerRevenue)} ₫</p>
+                <span className="stat-detail">90% tổng doanh thu</span>
+              </div>
+            </div>
+
+            {user?.role === 'admin' && (
+              <div className="summary-card card-admin">
+                <div className="card-icon">🏢</div>
+                <div className="card-content">
+                  <h3>Hoa hồng Admin (10%)</h3>
+                  <p className="stat-value">{formatVnd(revenueStats.adminCommission)} ₫</p>
+                  <span className="stat-detail">10% tổng doanh thu</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Summary Cards */}
       <div className="summary-grid">
         <div className="summary-card card-courses">
@@ -101,7 +146,7 @@ const RevenueReportPage = () => {
         <div className="summary-card card-revenue">
           <div className="card-icon">💰</div>
           <div className="card-content">
-            <h3>Tổng doanh thu</h3>
+            <h3>Doanh thu tiềm năng</h3>
             <p className="stat-value">{formatVnd(totalStats.totalRevenue)} ₫</p>
           </div>
         </div>

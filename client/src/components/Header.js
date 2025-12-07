@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaShoppingCart } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
+import cartService from '../services/cartService';
 import './Header.css';
 
 const Header = () => {
@@ -8,9 +10,36 @@ const Header = () => {
   const navigate = useNavigate();
   
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    if (isAuthenticated && user?.role === 'customer') {
+      const token = localStorage.getItem('token');
+      if (token) {
+        fetchCartCount();
+      }
+    } else {
+      // Reset cart count khi không đăng nhập
+      setCartCount(0);
+    }
+  }, [isAuthenticated, user]);
+
+  const fetchCartCount = async () => {
+    try {
+      const data = await cartService.getCartCount();
+      setCartCount(data.count);
+    } catch (err) {
+      // Chỉ log error, không hiển thị cho user
+      if (err.response?.status !== 401 && err.response?.status !== 400) {
+        console.error('Failed to fetch cart count:', err);
+      }
+      setCartCount(0);
+    }
+  };
 
   const handleLogout = () => {
     logout();
+    setCartCount(0); // Reset cart count
     navigate('/login');
     setIsMobileMenuOpen(false); // Đóng menu khi logout
   };
@@ -65,6 +94,14 @@ const Header = () => {
 
               {user?.role === 'customer' && (
                 <>
+                  <Link to="/cart" className="nav-link cart-link" onClick={closeMenu}>
+                    <FaShoppingCart />
+                    <span>Giỏ hàng</span>
+                    {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+                  </Link>
+                  <Link to="/orders" className="nav-link" onClick={closeMenu}>
+                    Đơn hàng
+                  </Link>
                   <Link to="/my-courses" className="nav-link" onClick={closeMenu}>
                     Khóa học của tôi
                   </Link>
@@ -92,9 +129,14 @@ const Header = () => {
               )}
 
               {user?.role === 'admin' && (
-                <Link to="/admin/dashboard" className="nav-link" onClick={closeMenu}>
-                  Bảng điều khiển quản trị
-                </Link>
+                <>
+                  <Link to="/admin/dashboard" className="nav-link" onClick={closeMenu}>
+                    Bảng điều khiển quản trị
+                  </Link>
+                  <Link to="/admin/orders" className="nav-link" onClick={closeMenu}>
+                    Quản lý đơn hàng
+                  </Link>
+                </>
               )}
 
               <Link to="/notifications" className="nav-link" onClick={closeMenu}>

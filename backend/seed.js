@@ -15,6 +15,8 @@ const User = require('./models/userModel');
 const Lesson = require('./models/lessonModel'); // Import Lesson first
 const Course = require('./models/courseModel'); // Then Course (which references Lesson)
 const Enrollment = require('./models/enrollmentModel'); // Then Enrollment (which also references Lesson)
+const Cart = require('./models/cartModel');
+const Order = require('./models/orderModel');
 
 // Verify models are registered
 console.log('📦 Registered Models:', mongoose.modelNames());
@@ -249,6 +251,8 @@ const importData = async () => {
     await Course.deleteMany();
     await Lesson.deleteMany();
     await Enrollment.deleteMany();
+    await Cart.deleteMany();
+    await Order.deleteMany();
     console.log('✅ Đã xóa dữ liệu cũ');
 
     // Hash passwords và tạo users
@@ -380,6 +384,8 @@ const deleteData = async () => {
     await Course.deleteMany();
     await Lesson.deleteMany();
     await Enrollment.deleteMany();
+    await Cart.deleteMany();
+    await Order.deleteMany();
     console.log('✅ Đã xóa tất cả dữ liệu');
     process.exit();
   } catch (error) {

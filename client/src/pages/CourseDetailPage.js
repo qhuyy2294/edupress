@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FaShoppingCart } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import courseService from '../services/courseService';
 import reviewService from '../services/reviewService';
+import cartService from '../services/cartService';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './CourseDetailPage.css';
@@ -22,6 +24,7 @@ const CourseDetailPage = () => {
   const [enrolling, setEnrolling] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [addingToCart, setAddingToCart] = useState(false);
 
   useEffect(() => {
     fetchCourse();
@@ -68,6 +71,27 @@ const CourseDetailPage = () => {
       setMyReview(response.data);
     } catch (err) {
       console.error('Không tải được bài đánh giá của tôi:', err);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      setAddingToCart(true);
+      setError('');
+      await cartService.addToCart(id);
+      setSuccessMessage('Đã thêm vào giỏ hàng!');
+      setTimeout(() => {
+        navigate('/cart');
+      }, 1500);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Không thể thêm vào giỏ hàng');
+    } finally {
+      setAddingToCart(false);
     }
   };
 
@@ -187,13 +211,30 @@ const CourseDetailPage = () => {
                   {course.price === 0 ? 'Miễn phí' : `${course.price}₫`}
                 </h2>
                 
-                {user?.role === 'customer' && (
+                {user?.role === 'customer' && !isEnrolled && (
+                  <>
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={addingToCart}
+                      className="btn-add-cart"
+                    >
+                      <FaShoppingCart /> {addingToCart ? 'Đang thêm...' : 'Thêm vào giỏ hàng'}
+                    </button>
+                    <button
+                      onClick={handleEnroll}
+                      disabled={enrolling}
+                      className="btn-enroll"
+                    >
+                      {enrolling ? 'Đang đăng ký...' : 'Mua ngay'}
+                    </button>
+                  </>
+                )}
+                {isEnrolled && (
                   <button
-                    onClick={handleEnroll}
-                    disabled={enrolling}
-                    className="btn-enroll"
+                    onClick={() => navigate('/my-courses')}
+                    className="btn-enrolled"
                   >
-                    {enrolling ? 'Đang đăng ký...' : 'Tham gia ngay'}
+                    Đã đăng ký - Vào học
                   </button>
                 )}
                 

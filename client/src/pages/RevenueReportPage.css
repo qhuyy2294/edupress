@@ -25,6 +25,40 @@
   font-size: 1.1rem;
 }
 
+/* Revenue Breakdown */
+.revenue-breakdown {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.revenue-breakdown h2 {
+  color: white;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.revenue-breakdown .summary-card {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.stat-detail {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.card-provider {
+  border-left: 4px solid #4caf50;
+}
+
+.card-admin {
+  border-left: 4px solid #ff9800;
+}
+
 /* Summary Cards */
 .summary-grid {
   display: grid;
