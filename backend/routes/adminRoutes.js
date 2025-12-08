@@ -1,8 +1,3 @@
-/**
- * Admin Routes
- * Handles administrative operations
- */
-
 const express = require('express');
 const router = express.Router();
 const {
@@ -18,6 +13,7 @@ const {
   rejectCourse,
   getSystemStats,
   deleteUser,
+  downgradeToCustomer,
 } = require('../controllers/adminController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -30,6 +26,7 @@ router.use(authorize('admin'));
 // User management
 router.get('/users', getAllUsers);
 router.put('/users/:id', updateUser);
+router.put('/users/:id/downgrade', downgradeToCustomer);
 router.put('/users/:id/toggle-status', toggleUserStatus);
 
 

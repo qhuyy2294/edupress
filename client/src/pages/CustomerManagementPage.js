@@ -59,6 +59,28 @@ const CustomerManagementPage = () => {
     }
   };
 
+  const handleDowngrade = async (userId) => {
+    if (!window.confirm('Bạn có chắc chắn muốn hủy quyền Nhà cung cấp và đưa người dùng này về làm Khách hàng?')) {
+      return;
+    }
+
+    try {
+      setError(''); 
+      setSuccess('');
+
+      const token = localStorage.getItem('token');
+      
+      await api.put(`/admin/users/${userId}/downgrade`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setSuccess('Đã hủy quyền nhà cung cấp thành công');
+      fetchCustomers(); // Tải lại danh sách để cập nhật giao diện
+    } catch (err) {
+      setError(err.response?.data?.message || 'Cập nhật thất bại');
+    }
+  };
+
   const handleEditClick = (user) => {
     setEditingUser(user);
     setEditForm({ fullName: user.fullName || '', email: user.email });
@@ -224,15 +246,27 @@ const CustomerManagementPage = () => {
                     <td>
                       <div className="action-buttons">
                         <button 
-                          className="btn-icon btn-edit-icon"
+                          className="btn-icon01 btn-edit-icon"
                           onClick={() => handleEditClick(customer)}
                           disabled={customer.role === 'admin'}
                           title="Chỉnh sửa"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </button>
+                        {customer.role === 'provider' && (
+                          <button 
+                            className="btn-icon01 btn-downgrade-icon"
+                            onClick={() => handleDowngrade(customer._id)}
+                            title="Hạ cấp xuống Khách hàng"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <line x1="12" y1="5" x2="12" y2="19"></line>
+                              <polyline points="19 12 12 19 5 12"></polyline>
+                            </svg>
+                          </button>
+                        )}
                         <button 
-                          className={`btn-icon btn-ban-icon ${customer.status === 'inactive' ? 'is-banned' : ''}`}
+                          className={`btn-icon01 btn-ban-icon ${customer.status === 'inactive' ? 'is-banned' : ''}`}
                           onClick={() => handleBanToggle(customer._id, customer.status)}
                           disabled={customer.role === 'admin'}
                           title={customer.status === 'inactive' ? 'Mở khóa' : 'Khóa tài khoản'}

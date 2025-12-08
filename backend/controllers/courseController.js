@@ -1,8 +1,3 @@
-/**
- * Course Controller
- * Handles course CRUD operations
- */
-
 const asyncHandler = require('express-async-handler');
 const Course = require('../models/courseModel');
 const User = require('../models/userModel');
@@ -114,6 +109,7 @@ const getAllCourses = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const getCourseById = asyncHandler(async (req, res) => {
+  // console.log("DEBUG kiểm tra user: ", req.user);
   const course = await Course.findById(req.params.id)
     .populate('provider', 'fullName email avatarUrl')
     .populate('lessons');
@@ -132,9 +128,23 @@ const getCourseById = asyncHandler(async (req, res) => {
     throw new Error('Khóa học không có sẵn');
   }
 
+  let isEnrolled = false;
+
+  if (req.user) {
+    const enrollment = await Enrollment.findOne({
+      user: req.user._id,
+      course: course._id,
+    });
+    // Nếu tìm thấy enrollment thì isEnrolled = true -> user đã đăng ký khóa học
+    isEnrolled = !!enrollment;
+  }
+
   res.json({
     success: true,
-    data: course,
+    data: {
+      ...course.toObject(),
+      isEnrolled: isEnrolled,
+    },
   });
 });
 

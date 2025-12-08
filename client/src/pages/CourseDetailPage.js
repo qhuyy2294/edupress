@@ -33,22 +33,30 @@ const CourseDetailPage = () => {
       fetchMyReview();
     }
     // eslint-disable-next-line
-  }, [id]);
+  }, [id, user]);
 
   const fetchCourse = async () => {
     try {
       setLoading(true);
       setError('');
-      const response = await courseService.getCourseById(id);
+      const token = user?.token;
+      const response = await courseService.getCourseById(id, token);
       setCourse(response.data);
       
       // Check if user is enrolled
-      if (user && response.data.enrolledStudents) {
-        const enrolled = response.data.enrolledStudents.some(
-          student => student._id === user._id
-        );
-        setIsEnrolled(enrolled);
+      if (response.data.isEnrolled) {
+        setIsEnrolled(true);
+      } else {
+        setIsEnrolled(false);
       }
+
+      // if (user && response.data.enrolledStudents) {
+      //   const enrolled = response.data.enrolledStudents.some(
+      //     student => student._id === user._id
+      //   );
+      //   setIsEnrolled(enrolled);
+      // }
+
     } catch (err) {
       setError(err.response?.data?.message || 'Không tải được thông tin chi tiết về khóa học');
     } finally {
@@ -105,6 +113,7 @@ const CourseDetailPage = () => {
       setEnrolling(true);
       setError('');
       await courseService.enrollInCourse(id);
+      setIsEnrolled(true);
       setSuccessMessage('Đã đăng ký khóa học thành công!');
       setTimeout(() => {
         navigate('/my-courses');
@@ -211,32 +220,29 @@ const CourseDetailPage = () => {
                   {course.price === 0 ? 'Miễn phí' : `${course.price}₫`}
                 </h2>
                 
-                {user?.role === 'customer' && !isEnrolled && (
-                  <>
-                    <button
-                      onClick={handleAddToCart}
-                      disabled={addingToCart}
-                      className="btn-add-cart"
-                    >
-                      <FaShoppingCart /> {addingToCart ? 'Đang thêm...' : 'Thêm vào giỏ hàng'}
-                    </button>
-                    <button
-                      onClick={handleEnroll}
-                      disabled={enrolling}
-                      className="btn-enroll"
-                    >
-                      {enrolling ? 'Đang đăng ký...' : 'Mua ngay'}
-                    </button>
-                  </>
-                )}
-                {isEnrolled && (
-                  <button
-                    onClick={() => navigate('/my-courses')}
-                    className="btn-enrolled"
-                  >
-                    Đã đăng ký - Vào học
-                  </button>
-                )}
+                {user?.role === 'customer' && (
+  <>
+    {!isEnrolled ? (
+      // Button: Thêm vào giỏ (Incoming từ GitHub)
+      <button 
+        onClick={handleAddToCart}
+        className="btn-enroll"
+      >
+        Thêm vào giỏ
+      </button>
+    ) : (
+      // Button: Đăng ký (Current từ máy bạn)
+      <button
+        onClick={handleEnroll}
+        disabled={enrolling}
+        className="btn-enroll"
+      >
+        {enrolling ? 'Đang đăng ký...' : 'Tham gia ngay'}
+      </button>
+    )}
+  </>
+)}
+
                 
                 {!isAuthenticated && (
                   <button
