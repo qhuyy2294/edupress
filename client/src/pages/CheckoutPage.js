@@ -177,7 +177,7 @@ const CheckoutPage = () => {
             </div>
             {cart?.discountAmount > 0 && (
               <div className="discount-applied">
-                <div style={{color: '#2e7d32'}}>
+                <div style={{color: 'green'}}>
                   <span>Giảm giá ({cart.discountCode}):</span>
                   <span className="discount-amount">-{cart.discountAmount.toLocaleString('vi-VN')} ₫</span>
                 </div>

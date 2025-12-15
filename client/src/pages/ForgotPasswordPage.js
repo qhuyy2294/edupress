@@ -25,15 +25,10 @@ const ForgotPasswordPage = () => {
     setIsLoading(true);
 
     try {
-      // Gọi API Forgot Password
       const response = await axios.post('/api/auth/forgot-password', { email });
-      
-      // Backend trả về message thành công (dù email tồn tại hay không)
       setMessage(response.data.message);
-      setSubmitted(true); // Hiển thị thông báo thành công
-      
+      setSubmitted(true);
     } catch (err) {
-      // Xử lý lỗi từ server
       const errMsg = err.response && err.response.data && err.response.data.error 
                     ? err.response.data.error 
                     : 'Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại.';
@@ -43,69 +38,76 @@ const ForgotPasswordPage = () => {
     }
   };
 
-  // Hiển thị thông báo sau khi gửi yêu cầu thành công
-  if (submitted && message) {
-    return (
-      <div className="forgot-password-page">
-        <div className="container">
-          <div className="forgot-card">
-            <div className="success-icon">✅</div>
-            <h2>Yêu cầu đã được gửi</h2>
-            <Message type="success">
-              <p>{message}</p>
-              <p>Vui lòng kiểm tra hộp thư email của bạn (bao gồm cả thư mục Spam/Junk) để tìm liên kết đặt lại mật khẩu.</p>
-              <p>Liên kết sẽ hết hạn sau 15 phút.</p>
-            </Message>
-            <Link to="/login" className="btn btn-primary">
+  return (
+    <div className="forgot-password-page">
+      <div className="forgot-card-wrapper">
+        {submitted ? (
+          <div className="forgot-card success-state">
+            <div className="icon-circle success">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2>Đã gửi yêu cầu!</h2>
+            <div className="message-content">
+              {message && <p className="main-msg">{message}</p>}
+              <p className="sub-message">Vui lòng kiểm tra hộp thư (bao gồm cả thư mục Spam) để nhận liên kết đặt lại mật khẩu.</p>
+              <span className="timing">Link hết hạn sau 15 phút</span>
+            </div>
+            <Link to="/login" className="btn btn-primary btn-block">
               Quay lại Đăng nhập
             </Link>
           </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="forgot-password-page">
-      <div className="container">
-        <div className="forgot-card">
-          <div className="icon">🔐</div>
-          <h2>Quên mật khẩu?</h2>
-          <p className="subtitle">
-            Vui lòng nhập địa chỉ email của bạn. Chúng tôi sẽ gửi cho bạn một liên kết để đặt lại mật khẩu.
-          </p>
-
-          {isLoading && <Loader />}
-          {error && <Message type="danger">{error}</Message>}
-          
-          <form onSubmit={handleSubmit} className="forgot-form">
-            <div className="form-group">
-              <label htmlFor="email">Địa chỉ Email</label>
-              <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Nhập email của bạn"
-                  required
-                  disabled={isLoading}
-              />
+        ) : (
+          <div className="forgot-card">
+            <div className="icon-circle key-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+              </svg>
+            </div>
+            
+            <div className="header-text">
+              <h2>Quên mật khẩu?</h2>
+              <p>Đừng lo lắng, hãy nhập email đăng ký của bạn, chúng tôi sẽ giúp bạn lấy lại mật khẩu.</p>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-block" disabled={isLoading}>
-              {isLoading ? 'Đang gửi...' : 'Gửi yêu cầu'}
-            </button>
-          </form>
+            {isLoading && <div className="loader-container"><Loader /></div>}
+            {error && <Message type="danger">{error}</Message>}
+            
+            <form onSubmit={handleSubmit} className="forgot-form">
+              <div className="form-group">
+                <label htmlFor="email">Email đăng ký</label>
+                <div className="input-wrapper">
+                  <svg className="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Vui lòng nhập email của bạn"
+                      required
+                      disabled={isLoading}
+                  />
+                </div>
+              </div>
 
-          <div className="help-text">
-            <p>
-              <Link to="/login">Quay lại trang đăng nhập</Link>
-            </p>
-            <p className="note">
-              Lưu ý: Liên kết đặt lại mật khẩu sẽ hết hạn sau 15 phút.
-            </p>
+              <button type="submit" className="btn btn-primary btn-block" disabled={isLoading}>
+                {isLoading ? 'Đang xử lý...' : 'Gửi liên kết xác nhận'}
+              </button>
+            </form>
+
+            <div className="card-footer">
+              <Link to="/login" className="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Quay lại đăng nhập
+              </Link>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
