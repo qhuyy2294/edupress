@@ -21,7 +21,6 @@ const CourseCard = ({ course }) => {
 
         <div className="course-content01">
           <h3 className="course-title">{course.title}</h3>
-
           <p className="course-description">
             {course.description.length > 100
               ? `${course.description.substring(0, 100)}...`
@@ -43,7 +42,7 @@ const CourseCard = ({ course }) => {
             <div className="course-stats">
               {course.averageRating > 0 && (
                 <span className="rating">
-                  <MdStar size={18} color="#ffc107" />
+                  <MdStar  size={18} color="#ffc107" />
                   {course.averageRating.toFixed(1)} ({course.totalReviews})
                 </span>
               )}

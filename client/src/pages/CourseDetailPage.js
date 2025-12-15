@@ -183,7 +183,7 @@ const CourseDetailPage = () => {
     // Sử dụng locale 'vi-VN' để định dạng dấu chấm là dấu phân cách hàng nghìn.
     return new Intl.NumberFormat('vi-VN').format(number);
   };
-
+  
   return (
     <div className="course-detail-page">
       <div className="course-hero">

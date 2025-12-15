@@ -35,8 +35,8 @@ const ForgotPasswordPage = () => {
     } catch (err) {
       // Xử lý lỗi từ server
       const errMsg = err.response && err.response.data && err.response.data.error 
-                     ? err.response.data.error 
-                     : 'Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại.';
+                    ? err.response.data.error 
+                    : 'Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại.';
       setError(errMsg);
     } finally {
       setIsLoading(false);

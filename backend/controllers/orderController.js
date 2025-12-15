@@ -94,7 +94,6 @@ exports.createOrder = async (req, res) => {
       paymentNote: `EDUPRESS${Date.now()}`
     });
     
-
     // Clear cart after creating order
     cart.items = [];
     cart.totalAmount = 0;

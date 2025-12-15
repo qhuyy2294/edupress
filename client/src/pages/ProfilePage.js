@@ -11,7 +11,6 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './ProfilePage.css';
 
-
 const ProfilePage = () => {
   const { user, updateProfile, logout } = useAuth();
   const navigate = useNavigate();

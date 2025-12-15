@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 
-.body {
+/* .body {
   font-family: 'Be Vietnam Pro', sans-serif;
-}
+} */
 
 .auth-page {
   min-height: 100vh;
@@ -13,7 +13,7 @@
   padding: 2rem;
   overflow: hidden;
   position: relative;
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
+  font-family: 'Be Vietnam Pro', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
 }
 
 /* Thêm hiệu ứng gợn sóng (ripple) hoặc các chấm lấp lánh nhẹ nhàng trên nền */

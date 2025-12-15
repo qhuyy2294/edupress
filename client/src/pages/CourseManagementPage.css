@@ -41,9 +41,9 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-.body {
+/* .body {
   font-family: 'Be Vietnam Pro', sans-serif;
-}
+} */
 
 .course-management-page {
   max-width: 1440px;
@@ -51,7 +51,7 @@
   padding: 2.5rem;
   background-color: var(--bg-color);
   min-height: 100vh;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .breadcrumb-nav {
