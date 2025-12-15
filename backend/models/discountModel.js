@@ -1,7 +1,3 @@
-/**
- * Discount Model
- * Discount codes/coupons for courses
- */
 
 const mongoose = require('mongoose');
 

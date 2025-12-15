@@ -37,7 +37,7 @@ const LoginPage = () => {
       const result = await login(formData);
       
       if (result.success) {
-        // Redirect based on user role
+        // Chuyển hướng dựa trên vai trò người dùng (Role)
         if (result.data.role === 'admin') {
           navigate('/admin/dashboard');
         } else if (result.data.role === 'provider') {
@@ -59,14 +59,14 @@ const LoginPage = () => {
     <div className="auth-page">
       <div className="auth-container">
         <div className="auth-card">
-          <h2 className="auth-title">Login to Edupress</h2>
-          <p className="auth-subtitle">Welcome back! Please enter your details.</p>
+          <h2 className="auth-title">Đăng nhập</h2>
+          <p className="auth-subtitle">Vui lòng nhập thông tin của bạn.</p>
 
           {error && <Message type="error" message={error} />}
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="email">Địa chỉ Email</label>
               <input
                 type="email"
                 id="email"
@@ -74,13 +74,13 @@ const LoginPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                placeholder="Enter your email"
+                placeholder="Nhập email của bạn"
                 className="form-input"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Mật khẩu</label>
               <input
                 type="password"
                 id="password"
@@ -88,12 +88,12 @@ const LoginPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                placeholder="Enter your password"
+                placeholder="Nhập mật khẩu của bạn"
                 className="form-input"
                 minLength="6"
               />
               <div className="forgot-password-link">
-                <Link to="/forgot-password">Forgot Password?</Link>
+                <Link to="/forgot-password">Quên mật khẩu?</Link>
               </div>
             </div>
 
@@ -102,15 +102,15 @@ const LoginPage = () => {
               disabled={loading}
               className="btn-submit"
             >
-              {loading ? <Loader size="small" /> : 'Login'}
+              {loading ? <Loader size="small" /> : 'Đăng nhập'}
             </button>
           </form>
 
           <div className="auth-footer">
             <p>
-              Don't have an account?{' '}
+              Bạn chưa có tài khoản?{' '}
               <Link to="/register" className="auth-link">
-                Sign up
+                Đăng ký ngay
               </Link>
             </p>
           </div>

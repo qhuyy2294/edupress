@@ -1,12 +1,8 @@
-/**
- * Discount Management Page
- * Provider can create and manage discount codes
- */
-
 import React, { useState, useEffect } from 'react';
 import discountService from '../services/discountService';
 import courseService from '../services/courseService';
 import './DiscountManagementPage.css';
+import { FiEdit2, FiTrash2, FiPower } from 'react-icons/fi';
 
 const DiscountManagementPage = () => {
   const [discounts, setDiscounts] = useState([]);
@@ -55,7 +51,7 @@ const DiscountManagementPage = () => {
       setCourses(coursesRes.data);
       setError('');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load data');
+      setError(err.response?.data?.message || 'Không thể tải dữ liệu');
     } finally {
       setLoading(false);
     }
@@ -84,10 +80,10 @@ const DiscountManagementPage = () => {
 
       if (editingDiscount) {
         await discountService.updateDiscount(editingDiscount._id, data);
-        setSuccess('Discount updated successfully! ✅');
+        setSuccess('Cập nhật mã giảm giá thành công! ✅');
       } else {
         await discountService.createDiscount(data);
-        setSuccess('Discount created successfully! 🎉');
+        setSuccess('Tạo mã giảm giá thành công! 🎉');
       }
 
       setTimeout(() => {
@@ -98,7 +94,7 @@ const DiscountManagementPage = () => {
         setSuccess('');
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save discount');
+      setError(err.response?.data?.message || 'Không thể lưu mã giảm giá');
     } finally {
       setSubmitting(false);
     }
@@ -120,16 +116,16 @@ const DiscountManagementPage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this discount?')) return;
+    if (!window.confirm('Bạn có chắc chắn muốn xóa mã giảm giá này không?')) return;
 
     setError('');
     try {
       await discountService.deleteDiscount(id);
-      setSuccess('Discount deleted successfully! 🗑️');
+      setSuccess('Đã xóa mã giảm giá thành công! 🗑️');
       setTimeout(() => setSuccess(''), 2000);
       fetchData();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete discount');
+      setError(err.response?.data?.message || 'Không thể xóa mã giảm giá');
     }
   };
 
@@ -137,11 +133,11 @@ const DiscountManagementPage = () => {
     setError('');
     try {
       await discountService.toggleDiscountStatus(id);
-      setSuccess('Status updated! 🔄');
+      setSuccess('Đã cập nhật trạng thái! 🔄');
       setTimeout(() => setSuccess(''), 2000);
       fetchData();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to toggle status');
+      setError(err.response?.data?.message || 'Không thể thay đổi trạng thái');
     }
   };
 
@@ -165,22 +161,22 @@ const DiscountManagementPage = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading discounts...</div>;
+    return <div className="loading">Đang tải mã giảm giá...</div>;
   }
 
   return (
     <div className="discount-management-page">
       <div className="page-header02">
-        <h1>Discount Code Management</h1>
+        <h1>Quản Lý Mã Giảm Giá</h1>
         <button
-          className="btn btn-primary"
+          className="btn1 btn-primary1"
           onClick={() => {
             setShowForm(true);
             setEditingDiscount(null);
             resetForm();
           }}
         >
-          + Create Discount Code
+          + Tạo Mã Giảm Giá
         </button>
       </div>
 
@@ -190,24 +186,24 @@ const DiscountManagementPage = () => {
       {showForm && (
         <div className="discount-form-modal">
           <div className="discount-form-container">
-            <h2>{editingDiscount ? 'Edit Discount' : 'Create New Discount'}</h2>
+            <h2>{editingDiscount ? 'Chỉnh Sửa Mã' : 'Tạo Mã Mới'}</h2>
             <form onSubmit={handleSubmit} className="discount-form">
               <div className="form-row">
                 <div className="form-group">
-                  <label>Discount Code *</label>
+                  <label>Mã Giảm Giá</label>
                   <input
                     type="text"
                     name="code"
                     value={formData.code}
                     onChange={handleInputChange}
-                    placeholder="e.g., SUMMER2024"
+                    placeholder="ví dụ: SUMMER2025"
                     required
                     disabled={editingDiscount}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label>Course *</label>
+                  <label>Khóa Học</label>
                   <select
                     name="courseId"
                     value={formData.courseId}
@@ -215,7 +211,7 @@ const DiscountManagementPage = () => {
                     required
                     disabled={editingDiscount}
                   >
-                    <option value="">Select course</option>
+                    <option value="">Chọn khóa học</option>
                     {courses.map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.title}
@@ -227,21 +223,21 @@ const DiscountManagementPage = () => {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>Discount Type *</label>
+                  <label>Loại Giảm Giá</label>
                   <select
                     name="type"
                     value={formData.type}
                     onChange={handleInputChange}
                     required
                   >
-                    <option value="percentage">Percentage (%)</option>
-                    <option value="fixed">Fixed Amount</option>
+                    <option value="percentage">Phần trăm (%)</option>
+                    <option value="fixed">Số tiền cố định</option>
                   </select>
                 </div>
 
                 <div className="form-group">
                   <label>
-                    Value * {formData.type === 'percentage' ? '(%)' : '(VND)'}
+                    Giá Trị {formData.type === 'percentage' ? '(%)' : '(VND)'}
                   </label>
                   <input
                     type="number"
@@ -255,21 +251,21 @@ const DiscountManagementPage = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Max Uses (optional)</label>
+                  <label>Lượt Dùng Tối Đa (tùy chọn)</label>
                   <input
                     type="number"
                     name="maxUses"
                     value={formData.maxUses}
                     onChange={handleInputChange}
                     min="1"
-                    placeholder="Unlimited"
+                    placeholder="Không giới hạn"
                   />
                 </div>
               </div>
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>Start Date *</label>
+                  <label>Ngày Bắt Đầu</label>
                   <input
                     type="date"
                     name="startDate"
@@ -280,7 +276,7 @@ const DiscountManagementPage = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>End Date *</label>
+                  <label>Ngày Kết Thúc</label>
                   <input
                     type="date"
                     name="endDate"
@@ -292,28 +288,28 @@ const DiscountManagementPage = () => {
               </div>
 
               <div className="form-group">
-                <label>Description (optional)</label>
+                <label>Mô Tả (tùy chọn)</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   rows="3"
                   maxLength="200"
-                  placeholder="Brief description of this discount..."
+                  placeholder="Mô tả ngắn gọn về mã giảm giá này..."
                 />
               </div>
 
               <div className="form-actions">
                 <button type="submit" className="btn btn-primary" disabled={submitting}>
-                  {submitting ? 'Saving...' : editingDiscount ? 'Update' : 'Create'} Discount
+                  {submitting ? 'Đang lưu...' : editingDiscount ? 'Cập Nhật' : 'Tạo Mới'}
                 </button>
                 <button 
                   type="button" 
-                  className="btn btn-secondary" 
+                  className="btn btn-secondary1" 
                   onClick={handleCancel}
                   disabled={submitting}
                 >
-                  Cancel
+                  Hủy
                 </button>
               </div>
             </form>
@@ -323,9 +319,9 @@ const DiscountManagementPage = () => {
 
       <div className="filters">
         <div className="filter-group">
-          <label>Filter by Course:</label>
+          <label>Lọc theo Khóa học:</label>
           <select value={filterCourse} onChange={(e) => setFilterCourse(e.target.value)}>
-            <option value="">All Courses</option>
+            <option value="">Tất cả khóa học</option>
             {courses.map((course) => (
               <option key={course._id} value={course._id}>
                 {course.title}
@@ -335,11 +331,11 @@ const DiscountManagementPage = () => {
         </div>
 
         <div className="filter-group">
-          <label>Status:</label>
+          <label>Trạng thái:</label>
           <select value={filterActive} onChange={(e) => setFilterActive(e.target.value)}>
-            <option value="">All</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
+            <option value="">Tất cả</option>
+            <option value="true">Đang hoạt động</option>
+            <option value="false">Ngưng hoạt động</option>
           </select>
         </div>
       </div>
@@ -347,22 +343,22 @@ const DiscountManagementPage = () => {
       <div className="discounts-list">
         {discounts.length === 0 ? (
           <div className="no-discounts">
-            <p>No discount codes found.</p>
-            <p>Create your first discount to start promoting your courses!</p>
+            <p>Không tìm thấy mã giảm giá nào.</p>
+            <p>Hãy tạo mã giảm giá đầu tiên để bắt đầu quảng bá khóa học của bạn!</p>
           </div>
         ) : (
           <div className="discounts-table">
             <table>
               <thead>
                 <tr>
-                  <th>Code</th>
-                  <th>Course</th>
-                  <th>Type</th>
-                  <th>Value</th>
-                  <th>Uses</th>
-                  <th>Valid Period</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th>Mã Code</th>
+                  <th>Khóa Học</th>
+                  <th>Loại</th>
+                  <th>Giá Trị</th>
+                  <th>Lượt Dùng</th>
+                  <th>Thời Hạn</th>
+                  <th>Trạng Thái</th>
+                  <th>Hành Động</th>
                 </tr>
               </thead>
               <tbody>
@@ -379,62 +375,70 @@ const DiscountManagementPage = () => {
                       </td>
                       <td>{discount.course?.title || 'N/A'}</td>
                       <td>
-                        {discount.type === 'percentage' ? 'Percentage' : 'Fixed Amount'}
+                        {discount.type === 'percentage' ? 'Phần trăm' : 'Số tiền cố định'}
                       </td>
                       <td>
                         {discount.type === 'percentage'
                           ? `${discount.value}%`
-                          : `${discount.value.toLocaleString()} VND`}
+                          : `${discount.value.toLocaleString()} ₫`}
                       </td>
                       <td>
                         {discount.usedCount}
                         {discount.maxUses ? ` / ${discount.maxUses}` : ' / ∞'}
                       </td>
                       <td className="date-cell">
-                        <div>{new Date(discount.startDate).toLocaleDateString()}</div>
-                        <div>{new Date(discount.endDate).toLocaleDateString()}</div>
+                        <div>{new Date(discount.startDate).toLocaleDateString('vi-VN')}</div>
+                        <div>{new Date(discount.endDate).toLocaleDateString('vi-VN')}</div>
                       </td>
                       <td>
                         <span
-                          className={`status-badge ${
+                          className={`status-badge2 ${
                             discount.active && !isExpired && !isNotStarted && !isMaxedOut
                               ? 'active'
                               : 'inactive'
                           }`}
                         >
                           {isExpired
-                            ? 'Expired'
+                            ? 'Đã hết hạn'
                             : isNotStarted
-                            ? 'Not Started'
+                            ? 'Chưa bắt đầu'
                             : isMaxedOut
-                            ? 'Max Reached'
+                            ? 'Hết lượt dùng'
                             : discount.active
-                            ? 'Active'
-                            : 'Inactive'}
+                            ? 'Đang hoạt động'
+                            : 'Ngưng hoạt động'}
                         </span>
                       </td>
                       <td className="actions-cell">
-                        <button
-                          className="btn-icon btn-edit"
-                          onClick={() => handleEdit(discount)}
-                          title="Edit"
-                        >
-                          ✏️
-                        </button>
-                        <button
-                          className="btn-icon btn-toggle"
-                          onClick={() => handleToggle(discount._id)}
-                          title={discount.active ? 'Deactivate' : 'Activate'}
-                        >
-                          {discount.active ? '🔴' : '🟢'}
-                        </button>
-                        <button
-                          className="btn-icon btn-delete"
-                          onClick={() => handleDelete(discount._id)}
-                          title="Delete"
-                        >
-                          🗑️
-                        </button>
+                        <td className="actions-cell">
+                          <button
+                            className="btn-icon btn-edit"
+                            onClick={() => handleEdit(discount)}
+                            title="Chỉnh sửa"
+                          >
+                            <FiEdit2 size={18} />
+                          </button>
+
+                          <button
+                            className="btn-icon btn-toggle"
+                            onClick={() => handleToggle(discount._id)}
+                            title={discount.active ? 'Ngưng kích hoạt' : 'Kích hoạt'}
+                          >
+                            <FiPower 
+                              size={18} 
+                              color={discount.active ? "#2ecc71" : "#e74c3c"} 
+                              style={{ fontWeight: 'bold' }}
+                            />
+                          </button>
+
+                          <button
+                            className="btn-icon btn-delete"
+                            onClick={() => handleDelete(discount._id)}
+                            title="Xóa"
+                          >
+                            <FiTrash2 size={18} />
+                          </button>
+                        </td>
                       </td>
                     </tr>
                   );

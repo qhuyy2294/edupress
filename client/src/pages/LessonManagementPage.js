@@ -278,13 +278,13 @@ const LessonManagementPage = () => {
                   </div>
                   <div className="lesson-actions">
                     <button
-                      className="btn-edit"
+                      className="btn-edit1"
                       onClick={() => handleEditLesson(lesson)}
                     >
                       Edit
                     </button>
                     <button
-                      className="btn-delete"
+                      className="btn-delete1"
                       onClick={() => handleDeleteLesson(lesson._id)}
                     >
                       Delete

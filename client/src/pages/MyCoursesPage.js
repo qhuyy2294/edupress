@@ -56,7 +56,6 @@ const MyCoursesPage = () => {
                 }
             })
         );
-
         setCourses(coursesWithProgress);
       }
     } catch (err) {
@@ -79,9 +78,27 @@ const MyCoursesPage = () => {
     }
   };
 
-  if (loading) {
-    return <Loader message="Đang tải khóa học của bạn..." />;
-  }
+  if (loading) return <Loader message="Đang tải dữ liệu..." />;
+
+  // Render Status Badge for Provider
+  const renderStatusBadge = (status) => {
+    const statusMap = {
+      approved: { label: 'Đã duyệt', class: 'approved' },
+      pending: { label: 'Đang chờ', class: 'pending' },
+      rejected: { label: 'Từ chối', class: 'rejected' },
+      draft: { label: 'Nháp', class: 'draft' }
+    };
+    const info = statusMap[status] || statusMap.pending;
+    
+    return (
+      <div className={`status-badge status-${info.class}`}>
+        {info.label}
+      </div>
+    );
+  };
+  // if (loading) {
+  //   return <Loader message="Đang tải khóa học của bạn..." />;
+  // }
 
   return (
     <div className="my-courses-page">

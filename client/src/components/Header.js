@@ -155,7 +155,7 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="nav-link" onClick={closeMenu}>
+              <Link to="/login" className="btn01 btn-primary" onClick={closeMenu}>
                 Đăng nhập
               </Link>
               <Link to="/register" className="btn01 btn-primary" onClick={closeMenu}>

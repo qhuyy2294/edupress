@@ -1,6 +1,8 @@
 const Cart = require('../models/cartModel');
 const Course = require('../models/courseModel');
+const Discount = require('../models/discountModel');
 const Enrollment = require('../models/enrollmentModel');
+const orderModel = require('../models/orderModel');
 
 // @desc    Get user's cart
 // @route   GET /api/cart
@@ -56,6 +58,15 @@ exports.addToCart = async (req, res) => {
       price: course.price
     });
 
+    cart.subTotal = cart.items.reduce((total, item) => total + item.price, 0);
+
+    // Nếu chưa có mã giảm giá thì Giá cuối = Giá gốc
+    if (!cart.discountCode) {
+        cart.discountAmount = 0;
+        cart.finalTotal = cart.subTotal;
+    } else {
+        cart.finalTotal = Math.max(0, cart.subTotal - (cart.discountAmount || 0));
+    }
     await cart.save();
     await cart.populate('items.course');
 
@@ -116,6 +127,77 @@ exports.getCartCount = async (req, res) => {
     const count = cart ? cart.items.length : 0;
     res.json({ count });
   } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.applyDiscountCode = async (req, res) => {
+  try {
+    const { discountCode } = req.body;
+    const userId = req.user._id;
+
+    // Lấy giỏ hàng
+    const cart = await Cart.findOne({ user: userId }).populate('items.course');
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: 'Giỏ hàng trống' });
+    }
+
+    // Tính lại subTotal (tổng tiền gốc) để đảm bảo chính xác
+    cart.subTotal = cart.items.reduce((sum, item) => sum + item.price, 0);
+
+    if (!discountCode) {
+      cart.discountCode = null;
+      cart.discountAmount = 0;
+      cart.finalTotal = cart.subTotal;
+      await cart.save();
+      return res.status(200).json({ message: 'Đã hủy mã giảm giá', cart });
+    }
+
+    const discount = await Discount.findOne({ code: discountCode.toUpperCase(), active: true });
+
+    // // Validate cơ bản
+    // Check mã có hợp lệ không
+    if (!discount) {
+      return res.status(400).json({
+        message: 'Mã GIẢM GIÁ không tồn tại' 
+      }); 
+    }
+    // Check mã có còn thời hạn không
+    if (discount.validUntil < new Date()) {
+      return res.status(400).json({
+        message: 'Mã GIẢM GIÁ đã hết hạn' 
+      });
+    } 
+    // Check mã có còn lượt sử dụng không
+    if (discount.maxUses && discount.currentUses >= discount.maxUses) {
+      return res.status(400).json({
+        message: 'Mã GIẢM GIÁ đã hết lượt dùng' 
+      });
+    }
+
+    // Tính toán
+    let discountAmount = 0;
+
+    if (discount.type === 'percentage') {
+      discountAmount = (cart.subTotal * discount.value) / 100;
+    } else {
+      discountAmount = discount.value;
+    }
+
+    // Cập nhật cart
+    cart.discountCode = discountCode;
+    cart.discountAmount = discountAmount;
+    cart.finalTotal = Math.max(0, cart.subTotal - discountAmount);
+
+    await cart.save();
+
+    return res.status(200).json({ 
+      message: 'Áp dụng mã thành công', 
+      cart // Trả về cart mới để FE hiển thị
+    });
+
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };

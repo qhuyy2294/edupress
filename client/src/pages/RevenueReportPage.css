@@ -1,4 +1,9 @@
 /* RevenueReportPage Styles */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+.body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
 
 .revenue-report-page {
   max-width: 1400px;
@@ -198,7 +203,7 @@
   color: #999;
 }
 
-.status-badge {
+.status-badge3 {
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
   font-size: 0.75rem;
@@ -207,17 +212,17 @@
   display: inline-block;
 }
 
-.status-badge.approved {
+.status-badge3.approved {
   background: #e8f5e9;
   color: #2e7d32;
 }
 
-.status-badge.pending {
+.status-badge3.pending {
   background: #fff3e0;
   color: #e65100;
 }
 
-.status-badge.rejected {
+.status-badge3.rejected {
   background: #ffebee;
   color: #c62828;
 }

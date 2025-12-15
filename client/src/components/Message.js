@@ -1,17 +1,12 @@
-/**
- * Message Component
- * Display success, error, or info messages
- */
-
 import React from 'react';
 import './Message.css';
 
 const Message = ({ type = 'info', message, onClose }) => {
   const icons = {
-    success: '✓',
-    error: '✕',
-    warning: '⚠',
-    info: 'ℹ',
+    success: 'Thành công',
+    error: 'Lỗi',
+    warning: 'Cảnh báo',
+    info: 'info',
   };
 
   return (
@@ -20,7 +15,7 @@ const Message = ({ type = 'info', message, onClose }) => {
       <span className="message-text">{message}</span>
       {onClose && (
         <button className="message-close" onClick={onClose}>
-          × 
+          x 
         </button>
       )}
     </div>

@@ -94,7 +94,9 @@ const RevenueReportPage = () => {
           <h2>Thống kê doanh thu từ đơn hàng đã duyệt</h2>
           <div className="summary-grid">
             <div className="summary-card card-revenue">
-              <div className="card-icon">💵</div>
+              <div className="card-icon">
+                <span>{/* icon */}</span>
+              </div>
               <div className="card-content">
                 <h3>Tổng doanh thu</h3>
                 <p className="stat-value">{formatVnd(revenueStats.totalRevenue)} ₫</p>
@@ -103,7 +105,9 @@ const RevenueReportPage = () => {
             </div>
 
             <div className="summary-card card-provider">
-              <div className="card-icon">💰</div>
+              <div className="card-icon">
+                <span>{/* icon */}</span>
+              </div>
               <div className="card-content">
                 <h3>{user?.role === 'admin' ? 'Provider nhận (90%)' : 'Bạn nhận (90%)'}</h3>
                 <p className="stat-value">{formatVnd(revenueStats.providerRevenue)} ₫</p>
@@ -113,7 +117,9 @@ const RevenueReportPage = () => {
 
             {user?.role === 'admin' && (
               <div className="summary-card card-admin">
-                <div className="card-icon">🏢</div>
+                <div className="card-icon">
+                  <span>{/* icon */}</span>
+                </div>
                 <div className="card-content">
                   <h3>Hoa hồng Admin (10%)</h3>
                   <p className="stat-value">{formatVnd(revenueStats.adminCommission)} ₫</p>
@@ -128,7 +134,9 @@ const RevenueReportPage = () => {
       {/* Summary Cards */}
       <div className="summary-grid">
         <div className="summary-card card-courses">
-          <div className="card-icon">📚</div>
+          <div className="card-icon">
+            <span>{/* icon */}</span>
+          </div>
           <div className="card-content">
             <h3>Tổng số khóa học</h3>
             <p className="stat-value">{totalStats.totalCourses}</p>
@@ -136,7 +144,9 @@ const RevenueReportPage = () => {
         </div>
 
         <div className="summary-card card-students">
-          <div className="card-icon">👥</div>
+          <div className="card-icon">
+            <span>{/* icon */}</span>
+          </div>
           <div className="card-content">
             <h3>Tổng số học viên</h3>
             <p className="stat-value">{totalStats.totalEnrollments}</p>
@@ -144,7 +154,9 @@ const RevenueReportPage = () => {
         </div>
 
         <div className="summary-card card-revenue">
-          <div className="card-icon">💰</div>
+          <div className="card-icon">
+            <span>{/* icon */}</span>
+          </div>
           <div className="card-content">
             <h3>Doanh thu tiềm năng</h3>
             <p className="stat-value">{formatVnd(totalStats.totalRevenue)} ₫</p>
@@ -152,7 +164,9 @@ const RevenueReportPage = () => {
         </div>
 
         <div className="summary-card card-rating">
-          <div className="card-icon">⭐</div>
+          <div className="card-icon">
+            <span>{/* icon */}</span>
+          </div>
           <div className="card-content">
             <h3>Đánh giá trung bình</h3>
             <p className="stat-value">{totalStats.averageRating.toFixed(1)}</p>
@@ -192,13 +206,13 @@ const RevenueReportPage = () => {
                         </div>
                       </td>
                       <td>
-                        <span className={`status-badge ${course.status}`}>
+                        <span className={`status-badge3 ${course.status}`}>
                           {course.status}
                         </span>
                       </td>
                       <td className="price-cell">
                         {course.price === 0 ? (
-                          <span className="free-badge">Free</span>
+                          <span className="free-badge">Miễn phí</span>
                         ) : (
                           `${formatVnd(course.price)} ₫`
                         )}
@@ -208,7 +222,7 @@ const RevenueReportPage = () => {
                       <td className="rating-cell">
                         {course.averageRating ? (
                           <>
-                            ⭐ {course.averageRating.toFixed(1)}
+                            {course.averageRating.toFixed(1)}
                           </>
                         ) : (
                           <span className="no-rating">N/A</span>
@@ -231,7 +245,7 @@ const RevenueReportPage = () => {
           <div className="top-performers-grid">
             {/* Most Students */}
             <div className="top-card">
-              <h3>🏆 Nhiều học viên nhất</h3>
+              <h3>Nhiều học viên nhất</h3>
               {courses
                 .sort((a, b) => (b.enrollmentCount || 0) - (a.enrollmentCount || 0))
                 .slice(0, 3)
@@ -246,7 +260,7 @@ const RevenueReportPage = () => {
 
             {/* Highest Revenue */}
             <div className="top-card">
-              <h3>💵 Doanh thu cao nhất</h3>
+              <h3>Doanh thu cao nhất</h3>
               {courses
                 .sort((a, b) => {
                   const revenueA = (a.enrollmentCount || 0) * (a.price || 0);
@@ -268,7 +282,7 @@ const RevenueReportPage = () => {
 
             {/* Best Rated */}
             <div className="top-card">
-              <h3>⭐ Đánh giá cao nhất</h3>
+              <h3>Đánh giá cao nhất</h3>
               {courses
                 .filter(c => c.averageRating > 0)
                 .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))

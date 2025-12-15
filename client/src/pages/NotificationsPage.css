@@ -190,7 +190,7 @@
 
 .btn-goto,
 .btn-mark-read,
-.btn-delete {
+.btn-delete3 {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
@@ -223,12 +223,12 @@
   background: #45a049;
 }
 
-.btn-delete {
+.btn-delete3 {
   background: #f44336;
   color: white;
 }
 
-.btn-delete:hover {
+.btn-delete3:hover {
   background: #da190b;
 }
 
@@ -269,7 +269,7 @@
 
   .btn-goto,
   .btn-mark-read,
-  .btn-delete {
+  .btn-delete3 {
     flex: 1;
     min-width: 80px;
   }

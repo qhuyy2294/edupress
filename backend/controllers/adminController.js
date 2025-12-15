@@ -94,8 +94,6 @@ const downgradeToCustomer = asyncHandler( async (req, res) => {
     }
 });
 
-
-
 // /**
 //  * @desc    Delete user account
 //  * @route   DELETE /api/admin/users/:id

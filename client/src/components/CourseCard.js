@@ -21,7 +21,6 @@ const CourseCard = ({ course }) => {
 
         <div className="course-content01">
           <h3 className="course-title">{course.title}</h3>
-        
           <p className="course-description">
             {course.description.length > 100
               ? `${course.description.substring(0, 100)}...`
@@ -31,7 +30,7 @@ const CourseCard = ({ course }) => {
           {course.provider && (
             <div className="course-provider">
               <img
-                src={course.provider.avatarUrl || 'default_avatar.png'}
+                src={course.provider.avatarUrl || 'https://placehold.co/40x40?text=Avatar'}
                 alt={course.provider.fullName}
                 className="provider-avatar"
               />
@@ -49,14 +48,14 @@ const CourseCard = ({ course }) => {
               )}
               {course.enrollmentCount > 0 && (
                 <span className="enrollment-count">
-                  👥 {course.enrollmentCount} học viên
+                  {course.enrollmentCount} học viên
                 </span>
               )}
             </div>
 
             <div className="course-price-section">
               <span className="course-price">
-                {course.price === 0 ? 'Free' : `${formatVnd(course.price)} ₫`}
+                {course.price === 0 ? 'Miễn phí' : `${formatVnd(course.price)} ₫`}
               </span>
               <span className="btn-view-course">
                 Xem khóa học

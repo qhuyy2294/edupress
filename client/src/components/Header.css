@@ -1,8 +1,8 @@
 .header {
   background-color: #ffffff;
-  padding: 0.8rem 0;
+  padding: 0.5rem 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  position: sticky;
+  position: sticky; /* Giữ cố định khi cuộn trang */
   top: 0;
   z-index: 1000;
   border-bottom: 1px solid #f0f0f0;
@@ -12,10 +12,10 @@
 }
 
 .header-container {
-  max-width: 1280px;
+  max-width: 1320px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -31,11 +31,11 @@
 
 .logo h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: -0.5px;
   background: linear-gradient(90deg, #3498db, #8e44ad);
-  -webkit-background-clip: text;
+  -webkit-background-clip: text; 
   -webkit-text-fill-color: transparent;
 }
 

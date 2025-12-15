@@ -242,7 +242,7 @@ const CustomerManagementPage = () => {
                         {getStatusDisplay(customer.status || 'active')}
                       </span>
                     </td>
-                    <td className="date-cell">{new Date(customer.createdAt).toLocaleDateString('vi-VN')}</td>
+                    <td className="date-cell1">{new Date(customer.createdAt).toLocaleDateString('vi-VN')}</td>
                     <td>
                       <div className="action-buttons">
                         <button 

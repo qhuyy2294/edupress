@@ -85,12 +85,26 @@ export const getCartCount = async () => {
   }
 };
 
+export const applyDiscountCode = async (discountCode) => {
+  try {
+    const response = await axios.put(`${API_URL}/apply-discount`, { discountCode }, getConfig());
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
+    throw error;
+  }
+};
+
 const cartService = {
   getCart,
   addToCart,
   removeFromCart,
   clearCart,
-  getCartCount
+  getCartCount,
+  applyDiscountCode
 };
 
 export default cartService;

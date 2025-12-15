@@ -1,8 +1,3 @@
-/**
- * RegisterPage Component
- * User registration form
- */
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
@@ -35,9 +30,9 @@ const RegisterPage = () => {
     setLoading(true);
     setError('');
 
-    // Validate passwords match
+    // Kiểm tra mật khẩu có khớp không
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError('Mật khẩu nhập lại không khớp');
       setLoading(false);
       return;
     }
@@ -52,7 +47,7 @@ const RegisterPage = () => {
         setError(result.message);
       }
     } catch (err) {
-      setError('Đã xảy ra lỗi không mong muốn. Vui lòng thử lại');
+      setError('Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.');
     } finally {
       setLoading(false);
     }
@@ -62,14 +57,14 @@ const RegisterPage = () => {
     <div className="auth-page">
       <div className="auth-container">
         <div className="auth-card">
-          <h2 className="auth-title">Create an Account</h2>
-          <p className="auth-subtitle">Join Edupress and start learning today!</p>
+          <h2 className="auth-title">Đăng ký tài khoản</h2>
+          <p className="auth-subtitle">Tham gia Edupress và bắt đầu học ngay hôm nay!</p>
 
           {error && <Message type="error" message={error} />}
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
-              <label htmlFor="fullName">Full Name</label>
+              <label htmlFor="fullName">Họ và tên</label>
               <input
                 type="text"
                 id="fullName"
@@ -77,13 +72,13 @@ const RegisterPage = () => {
                 value={formData.fullName}
                 onChange={handleChange}
                 required
-                placeholder="Enter your full name"
+                placeholder="Nhập họ và tên của bạn"
                 className="form-input"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="email">Địa chỉ Email</label>
               <input
                 type="email"
                 id="email"
@@ -91,13 +86,13 @@ const RegisterPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                placeholder="Enter your email"
+                placeholder="Nhập địa chỉ email"
                 className="form-input"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Mật khẩu</label>
               <input
                 type="password"
                 id="password"
@@ -105,14 +100,14 @@ const RegisterPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                placeholder="Enter your password (min 6 characters)"
+                placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
                 className="form-input"
                 minLength="6"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm Password</label>
+              <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
               <input
                 type="password"
                 id="confirmPassword"
@@ -120,7 +115,7 @@ const RegisterPage = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
-                placeholder="Confirm your password"
+                placeholder="Nhập lại mật khẩu của bạn"
                 className="form-input"
                 minLength="6"
               />
@@ -131,15 +126,15 @@ const RegisterPage = () => {
               disabled={loading}
               className="btn-submit"
             >
-              {loading ? <Loader size="small" /> : 'Create Account'}
+              {loading ? <Loader size="small" /> : 'Đăng ký'}
             </button>
           </form>
 
           <div className="auth-footer">
             <p>
-              Already have an account?{' '}
+              Bạn đã có tài khoản?{' '}
               <Link to="/login" className="auth-link">
-                Login
+                Đăng nhập
               </Link>
             </p>
           </div>

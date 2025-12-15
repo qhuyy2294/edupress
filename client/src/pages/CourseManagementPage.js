@@ -141,6 +141,13 @@ const CourseManagementPage = () => {
     return <Loader />;
   }
 
+  // HÀM ĐỊNH DẠNG SỐ TIỀN ĐƯỢC THÊM TRỰC TIẾP VÀO ĐÂY
+  const formatVnd = (number) => {
+    if (typeof number !== 'number') return number;
+    // Sử dụng locale 'vi-VN' để định dạng dấu chấm là dấu phân cách hàng nghìn.
+    return new Intl.NumberFormat('vi-VN').format(number);
+  };
+
   return (
     <div className="course-management-page">
       <div className="breadcrumb-nav">
@@ -149,7 +156,7 @@ const CourseManagementPage = () => {
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
-            Quay lại Dashboard
+            Dashboard
         </Link>
       </div>
 
@@ -210,7 +217,7 @@ const CourseManagementPage = () => {
                 ) : (
                   <div className="image-placeholder">📚</div>
                 )}
-                <span className={`status-badge ${course.status}`}>
+                <span className={`status-badge1 ${course.status}`}>
                   {course.status}
                 </span>
               </div>
@@ -225,14 +232,14 @@ const CourseManagementPage = () => {
                 <div className="course-meta">
                   <span className="category-badge">{course.category}</span>
                   <span className="price">
-                    {course.price === 0 ? 'Free' : `$${course.price}`}
+                    {course.price === 0 ? 'Miễn phí' : `${formatVnd(course.price)} ₫`}
                   </span>
                 </div>
 
                 <div className="instructor-info">
                   <span className="label">Giảng viên:</span>
                   <span className="instructor-name">
-                    {course.instructor?.fullName || 'N/A'}
+                    {course.provider?.fullName || 'N/A'}
                   </span>
                 </div>
 
@@ -242,20 +249,20 @@ const CourseManagementPage = () => {
                 </div>
 
                 <div className="action-buttons">
-                  <Link to={`/course/${course._id}`} className="btn-view" target="_blank">
+                  <Link to={`/course/${course._id}`} className="btn-view1" target="_blank">
                     Xem
                   </Link>
                   
                   {course.status === 'pending' && (
                     <>
                       <button 
-                        className="btn-approve"
+                        className="btn-approve2"
                         onClick={() => handleApprove(course._id)}
                       >
                         Đồng ý
                       </button>
                       <button 
-                        className="btn-reject"
+                        className="btn-reject2"
                         onClick={() => handleReject(course._id)}
                       >
                         Từ chối
@@ -265,7 +272,7 @@ const CourseManagementPage = () => {
 
                   {course.status === 'rejected' && (
                     <button 
-                      className="btn-approve"
+                      className="btn-approve2"
                       onClick={() => handleApprove(course._id)}
                     >
                       Đồng ý
@@ -273,7 +280,7 @@ const CourseManagementPage = () => {
                   )}
 
                   <button 
-                    className="btn-delete"
+                    className="btn-delete2"
                     onClick={() => handleDelete(course._id)}
                   >
                     Xóa

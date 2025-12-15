@@ -1,9 +1,14 @@
-/* CreateCoursePage Component Styles */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+/* .body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+} */
 
 .create-course-page {
   min-height: 100vh;
   background-color: #f5f7fa;
   padding: 2rem 0;
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
 .create-course-wrapper {

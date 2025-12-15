@@ -1,3 +1,8 @@
+/**
+ * Course Controller
+ * Handles course CRUD operations
+ */
+
 const asyncHandler = require('express-async-handler');
 const Course = require('../models/courseModel');
 const User = require('../models/userModel');
@@ -109,7 +114,6 @@ const getAllCourses = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const getCourseById = asyncHandler(async (req, res) => {
-  // console.log("DEBUG kiểm tra user: ", req.user);
   const course = await Course.findById(req.params.id)
     .populate('provider', 'fullName email avatarUrl')
     .populate('lessons');

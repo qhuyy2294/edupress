@@ -260,7 +260,7 @@ const OrderManagementPage = () => {
 
               {order.status === 'approved' && (
                 <div className="approval-info">
-                  ✓ Đã duyệt bởi {order.approvedBy?.name || 'Admin'} lúc {formatDate(order.approvedAt)}
+                  Đã duyệt bởi {order.approvedBy?.name || 'Admin'} lúc {formatDate(order.approvedAt)}
                 </div>
               )}
 

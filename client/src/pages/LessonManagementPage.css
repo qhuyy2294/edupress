@@ -249,8 +249,8 @@
   flex-shrink: 0;
 }
 
-.btn-edit,
-.btn-delete {
+.btn-edit1,
+.btn-delete1 {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
@@ -260,21 +260,21 @@
   transition: all 0.3s ease;
 }
 
-.btn-edit {
+.btn-edit1 {
   background-color: #3498db;
   color: white;
 }
 
-.btn-edit:hover {
+.btn-edit1:hover {
   background-color: #2980b9;
 }
 
-.btn-delete {
+.btn-delete1 {
   background-color: #e74c3c;
   color: white;
 }
 
-.btn-delete:hover {
+.btn-delete1:hover {
   background-color: #c0392b;
 }
 
@@ -306,8 +306,8 @@
     justify-content: stretch;
   }
 
-  .btn-edit,
-  .btn-delete {
+  .btn-edit1,
+  .btn-delete1 {
     flex: 1;
   }
 

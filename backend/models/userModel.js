@@ -45,6 +45,10 @@ const userSchema = new mongoose.Schema(
       enum: ['active', 'pending_provider', 'inactive'],
       default: 'active',
     },
+    // createdAt: {
+    //   type: Date,
+    //   default: Date.now,
+    // },
     // [ĐÃ SỬA] Thêm các trường cho Reset Password
     passwordResetToken: String,
     passwordResetExpires: Date,

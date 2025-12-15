@@ -8,106 +8,172 @@ const Notification = require('../models/notificationModel');
 // @desc    Create order from cart
 // @route   POST /api/orders
 // @access  Private
+
+// exports.createOrder = async (req, res) => {
+//   try {
+//     const { discountCode } = req.body;
+
+//     console.log('Creating order for user:', req.user._id);
+
+//     // Get cart
+//     const cart = await Cart.findOne({ user: req.user._id }).populate('items.course');
+//     console.log('Cart found:', cart);
+    
+//     if (!cart || cart.items.length === 0) {
+//       return res.status(400).json({ message: 'Giỏ hàng trống' });
+//     }
+
+//     let totalAmount = cart.totalAmount;
+//     let discountAmount = 0;
+//     let finalAmount = totalAmount;
+
+//     // Apply discount if provided
+//     if (discountCode) {
+//       const discount = await Discount.findOne({ 
+//         code: discountCode,
+//         isActive: true
+//       });
+
+//       if (discount) {
+//         // Check if discount is valid for any course in cart
+//         const validForCart = cart.items.some(item => 
+//           discount.applicableCourses.length === 0 || 
+//           discount.applicableCourses.includes(item.course._id.toString())
+//         );
+        
+//         if (validForCart) {
+//           // Check expiry and usage
+//           const now = new Date();
+//           if (discount.validFrom <= now && discount.validUntil >= now) {
+//             if (!discount.maxUses || discount.currentUses < discount.maxUses) {
+//               // Calculate discount
+//               if (discount.discountType === 'percentage') {
+//                 discountAmount = (totalAmount * discount.discountValue) / 100; 
+//               } else {
+//                 discountAmount = discount.discountValue;
+//               }
+//               finalAmount = Math.max(0, totalAmount - discountAmount);
+
+//               // Update discount usage
+//               discount.currentUses += 1;
+//               await discount.save();
+//             }
+//           }
+//         }
+//       }
+//     }
+
+//     // Prepare courses data with provider info
+//     const coursesData = await Promise.all(cart.items.map(async (item) => {
+//       const course = await Course.findById(item.course._id);
+//       console.log('Course found:', course);
+      
+//       if (!course) {
+//         throw new Error(`Khóa học không tồn tại: ${item.course._id}`);
+//       }
+      
+//       if (!course.provider) {
+//         throw new Error(`Khóa học ${course.title} không có provider`);
+//       }
+      
+//       return {
+//         course: item.course._id,
+//         price: item.price,
+//         provider: course.provider
+//       };
+//     }));
+
+//     // Create order
+//     const order = await Order.create({
+//       user: req.user._id,
+//       courses: coursesData,
+//       totalAmount,
+//       discountCode: discountCode || null,
+//       discountAmount,
+//       finalAmount,
+//       status: 'pending',
+//       paymentNote: `EDUPRESS${Date.now()}`
+//     });
+    
+//     // Clear cart after creating order
+//     cart.items = [];
+//     cart.totalAmount = 0;
+//     await cart.save();
+
+//     // Populate order data
+//     await order.populate('courses.course user');
+
+//     res.status(201).json(order);
+//   } catch (error) {
+//     console.error('Error creating order:', error);
+//     res.status(500).json({ message: error.message, stack: error.stack });
+//   }
+// };
+
+
 exports.createOrder = async (req, res) => {
   try {
-    const { discountCode } = req.body;
-
-    console.log('📦 Creating order for user:', req.user._id);
-
-    // Get cart
-    const cart = await Cart.findOne({ user: req.user._id }).populate('items.course');
-    console.log('🛒 Cart found:', cart);
-    
+    const userId = req.user._id;
+    // Lấy giỏ hàng
+    const cart = await Cart.findOne({ user: userId }).populate('items.course');
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: 'Giỏ hàng trống' });
     }
 
-    let totalAmount = cart.totalAmount;
-    let discountAmount = 0;
-    let finalAmount = totalAmount;
-
-    // Apply discount if provided
-    if (discountCode) {
-      const discount = await Discount.findOne({ 
-        code: discountCode,
-        isActive: true
-      });
-
-      if (discount) {
-        // Check if discount is valid for any course in cart
-        const validForCart = cart.items.some(item => 
-          discount.applicableCourses.length === 0 || 
-          discount.applicableCourses.includes(item.course._id.toString())
-        );
-
-        if (validForCart) {
-          // Check expiry and usage
-          const now = new Date();
-          if (discount.validFrom <= now && discount.validUntil >= now) {
-            if (!discount.maxUses || discount.currentUses < discount.maxUses) {
-              // Calculate discount
-              if (discount.discountType === 'percentage') {
-                discountAmount = (totalAmount * discount.discountValue) / 100;
-              } else {
-                discountAmount = discount.discountValue;
-              }
-              finalAmount = Math.max(0, totalAmount - discountAmount);
-
-              // Update discount usage
-              discount.currentUses += 1;
-              await discount.save();
-            }
-          }
-        }
+    if (cart.discountCode) {
+      const discount = await Discount.findOne({ code: cart.discountCode, isActive: true });
+      const now = new Date();
+      
+      if (!discount || discount.validUntil < now || (discount.maxUses && discount.currentUses >= discount.maxUses)) {
+        // Reset Cart về giá ban đầu
+        cart.discountCode = null;
+        cart.discountAmount = 0;
+        cart.finalTotal = cart.subTotal;
+        await cart.save();
+        
+        return res.status(400).json({ 
+          message: 'Mã giảm giá đã hết hạn hoặc hết lượt dùng. Vui lòng thử lại.' 
+        });
       }
+
+      discount.currentUses += 1;
+      await discount.save();
     }
 
-    // Prepare courses data with provider info
-    const coursesData = await Promise.all(cart.items.map(async (item) => {
-      const course = await Course.findById(item.course._id);
-      console.log('📚 Course found:', course);
-      
-      if (!course) {
-        throw new Error(`Khóa học không tồn tại: ${item.course._id}`);
-      }
-      
-      if (!course.provider) {
-        throw new Error(`Khóa học ${course.title} không có provider`);
-      }
-      
-      return {
+    // Tạo Order lấy toàn bộ số liệu tiền từ Cart sang Order
+    const newOrder = await orderModel.create({
+      user: userId,
+      courses: cart.items.map(item => ({
         course: item.course._id,
         price: item.price,
-        provider: course.provider
-      };
-    }));
-
-    // Create order
-    const order = await Order.create({
-      user: req.user._id,
-      courses: coursesData,
-      totalAmount,
-      discountCode: discountCode || null,
-      discountAmount,
-      finalAmount,
+        provider: item.course.provider
+      })),
+      totalAmount: cart.subTotal,        // Giá gốc
+      discountCode: cart.discountCode,   // Mã giảm
+      discountAmount: cart.discountAmount, // Tiền giảm
+      finalAmount: cart.finalTotal,      // Tiền khách phải trả
       status: 'pending',
-      paymentNote: `EDUPRESS${Date.now()}`
+      paymentNote: `ORDER_${Date.now()}`
     });
 
-    // Clear cart after creating order
     cart.items = [];
-    cart.totalAmount = 0;
+    cart.subTotal = 0;
+    cart.discountCode = null;
+    cart.discountAmount = 0;
+    cart.finalTotal = 0;
     await cart.save();
 
-    // Populate order data
-    await order.populate('courses.course user');
+    return res.status(201).json({ 
+      message: 'Tạo đơn hàng thành công', 
+      order: newOrder 
+    });
 
-    res.status(201).json(order);
   } catch (error) {
-    console.error('❌ Error creating order:', error);
-    res.status(500).json({ message: error.message, stack: error.stack });
+    console.error(error);
+    res.status(500).json({ message: error.message });
   }
 };
+
 
 // @desc    Get user's orders
 // @route   GET /api/orders
@@ -212,19 +278,19 @@ exports.getAllOrders = async (req, res) => {
 // @access  Private/Admin
 exports.approveOrder = async (req, res) => {
   try {
-    console.log('🔍 Approving order:', req.params.id);
+    console.log('Approving order:', req.params.id);
     
     const order = await Order.findById(req.params.id).populate('courses.course user');
 
     if (!order) {
-      console.log('❌ Order not found');
+      console.log('Order not found');
       return res.status(404).json({ message: 'Đơn hàng không tồn tại' });
     }
 
-    console.log('📦 Order found:', order._id, 'Status:', order.status);
+    console.log('Order found:', order._id, 'Status:', order.status);
 
     if (order.status !== 'pending') {
-      console.log('❌ Order already processed:', order.status);
+      console.log('Order already processed:', order.status);
       return res.status(400).json({ message: 'Đơn hàng đã được xử lý' });
     }
 
@@ -233,13 +299,13 @@ exports.approveOrder = async (req, res) => {
     order.approvedBy = req.user._id;
     order.approvedAt = Date.now();
     await order.save();
-    console.log('✅ Order status updated to approved');
+    console.log('Order status updated to approved');
 
     // Create enrollments for all courses
-    console.log('🎓 Creating enrollments for', order.courses.length, 'courses');
+    console.log('Creating enrollments for', order.courses.length, 'courses');
     for (const item of order.courses) {
       if (!item.course) {
-        console.error('❌ Course not found in order item:', item);
+        console.error('Course not found in order item:', item);
         continue;
       }
 
@@ -250,7 +316,7 @@ exports.approveOrder = async (req, res) => {
       });
 
       if (existingEnrollment) {
-        console.log('⚠️ Already enrolled in course:', item.course._id);
+        console.log('Already enrolled in course:', item.course._id);
         continue;
       }
 
@@ -260,13 +326,13 @@ exports.approveOrder = async (req, res) => {
         pricePaid: item.price,
         progress: 0
       });
-      console.log('✅ Created enrollment:', enrollment._id);
+      console.log('Created enrollment:', enrollment._id);
 
       // Update course enrollment count
       await Course.findByIdAndUpdate(item.course._id, {
         $inc: { enrollmentCount: 1 }
       });
-      console.log('✅ Updated course enrollment count');
+      console.log('Updated course enrollment count');
     }
 
     // Notify user
@@ -278,14 +344,14 @@ exports.approveOrder = async (req, res) => {
         type: 'success',
         link: `/my-courses`
       });
-      console.log('✅ Notification created');
+      console.log('Notification created');
     } catch (notifError) {
-      console.log('⚠️ Notification error (non-critical):', notifError.message);
+      console.log('Notification error (non-critical):', notifError.message);
     }
 
     res.json({ message: 'Đã duyệt đơn hàng thành công', order });
   } catch (error) {
-    console.error('❌ Error approving order:', error);
+    console.error('Error approving order:', error);
     res.status(500).json({ message: error.message, stack: error.stack });
   }
 };

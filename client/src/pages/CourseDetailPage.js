@@ -56,7 +56,6 @@ const CourseDetailPage = () => {
       //   );
       //   setIsEnrolled(enrolled);
       // }
-
     } catch (err) {
       setError(err.response?.data?.message || 'Không tải được thông tin chi tiết về khóa học');
     } finally {
@@ -178,6 +177,13 @@ const CourseDetailPage = () => {
   // Gọi hàm tính toán mỗi khi reviews thay đổi (hoặc tính trực tiếp khi render)
   const stats = calculateRatingStats(reviews);
 
+  // HÀM ĐỊNH DẠNG SỐ TIỀN ĐƯỢC THÊM TRỰC TIẾP VÀO ĐÂY
+  const formatVnd = (number) => {
+    if (typeof number !== 'number') return number;
+    // Sử dụng locale 'vi-VN' để định dạng dấu chấm là dấu phân cách hàng nghìn.
+    return new Intl.NumberFormat('vi-VN').format(number);
+  };
+  
   return (
     <div className="course-detail-page">
       <div className="course-hero">
@@ -217,32 +223,41 @@ const CourseDetailPage = () => {
               
               <div className="course-price-section01">
                 <h2 className="course-price01">
-                  {course.price === 0 ? 'Miễn phí' : `${course.price}₫`}
+                  {course.price === 0 ? 'Miễn phí' : `${formatVnd(course.price)} ₫`}
                 </h2>
-                
                 {user?.role === 'customer' && (
-  <>
-    {!isEnrolled ? (
-      // Button: Thêm vào giỏ (Incoming từ GitHub)
-      <button 
-        onClick={handleAddToCart}
-        className="btn-enroll"
-      >
-        Thêm vào giỏ
-      </button>
-    ) : (
-      // Button: Đăng ký (Current từ máy bạn)
-      <button
-        onClick={handleEnroll}
-        disabled={enrolling}
-        className="btn-enroll"
-      >
-        {enrolling ? 'Đang đăng ký...' : 'Tham gia ngay'}
-      </button>
-    )}
-  </>
-)}
-
+                  <>
+                    {isEnrolled ? (
+                      <button
+                        className="btn-enroll"
+                        disabled
+                        style={{ 
+                          backgroundColor: '#4CAF50', 
+                          cursor: 'default',
+                          opacity: 1 
+                        }}
+                      >
+                        Đã đăng ký
+                      </button>
+                    ) : (
+                      <div className="action-buttons" style={{ display: 'flex', gap: '10px' }}>
+                        <button 
+                          onClick={handleAddToCart}
+                          className="btn-enroll"
+                        >
+                          Thêm vào giỏ
+                        </button>
+                        {/* <button
+                          onClick={handleEnroll}
+                          disabled={enrolling}
+                          className="btn-enroll"
+                        >
+                          {enrolling ? 'Đang xử lý...' : 'Tham gia ngay'}
+                        </button> */}
+                      </div>
+                    )}
+                  </>
+                )}
                 
                 {!isAuthenticated && (
                   <button

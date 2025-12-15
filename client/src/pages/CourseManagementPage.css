@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
 :root {
   --primary-color: #4f46e5;
   --primary-hover: #4338ca;
@@ -39,13 +41,17 @@
   to { opacity: 1; transform: scale(1); }
 }
 
+/* .body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+} */
+
 .course-management-page {
   max-width: 1440px;
   margin: 0 auto;
   padding: 2.5rem;
   background-color: var(--bg-color);
   min-height: 100vh;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .breadcrumb-nav {
@@ -251,7 +257,7 @@
 }
 
 /* Status Badge */
-.status-badge {
+.status-badge1 {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -266,16 +272,16 @@
   z-index: 2;
 }
 
-.status-badge.approved {
+.status-badge1.approved {
   background: rgba(16, 185, 129, 0.9);
   color: white;
 }
-.status-badge.pending {
+.status-badge1.pending {
   background: rgba(245, 158, 11, 0.9);
   color: white;
   animation: pulse 2s infinite;
 }
-.status-badge.rejected {
+.status-badge1.rejected {
   background: rgba(239, 68, 68, 0.9);
   color: white;
 }
@@ -376,13 +382,13 @@
   margin-top: auto;
 }
 
-.btn-view,
-.btn-approve,
-.btn-reject,
-.btn-delete {
-  padding: 0.75rem 0.5rem;
+.btn-view1,
+.btn-approve2,
+.btn-reject2,
+.btn-delete2 {
+  padding: 0.6rem 0.8rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -396,43 +402,43 @@
 }
 
 /* Specific Button Styles */
-.btn-view {
-  background: #f1f5f9;
+.btn-view1 {
+  background: #dbe2e9;
   color: var(--text-main);
 }
-.btn-view:hover {
+.btn-view1:hover {
   background: #e2e8f0;
   color: black;
 }
 
-.btn-approve {
+.btn-approve2 {
   background: var(--success-color);
   color: white;
   box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
 }
-.btn-approve:hover {
+.btn-approve2:hover {
   background: #059669;
   transform: translateY(-2px);
   box-shadow: 0 6px 8px -1px rgba(16, 185, 129, 0.4);
 }
 
-.btn-reject {
+.btn-reject2 {
   background: var(--warning-color);
   color: white;
   box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.3);
 }
-.btn-reject:hover {
+.btn-reject2:hover {
   background: #d97706;
   transform: translateY(-2px);
   box-shadow: 0 6px 8px -1px rgba(245, 158, 11, 0.4);
 }
 
-.btn-delete {
+.btn-delete2 {
   background: white;
   color: var(--danger-color);
   border: 1px solid var(--danger-color);
 }
-.btn-delete:hover {
+.btn-delete2:hover {
   background: var(--danger-color);
   color: white;
   transform: translateY(-2px);

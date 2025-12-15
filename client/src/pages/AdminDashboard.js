@@ -165,7 +165,7 @@ const AdminDashboard = () => {
                   <div className="alert alert-provider">
                     <span className="alert-icon">👤</span>
                     <span className="alert-text">
-                      {pendingProviders.length} yêu cầu của nhà cung cấp{pendingProviders.length > 1 ? 's' : ''} đang chờ phê duyệt
+                      {pendingProviders.length} yêu cầu của nhà cung cấp{pendingProviders.length > 1 ? 's' : ''} đang chờ được phê duyệt
                     </span>
                   </div>
                 )}
@@ -173,7 +173,7 @@ const AdminDashboard = () => {
                   <div className="alert alert-course">
                     <span className="alert-icon">📝</span>
                     <span className="alert-text">
-                      {pendingCourses.length} khóa học{pendingCourses.length > 1 ? '' : ''} đang chờ được đánh giá
+                      {pendingCourses.length} khóa học{pendingCourses.length > 1 ? '' : ''} đang chờ được phê duyệt
                     </span>
                   </div>
                 )}
@@ -248,7 +248,7 @@ const AdminDashboard = () => {
                     <tr key={course._id}>
                       <td>{course.title}</td>
                       <td>{course.category}</td>
-                      <td>{course.price}VND</td>
+                      <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(course.price)}</td>
                       <td>{course.provider?.fullName}</td>
                       <td>
                         <button

@@ -1,3 +1,8 @@
+/**
+ * Admin Routes
+ * Handles administrative operations
+ */
+
 const express = require('express');
 const router = express.Router();
 const {
@@ -12,8 +17,8 @@ const {
   approveCourse,
   rejectCourse,
   getSystemStats,
-  deleteUser,
   downgradeToCustomer,
+  deleteUser,
 } = require('../controllers/adminController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 

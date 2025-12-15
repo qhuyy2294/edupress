@@ -211,7 +211,7 @@ const NotificationsPage = () => {
                 )}
                 
                 <button
-                  className="btn-delete"
+                  className="btn-delete3"
                   onClick={() => handleDelete(notification._id)}
                 >
                   Xóa

@@ -22,6 +22,7 @@ const ProfilePage = () => {
     newPassword: '',
     confirmPassword: '',
     avatarUrl: '',
+    createdAt: '',
   });
   
   const [loading, setLoading] = useState(false);
@@ -37,8 +38,11 @@ const ProfilePage = () => {
         newPassword: '',
         confirmPassword: '',
         avatarUrl: user.avatarUrl || '',
+        createdAt: user.createdAt || '',
       });
     }
+    console.log("user data:", user);
+    
   }, [user]);
 
   const handleChange = (e) => {
@@ -125,7 +129,7 @@ const ProfilePage = () => {
     <div className="profile-page">
       <div className="container">
         <div className="profile-header">
-          <h1>👤 Hồ sơ của tôi</h1>
+          <h1>Hồ sơ của tôi</h1>
           <p>Quản lý thông tin cá nhân và cài đặt tài khoản của bạn</p>
         </div>
 
@@ -146,14 +150,14 @@ const ProfilePage = () => {
                 <h2>{user.fullName}</h2>
                 <p className="user-email">{user.email}</p>
                 <span className={`user-role role-${user.role}`}>
-                  {user.role === 'customer' && '🎓 Học viên'}
-                  {user.role === 'provider' && '👨‍🏫 Nhà cung cấp'}
-                  {user.role === 'admin' && '👨‍💼 Quản lý'}
+                  {user.role === 'customer' && 'Học viên'}
+                  {user.role === 'provider' && 'Nhà cung cấp'}
+                  {user.role === 'admin' && 'Quản lý'}
                 </span>
                 <span className={`user-status status-${user.status}`}>
-                  {user.status === 'active' && '✅ Kích hoạt'}
-                  {user.status === 'pending_provider' && '⏳ Đang chờ phê duyệt của nhà cung cấp'}
-                  {user.status === 'inactive' && '❌ Không hoạt động'}
+                  {user.status === 'active' && 'Hoạt động'}
+                  {user.status === 'pending_provider' && 'Đang chờ phê duyệt của nhà cung cấp'}
+                  {user.status === 'inactive' && 'Không hoạt động'}
                 </span>
               </div>
             </div>
@@ -162,10 +166,13 @@ const ProfilePage = () => {
               <div className="stat-item">
                 <span className="stat-label01">Thành viên từ</span>
                 <span className="stat-value">
-                  {new Date(user.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                  })}
+                  {user.createdAt 
+                    ? new Date(user.createdAt).toLocaleDateString('vi-VN', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })
+                  : 'Chưa cập nhật'}
                 </span>
               </div>
             </div>
@@ -261,7 +268,7 @@ const ProfilePage = () => {
           {/* Danger Zone */}
           {user.role !== 'admin' && (
             <div className="danger-zone-card">
-              <h3>⚠️ Danger Zone</h3>
+              <h3> <span></span> Danger Zone</h3>
               <p>
                 Một khi bạn đã xóa tài khoản, bạn sẽ không thể quay lại. Tài khoản của bạn sẽ bị vô hiệu hóa và bạn sẽ mất quyền truy cập vào tất cả các khóa học đã đăng ký.
               </p>

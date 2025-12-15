@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
@@ -23,9 +24,13 @@
   --radius-md: 8px;
 }
 
+/* .body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+} */
+
 /* Base Styles */
 .customer-management-page {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Be Vietnam Pro', 'Inter', sans-serif;
   background-color: var(--bg-page);
   min-height: 100vh;
   padding: 2rem;
@@ -369,7 +374,7 @@
   opacity: 0.6;
 }
 
-.date-cell {
+.date-cell1 {
   color: var(--text-light);
   font-size: 0.9rem;
 }

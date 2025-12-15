@@ -1,4 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 
+/* .body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+} */
 
 .auth-page {
   min-height: 100vh;
@@ -9,10 +13,9 @@
   padding: 2rem;
   overflow: hidden;
   position: relative;
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
+  font-family: 'Be Vietnam Pro', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
 }
 
-/* Thêm hiệu ứng gợn sóng (ripple) hoặc các chấm lấp lánh nhẹ nhàng trên nền */
 .auth-page::before,
 .auth-page::after {
   content: '';
@@ -56,7 +59,7 @@
 
 .auth-container {
   width: 100%;
-  max-width: 480px;
+  max-width: 600px;
   z-index: 1;
 }
 
@@ -157,7 +160,7 @@
 .form-input:focus {
   border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-  transform: translateY(0) scale(1.01); /* Nhẹ nhàng phóng to khi focus */
+  transform: translateY(0) scale(1.01);
 }
 
 /* Kích hoạt animation trễ cho input thứ hai */

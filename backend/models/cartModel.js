@@ -24,9 +24,25 @@ const cartSchema = new mongoose.Schema({
     unique: true
   },
   items: [cartItemSchema],
+  subTotal: { 
+    type: Number, 
+    default: 0 
+  },
+  discountCode: { 
+    type: String, 
+    default: null 
+  },
+  discountAmount: { 
+    type: Number, 
+    default: 0 
+  },
   totalAmount: {
     type: Number,
     default: 0
+  },
+  finalTotal: { 
+    type: Number, 
+    default: 0 
   }
 }, {
   timestamps: true
@@ -38,4 +54,6 @@ cartSchema.pre('save', function(next) {
   next();
 });
 
-module.exports = mongoose.model('Cart', cartSchema);
+const Cart = mongoose.model('Cart', cartSchema);
+
+module.exports = Cart;
