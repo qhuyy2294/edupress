@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary-color: #ec4899;
+  --danger-color: #ef4444;
+  --text-main: #111827;
+  --text-secondary: #6b7280;
+  --bg-page: #f9fafb;
+  --bg-card: #ffffff;
+  --border-color: #e5e7eb;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.course-review-page {
+  min-height: 100vh;
+  background-color: var(--bg-page);
+  padding: 3rem 1rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-main);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.review-form-wrapper {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
+  transition: var(--transition);
+}
+
+.btn-back:hover {
+  color: var(--primary-color);
+  transform: translateX(-4px);
+}
+
+.course-info-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: var(--bg-card);
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.course-info-header:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.course-thumb-small {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.course-info-header h2 {
+  margin: 0 0 0.25rem 0;
+  color: var(--text-main);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.course-instructor {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.review-form-card {
+  background-color: var(--bg-card);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(0,0,0,0.02);
+}
+
+.form-title {
+  color: var(--text-main);
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: -0.025em;
+}
+
+.form-group01 {
+  margin-bottom: 2rem;
+}
+
+.form-label01 {
+  display: block;
+  color: var(--text-main);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+/* Star Rating */
+.star-rating-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #fdfaff;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border-color);
+}
+
+.star-button {
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 0;
+  line-height: 1;
+  color: #d1d5db; 
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+}
+
+.star-button.active {
+  color: transparent;
+  text-shadow: 0 0 0 #fbbf24;
+}
+
+.star-button:hover {
+  transform: scale(1.2);
+}
+
+.rating-text {
+  display: block;
+  text-align: center;
+  margin-top: 0.5rem;
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 600;
+  min-height: 1.5rem;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text-main);
+  background-color: #f9fafb;
+  resize: vertical;
+  min-height: 160px;
+  transition: var(--transition);
+}
+
+.form-textarea:hover {
+  background-color: #fff;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.form-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.form-actions01 {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-cancel01,
+.btn-delete01,
+.btn-submit01 {
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-cancel01 {
+  background-color: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-cancel01:hover {
+  background-color: var(--danger-color);
+  color: #ffffff;
+}
+
+.btn-delete01 {
+  background-color: #fee2e2;
+  color: var(--danger-color);
+  margin-right: auto;
+}
+
+.btn-delete01:hover {
+  background-color: #fecaca;
+  transform: translateY(-1px);
+}
+
+.btn-submit01 {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #4338ca 100%);
+  color: white;
+  min-width: 140px;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+}
+
+.btn-submit01:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+  filter: brightness(1.1);
+}
+
+.btn-submit01:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .course-review-page {
+    padding: 1rem;
+  }
+
+  .review-form-card {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  .course-info-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .course-thumb-small {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+
+  .course-info-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .star-rating-input {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .star-button {
+    font-size: 2.2rem;
+  }
+  
+  .rating-text {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .form-actions01 {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .btn-submit01,
+  .btn-delete01,
+  .btn-cancel01 {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .btn-delete01 {
+    margin-right: 0;
+  }
+}

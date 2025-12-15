@@ -1,0 +1,218 @@
+
+
+.footer {
+  background-color: #1a202c; 
+  color: #e2e8f0;
+  padding: 4rem 0 2rem; 
+  margin-top: auto;
+  font-family: 'Inter', sans-serif; 
+  position: relative;
+  overflow: hidden; 
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle at 10% 20%, rgba(200, 200, 200, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 90% 80%, rgba(200, 200, 200, 0.05) 0%, transparent 50%);
+  z-index: 0;
+  pointer-events: none; /* Đảm bảo các tương tác click vẫn hoạt động */
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2.5rem; /* Tăng padding ngang */
+  display: grid;
+  /* Điều chỉnh minmax cho các cột linh hoạt */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: 2.5rem; 
+  position: relative; 
+  z-index: 1;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-section h3 {
+  color: #fff; 
+  margin-bottom: 1.2rem;
+  font-size: 1.8rem; 
+  font-weight: 700;
+  background: linear-gradient(
+    45deg,
+    #4a90e2,
+    #8e44ad
+  ); /* Gradient màu sắc cho logo/tên chính */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
+}
+
+.footer-section h4 {
+  color: #fff; 
+  margin-bottom: 1.2rem;
+  font-size: 1.2rem; 
+  font-weight: 600; 
+  position: relative;
+}
+
+/* Gạch chân tinh tế dưới tiêu đề phụ */
+/* .footer-section h4::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 40px; 
+  height: 3px;
+  background-color: #4a90e2; 
+  border-radius: 2px;
+} */
+
+
+.footer-section p {
+  color: #a0aec0; 
+  line-height: 1.7; 
+  font-size: 0.95rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.8rem; 
+}
+
+.footer-section ul li a {
+  color: #a0aec0;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease; 
+  font-size: 0.95rem;
+  display: inline-block; 
+}
+
+.footer-section ul li a:hover {
+  color: #4a90e2; 
+  transform: translateX(5px); 
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.social-links a {
+  color: #a0aec0; 
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease, border-color 0.3s ease, background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border: 1px solid #a0aec0;
+  border-radius: 50%;
+  font-size: 0; 
+}
+
+.social-links a:hover {
+  color: #4a90e2; 
+  transform: translateY(-3px);
+  border-color: #4a90e2;
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);
+  background-color: rgba(74, 144, 226, 0.1);
+}
+
+
+.social-links a svg { 
+  font-size: 1rem; 
+  color: inherit; /* Kế thừa màu từ thẻ a cha */
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 2rem 0 1rem;
+  margin-top: 3rem;
+  border-top: 1px solid #2d3748;
+  color: #718096;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 992px) {
+  .footer-container {
+    padding: 0 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .footer-section h3,
+  .footer-section h4 {
+    text-align: center;
+    width: 100%;
+  }
+
+  .footer-section h4::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .social-links {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .footer-section ul {
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  .footer-section ul li a:hover {
+    transform: none;
+  }
+
+  .social-links a {
+    width: 40px;
+    height: 40px;
+  }
+  .social-links a svg { /* Icon trong mobile */
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 3rem 0 1rem;
+  }
+  .footer-container {
+    padding: 0 1rem;
+  }
+  .footer-section h3 {
+    font-size: 1.5rem;
+  }
+  .footer-section h4 {
+    font-size: 1.1rem;
+  }
+  .footer-bottom {
+    padding: 1.5rem 0 0.5rem;
+    margin-top: 2rem;
+  }
+}

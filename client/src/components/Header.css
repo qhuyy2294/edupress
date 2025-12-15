@@ -1,0 +1,316 @@
+.header {
+  background-color: #ffffff;
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: sticky; /* Giữ cố định khi cuộn trang */
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #f0f0f0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.header-container {
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+  /* padding: 0 2rem; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- Logo --- */
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  z-index: 1002; /* Luôn nổi lên trên */
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #3498db, #8e44ad);
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link {
+  position: relative;
+  color: #555;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.5rem 0.2rem;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Hiệu ứng gạch chân (Chỉ hiện ở Desktop) */
+.nav-link::after {
+  content: ''; /* Theo chiều dài của nội dung */
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #3498db;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.nav-link:hover {
+  color: #3498db;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Cart Link with Badge */
+.cart-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #f44336;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* --- Buttons --- */
+.btn01 {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* Tránh vỡ nút */
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  color: white;
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, #2980b9, #3498db);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+}
+
+.btn-logout {
+  background-color: #ffeaea;
+  color: #e74c3c;
+  margin-left: 0.5rem;
+}
+
+.btn-logout:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.user-greeting {
+  color: #666;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-left: 1rem;
+}
+
+/* Nút Hamburger */
+.mobile-menu-btn {
+  display: none; /* Ẩn mặc định, chỉ hiện trên mobile */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #2c3e50;
+  transition: transform 0.2s;
+}
+
+.mobile-menu-btn:active {
+  transform: scale(0.9);
+}
+
+.mobile-menu-btn svg {
+  width: 32px;
+  height: 32px;
+}
+
+.close-menu-btn {
+  display: none;
+}
+
+.nav-overlay {
+  display: none;
+}
+
+.mobile-user-info {
+  display: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  
+  .header-container {
+    padding: 0 1.5rem;
+    flex-direction: row; 
+    justify-content: space-between;
+  }
+
+  /* Hiện nút Hamburger */
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background-color: #ffffff;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 5rem 1.5rem 2rem 1.5rem;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%); /* Ẩn sang trái */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+    overflow-y: auto; /* Cho phép cuộn nếu menu dài */
+    gap: 0;
+  }
+
+  .nav.active {
+    transform: translateX(0); 
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .nav-link::after {
+    display: none;
+  }
+
+  .nav-link:hover {
+    color: #3498db;
+    background-color: #f8f9fa; 
+    padding-left: 10px;
+    transform: none;
+  }
+
+  .nav .btn01 {
+    width: 100%;
+    margin-top: 1rem;
+    justify-content: center;
+    box-shadow: none;
+    border-radius: 8px;
+  }
+  
+  .btn-logout {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    background-color: #fceceb;
+  }
+
+  .close-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: #f1f3f5;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.2s;
+  }
+  
+  .close-menu-btn:hover {
+    background: #e9ecef;
+    color: #e74c3c;
+    transform: rotate(90deg);
+  }
+  
+  .close-menu-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Overlay (Lớp phủ tối) */
+  .nav-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+    backdrop-filter: blur(2px); /* Làm mờ nền đằng sau */
+  }
+
+  .nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  /* Ẩn lời chào trên header, hiện trong menu (mobile-only) */
+  .nav > .user-greeting {
+    display: none; 
+  }
+
+  /* Hiện dòng chào mới (mobile-only) */
+  .mobile-user-info {
+    display: block;
+    width: 100%;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px dashed #f0f0f0;
+    color: #3498db;
+    font-size: 1.1rem;
+  }
+}
