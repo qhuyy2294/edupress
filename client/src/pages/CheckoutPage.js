@@ -33,6 +33,9 @@ const CheckoutPage = () => {
         return;
       }
       setCart(data);
+      // if (data.discountCode) {
+      //   setDiscountCode(data.discountCode);
+      // }
     } catch (err) {
       setError(err.response?.data?.message || 'Không thể tải giỏ hàng');
     } finally {
@@ -44,36 +47,31 @@ const CheckoutPage = () => {
     try {
       setCreatingOrder(true);
       setError('');
-      const order = await orderService.createOrder(discountCode || null);
-      setCurrentOrder(order);
+      const order = await orderService.createOrder();
+      setCurrentOrder(order); 
       setShowQRModal(true);
     } catch (err) {
-      setError(err.response?.data?.message || 'Không thể tạo đơn hàng');
+      setError(err.response?.data?.message || 'Không thể tạo đơn hàng. Vui lòng thử lại.');
+      fetchCart();
     } finally {
       setCreatingOrder(false);
     }
   };
 
   const handleApplyDiscount = async () => {
+    // if (!discountCode.trim()) return;
     try {
       setApplyingDiscount(true);
       setError('');
-
-      console.log("1. Bắt đầu gọi API apply");
       await cartService.applyDiscountCode(discountCode);
-
-      console.log("2. Đã gọi API apply thành công, bắt đầu fetch lại giỏ hàng");
-      const result = await fetchCart();
-
-      console.log("Dữ liệu giỏ hàng mới:", result); 
-
+      await fetchCart(); // Cập nhật lại UI ngay lập tức
     } catch (error) {
-      console.error("LỖI RỒI:", error);
       setError(error.response?.data?.message || 'Không thể áp dụng mã giảm giá');
+      fetchCart();
     } finally {
       setApplyingDiscount(false);
     }
-  }
+  };
 
   const handleConfirmPayment = async () => {
     try {
@@ -99,7 +97,7 @@ const CheckoutPage = () => {
     }
   };
 
-  if (loading) return <Loader />;
+  if (loading && !cart) return <Loader />;
 
   return (
     <div className="checkout-page">
@@ -118,8 +116,8 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      {error && <Message type="error">{error}</Message>}
-      {success && <Message type="success">{success}</Message>}
+      {/* {error && <Message type="error">{error}</Message>}
+      {success && <Message type="success">{success}</Message>} */}
 
       <div className="checkout-content">
         <div className="order-summary">
@@ -141,7 +139,7 @@ const CheckoutPage = () => {
             <div className="discount-input-group">
               <input
                 type="text"
-                placeholder="Nhập mã giảm giá (nếu có)"
+                placeholder="Nhập mã giảm giá"
                 value={discountCode}
                 onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
               />
@@ -154,26 +152,27 @@ const CheckoutPage = () => {
                 {applyingDiscount ? 'Đang kiểm tra...' : 'Áp dụng'}
               </button>
             </div>
-            {discountCode && (
+            {/* {discountCode && (
               <div className="discount-applied">
                 Mã giảm giá sẽ được áp dụng khi tạo đơn hàng
               </div>
-            )}
+            )} */}
           </div>
 
           <div className="order-total">
             <div className="total-row">
               <span>Tạm tính:</span>
-              <span>{cart?.totalAmount.toLocaleString('vi-VN')} ₫</span>
+              <span>{cart?.subTotal?.toLocaleString('vi-VN')} ₫</span>
             </div>
             {cart?.discountAmount > 0 && (
               <div className="discount-applied" style={{color: 'green'}}>
-                Đã áp dụng mã: -{cart.discountAmount.toLocaleString()}đ
+                <span>Giảm giá ({cart.discountCode}):</span>
+                <span>-{cart.discountAmount.toLocaleString('vi-VN')} ₫</span>
               </div>
             )}
             <div className="total-row final">
               <span>Tổng cộng:</span>
-              <span>{cart?.totalAmount.toLocaleString('vi-VN')} ₫</span>
+              <span>{cart?.finalTotal.toLocaleString('vi-VN')} ₫</span>
             </div>
           </div>
         </div>

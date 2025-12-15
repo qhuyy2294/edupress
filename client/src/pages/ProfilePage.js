@@ -150,14 +150,14 @@ const ProfilePage = () => {
                 <h2>{user.fullName}</h2>
                 <p className="user-email">{user.email}</p>
                 <span className={`user-role role-${user.role}`}>
-                  {user.role === 'customer' && '🎓 Học viên'}
-                  {user.role === 'provider' && '👨‍🏫 Nhà cung cấp'}
-                  {user.role === 'admin' && '👨‍💼 Quản lý'}
+                  {user.role === 'customer' && 'Học viên'}
+                  {user.role === 'provider' && 'Nhà cung cấp'}
+                  {user.role === 'admin' && 'Quản lý'}
                 </span>
                 <span className={`user-status status-${user.status}`}>
-                  {user.status === 'active' && '✅ Kích hoạt'}
-                  {user.status === 'pending_provider' && '⏳ Đang chờ phê duyệt của nhà cung cấp'}
-                  {user.status === 'inactive' && '❌ Không hoạt động'}
+                  {user.status === 'active' && 'Hoạt động'}
+                  {user.status === 'pending_provider' && 'Đang chờ phê duyệt của nhà cung cấp'}
+                  {user.status === 'inactive' && 'Không hoạt động'}
                 </span>
               </div>
             </div>
@@ -268,7 +268,7 @@ const ProfilePage = () => {
           {/* Danger Zone */}
           {user.role !== 'admin' && (
             <div className="danger-zone-card">
-              <h3>⚠️ Danger Zone</h3>
+              <h3> <span></span> Danger Zone</h3>
               <p>
                 Một khi bạn đã xóa tài khoản, bạn sẽ không thể quay lại. Tài khoản của bạn sẽ bị vô hiệu hóa và bạn sẽ mất quyền truy cập vào tất cả các khóa học đã đăng ký.
               </p>

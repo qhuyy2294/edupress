@@ -5,6 +5,9 @@ const API_URL = 'http://localhost:5000/api/orders';
 // Get auth config
 const getConfig = () => {
   const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No authentication token found')
+  }
   return {
     headers: {
       Authorization: `Bearer ${token}`
@@ -13,9 +16,17 @@ const getConfig = () => {
 };
 
 // Create order from cart
-export const createOrder = async (discountCode = null) => {
-  const response = await axios.post(API_URL, { discountCode }, getConfig());
-  return response.data;
+export const createOrder = async () => {
+  try {
+    const response = await axios.post(`${API_URL}/create`, {}, getConfig());
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
+    throw error;
+  }
 };
 
 // Get user's orders
