@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaCheckCircle, FaShoppingCart, FaQrcode, FaTimes } from 'react-icons/fa';
+import { FaCheckCircle, FaShoppingCart, FaQrcode, FaTimes, FaTimesCircle } from 'react-icons/fa';
 import cartService from '../services/cartService';
 import orderService from '../services/orderService';
 import Loader from '../components/Loader';
@@ -68,6 +68,19 @@ const CheckoutPage = () => {
     } catch (error) {
       setError(error.response?.data?.message || 'Không thể áp dụng mã giảm giá');
       fetchCart();
+    } finally {
+      setApplyingDiscount(false);
+    }
+  };
+
+  const handleRemoveDiscount = async () => {
+    try {
+      setApplyingDiscount(true);
+      setDiscountCode(''); // Xóa input
+      await cartService.applyDiscountCode('');
+      await fetchCart();
+    } catch (error) {
+      console.error(error);
     } finally {
       setApplyingDiscount(false);
     }
@@ -144,10 +157,8 @@ const CheckoutPage = () => {
                 onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
               />
               <button
-                // onClick={() => setApplyingDiscount(true)}
-                // disabled={!discountCode || applyingDiscount}
                 onClick={handleApplyDiscount}
-                disabled={!discountCode.trim() || applyingDiscount}
+                disabled={!discountCode || applyingDiscount}
               >
                 {applyingDiscount ? 'Đang kiểm tra...' : 'Áp dụng'}
               </button>
@@ -165,9 +176,18 @@ const CheckoutPage = () => {
               <span>{cart?.subTotal?.toLocaleString('vi-VN')} ₫</span>
             </div>
             {cart?.discountAmount > 0 && (
-              <div className="discount-applied" style={{color: 'green'}}>
-                <span>Giảm giá ({cart.discountCode}):</span>
-                <span>-{cart.discountAmount.toLocaleString('vi-VN')} ₫</span>
+              <div className="discount-applied">
+                <div style={{color: '#2e7d32'}}>
+                  <span>Giảm giá ({cart.discountCode}):</span>
+                  <span className="discount-amount">-{cart.discountAmount.toLocaleString('vi-VN')} ₫</span>
+                </div>
+                <button
+                  className="btn-remove-discount"
+                  onClick={handleRemoveDiscount}
+                  disabled={applyingDiscount}
+                >
+                  {applyingDiscount ? '...' : 'Hủy'}
+                </button>
               </div>
             )}
             <div className="total-row final">

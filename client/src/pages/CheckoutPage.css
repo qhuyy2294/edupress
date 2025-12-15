@@ -131,6 +131,18 @@
   justify-content: space-between;
   align-items: center;
 }
+.discount-amount {
+  margin-left: 514px;
+}
+
+.btn-remove-discount {
+  margin-left: 10px;
+  border: none;
+  background: transparent;
+  color: #d9534f; 
+  font-size: 1em;
+  cursor: pointer;
+}
 
 .order-total {
   border-top: 2px solid #ddd;
