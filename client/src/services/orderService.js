@@ -18,8 +18,9 @@ const getConfig = () => {
 // Create order from cart
 export const createOrder = async () => {
   try {
-    const response = await axios.post(`${API_URL}/create`, {}, getConfig());
-    return response.data;
+    const response = await axios.post(`${API_URL}`, {}, getConfig());
+    // Trả về trực tiếp đối tượng đơn hàng đã tạo.
+    return response.data.order || response.data;
   } catch (error) {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
@@ -44,6 +45,12 @@ export const getOrderById = async (orderId) => {
 // Mark order as paid
 export const markOrderPaid = async (orderId) => {
   const response = await axios.put(`${API_URL}/${orderId}/paid`, {}, getConfig());
+  return response.data;
+};
+
+// Cancel pending order
+export const cancelOrder = async (orderId) => {
+  const response = await axios.delete(`${API_URL}/${orderId}`, getConfig());
   return response.data;
 };
 
@@ -77,6 +84,7 @@ const orderService = {
   getUserOrders,
   getOrderById,
   markOrderPaid,
+  cancelOrder,
   getAllOrders,
   approveOrder,
   rejectOrder,

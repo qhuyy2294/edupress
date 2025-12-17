@@ -8,7 +8,8 @@ const {
   getAllOrders,
   approveOrder,
   rejectOrder,
-  getRevenueStats
+  getRevenueStats,
+  cancelOrder
 } = require('../controllers/orderController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -18,6 +19,7 @@ router.get('/', protect, getUserOrders);
 router.get('/revenue/stats', protect, authorize('admin', 'provider'), getRevenueStats);
 router.get('/:id', protect, getOrderById);
 router.put('/:id/paid', protect, markOrderPaid);
+router.delete('/:id', protect, cancelOrder);
 
 // Admin routes
 router.get('/admin/all', protect, authorize('admin'), getAllOrders);

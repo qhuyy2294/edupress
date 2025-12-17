@@ -105,8 +105,12 @@ const CheckoutPage = () => {
 
   const closeModal = () => {
     if (window.confirm('Bạn chưa xác nhận thanh toán. Bạn có chắc muốn đóng?')) {
+      if (currentOrder?._id && currentOrder?.status === 'pending') {
+        orderService.cancelOrder(currentOrder._id).catch(() => {});
+      }
       setShowQRModal(false);
-      navigate('/orders');
+      // navigate('/orders');
+      setCurrentOrder(null);
     }
   };
 
@@ -129,8 +133,8 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      {/* {error && <Message type="error">{error}</Message>}
-      {success && <Message type="success">{success}</Message>} */}
+      {error && <Message type="error">{error}</Message>}
+      {success && <Message type="success">{success}</Message>}
 
       <div className="checkout-content">
         <div className="order-summary">

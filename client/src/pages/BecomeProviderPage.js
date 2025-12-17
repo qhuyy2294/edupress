@@ -12,6 +12,7 @@ const BecomeProviderPage = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [pendingRequested, setPendingRequested] = useState(false);
 
   // Check if already provider or pending
   if (user?.role === 'provider') {
@@ -31,7 +32,7 @@ const BecomeProviderPage = () => {
     );
   }
 
-  if (user?.status === 'pending_provider') {
+  if (user?.status === 'pending_provider' || pendingRequested) {
     return (
       <div className="become-provider-page">
         <div className="container">
@@ -62,10 +63,8 @@ const BecomeProviderPage = () => {
       const response = await api.post('/users/request-provider');
 
       if (response.data.success) {
-        setSuccess(response.data.message);
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        setSuccess('Đang chờ phê duyệt');
+        setPendingRequested(true);
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Không thể gửi yêu cầu');

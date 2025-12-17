@@ -141,7 +141,7 @@ exports.createOrder = async (req, res) => {
     }
 
     // Tạo Order lấy toàn bộ số liệu tiền từ Cart sang Order
-    const newOrder = await orderModel.create({
+    const newOrder = await Order.create({
       user: userId,
       courses: cart.items.map(item => ({
         course: item.course._id,
@@ -155,13 +155,6 @@ exports.createOrder = async (req, res) => {
       status: 'pending',
       paymentNote: `ORDER_${Date.now()}`
     });
-
-    cart.items = [];
-    cart.subTotal = 0;
-    cart.discountCode = null;
-    cart.discountAmount = 0;
-    cart.finalTotal = 0;
-    await cart.save();
 
     return res.status(201).json({ 
       message: 'Tạo đơn hàng thành công', 
@@ -182,6 +175,7 @@ exports.getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id })
       .populate('courses.course')
+      .populate('courses.provider', 'fullName email')
       .sort({ createdAt: -1 });
 
     res.json(orders);
@@ -255,6 +249,33 @@ exports.markOrderPaid = async (req, res) => {
   }
 };
 
+// @desc    Cancel pending order (user)
+// @route   DELETE /api/orders/:id
+// @access  Private (owner only)
+exports.cancelOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: 'Đơn hàng không tồn tại' });
+    }
+
+    if (order.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Không có quyền hủy đơn hàng này' });
+    }
+
+    if (order.status !== 'pending') {
+      return res.status(400).json({ message: 'Chỉ hủy được đơn hàng đang chờ xử lý' });
+    }
+
+    await order.deleteOne();
+
+    res.json({ message: 'Đã hủy đơn hàng' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // @desc    Get all orders (Admin)
 // @route   GET /api/orders/admin/all
 // @access  Private/Admin
@@ -265,6 +286,7 @@ exports.getAllOrders = async (req, res) => {
 
     const orders = await Order.find(filter)
       .populate('user courses.course approvedBy')
+      .populate('courses.provider', 'fullName email')
       .sort({ createdAt: -1 });
 
     res.json(orders);

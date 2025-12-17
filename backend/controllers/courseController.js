@@ -1,8 +1,3 @@
-/**
- * Course Controller
- * Handles course CRUD operations
- */
-
 const asyncHandler = require('express-async-handler');
 const Course = require('../models/courseModel');
 const User = require('../models/userModel');
@@ -38,7 +33,7 @@ const createCourse = asyncHandler(async (req, res) => {
     thumbnailUrl,
     category,
     provider: req.user._id,
-    status: 'pending', // Requires admin approval
+    status: 'pending',
   });
 
   res.status(201).json({
@@ -54,7 +49,6 @@ const createCourse = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const getAllCourses = asyncHandler(async (req, res) => {
-  // Query parameters for filtering and searching
   const { search, category, minPrice, maxPrice, sort } = req.query;
 
   let query = { status: 'approved' };
@@ -76,7 +70,7 @@ const getAllCourses = asyncHandler(async (req, res) => {
     if (maxPrice) query.price.$lte = Number(maxPrice);
   }
 
-  // Sorting
+  // Sắp xếp
   let sortOption = {};
   switch (sort) {
     case 'price_asc':
@@ -197,7 +191,7 @@ const updateCourse = asyncHandler(async (req, res) => {
 /**
  * @desc    Delete course
  * @route   DELETE /api/courses/:id
- * @access  Private (Provider - owner only)
+ * @access  Private (Provider owner or Admin)
  */
 const deleteCourse = asyncHandler(async (req, res) => {
   const course = await Course.findById(req.params.id);
@@ -207,8 +201,11 @@ const deleteCourse = asyncHandler(async (req, res) => {
     throw new Error('Không tìm thấy khóa học');
   }
 
-  // Check if user is the course owner
-  if (course.provider.toString() !== req.user._id.toString()) {
+  // Allow owner (provider) or admin to delete
+  const isOwner = course.provider.toString() === req.user._id.toString();
+  const isAdmin = req.user.role === 'admin';
+
+  if (!isOwner && !isAdmin) {
     res.status(403);
     throw new Error('Bạn không được phép xóa khóa học này');
   }
@@ -228,7 +225,7 @@ const deleteCourse = asyncHandler(async (req, res) => {
  */
 const getMyCourses = asyncHandler(async (req, res) => {
   const courses = await Course.find({ provider: req.user._id }).sort({
-    createdAt: -1,
+    createdAt: -1, 
   });
 
   res.json({

@@ -32,7 +32,7 @@ router.get('/:id', optionalProtect, getCourseById);
 // Protected routes for course management
 router.post('/', protect, authorize('provider'), createCourse);
 router.put('/:id', protect, authorize('provider'), updateCourse);
-router.delete('/:id', protect, authorize('provider'), deleteCourse);
+router.delete('/:id', protect, authorize('provider', 'admin'), deleteCourse);
 
 // Enrollment route
 router.post('/:id/enroll', protect, authorize('customer'), enrollInCourse);

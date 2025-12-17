@@ -159,19 +159,19 @@ exports.applyDiscountCode = async (req, res) => {
     // Check mã có hợp lệ không
     if (!discount) {
       return res.status(400).json({
-        message: 'Mã GIẢM GIÁ không tồn tại' 
+        message: 'Mã giảm giá không đúng. Vui lòng nhập lại!' 
       }); 
     }
     // Check mã có còn thời hạn không
     if (discount.validUntil < new Date()) {
       return res.status(400).json({
-        message: 'Mã GIẢM GIÁ đã hết hạn' 
+        message: 'Mã giảm giá đã hết hạn' 
       });
     } 
     // Check mã có còn lượt sử dụng không
     if (discount.maxUses && discount.currentUses >= discount.maxUses) {
       return res.status(400).json({
-        message: 'Mã GIẢM GIÁ đã hết lượt dùng' 
+        message: 'Mã giảm giá đã hết lượt dùng' 
       });
     }
 

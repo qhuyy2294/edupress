@@ -180,12 +180,12 @@ const OrderManagementPage = () => {
               <div className="admin-order-header">
                 <div className="order-user-info">
                   <img
-                    src={order.user?.avatar || `https://ui-avatars.com/api/?name=${order.user?.name}&background=random`}
-                    alt={order.user?.name}
+                    src={order.user?.avatarUrl || `https://ui-avatars.com/api/?name=${order.user?.fullName || order.user?.email || 'User'}&background=random`}
+                    alt={order.user?.fullName || order.user?.email}
                     className="user-avatar"
                   />
                   <div className="user-details">
-                    <h4>{order.user?.name || 'N/A'}</h4>
+                    <h4>{order.user?.fullName || order.user?.email || 'N/A'}</h4>
                     <p>{order.user?.email || 'N/A'}</p>
                   </div>
                 </div>
@@ -218,7 +218,7 @@ const OrderManagementPage = () => {
                           {item.course?.title || 'Khóa học'}
                         </div>
                         <div className="course-item-provider">
-                          Provider: {item.provider?.name || item.course?.provider?.name || 'N/A'}
+                          Provider: {item.provider?.fullName || item.course?.provider?.fullName || 'N/A'}
                         </div>
                       </div>
                       <span className="course-item-price">
