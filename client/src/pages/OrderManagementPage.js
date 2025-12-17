@@ -52,8 +52,15 @@ const OrderManagementPage = () => {
       setProcessingId(orderId);
       setError('');
       await orderService.approveOrder(orderId);
+      
+      // Cập nhật state ngay lập tức
+      setOrders(orders.map(order => 
+        order._id === orderId 
+          ? { ...order, status: 'approved', approvedAt: new Date() }
+          : order
+      ));
+      
       setSuccess('Đã duyệt đơn hàng thành công!');
-      fetchOrders();
     } catch (err) {
       setError(err.response?.data?.message || 'Không thể duyệt đơn hàng');
     } finally {
@@ -77,10 +84,17 @@ const OrderManagementPage = () => {
       setProcessingId(rejectOrderId);
       setError('');
       await orderService.rejectOrder(rejectOrderId, rejectReason);
+      
+      // Cập nhật state ngay lập tức
+      setOrders(orders.map(order => 
+        order._id === rejectOrderId 
+          ? { ...order, status: 'rejected', rejectedReason: rejectReason }
+          : order
+      ));
+      
       setSuccess('Đã từ chối đơn hàng');
       setShowRejectModal(false);
       setRejectOrderId(null);
-      fetchOrders();
     } catch (err) {
       setError(err.response?.data?.message || 'Không thể từ chối đơn hàng');
     } finally {
@@ -245,6 +259,7 @@ const OrderManagementPage = () => {
                     className="btn-reject"
                     onClick={() => openRejectModal(order._id)}
                     disabled={processingId === order._id}
+                    title="Từ chối đơn hàng này"
                   >
                     <FaTimesCircle /> {processingId === order._id ? 'Đang xử lý...' : 'Từ chối'}
                   </button>
@@ -252,6 +267,7 @@ const OrderManagementPage = () => {
                     className="btn-approve"
                     onClick={() => handleApprove(order._id)}
                     disabled={processingId === order._id}
+                    title="Duyệt đơn hàng này"
                   >
                     <FaCheckCircle /> {processingId === order._id ? 'Đang xử lý...' : 'Duyệt đơn hàng'}
                   </button>

@@ -390,23 +390,27 @@ exports.rejectOrder = async (req, res) => {
       return res.status(404).json({ message: 'Đơn hàng không tồn tại' });
     }
 
-    if (order.status !== 'pending') {
-      return res.status(400).json({ message: 'Đơn hàng đã được xử lý' });
+    if (order.status !== 'pending' && order.status !== 'rejected') {
+      return res.status(400).json({ message: 'Không thể từ chối đơn hàng ở trạng thái hiện tại' });
     }
 
+    const wasAlreadyRejected = order.status === 'rejected';
+    
     order.status = 'rejected';
     order.approvedBy = req.user._id;
     order.rejectedReason = reason || 'Không nhận được thanh toán';
     await order.save();
 
-    // Notify user
-    await Notification.create({
-      user: order.user._id,
-      title: 'Đơn hàng bị từ chối',
-      message: `Đơn hàng #${order._id} bị từ chối. Lý do: ${order.rejectedReason}`,
-      type: 'error',
-      link: `/orders/${order._id}`
-    });
+    // Chỉ gửi notification nếu đơn hàng mới được từ chối lần đầu
+    if (!wasAlreadyRejected) {
+      await Notification.create({
+        user: order.user._id,
+        title: 'Đơn hàng bị từ chối',
+        message: `Đơn hàng #${order._id} bị từ chối. Lý do: ${order.rejectedReason}`,
+        type: 'system',
+        link: `/orders/${order._id}`
+      });
+    }
 
     res.json({ message: 'Đã từ chối đơn hàng', order });
   } catch (error) {
