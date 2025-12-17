@@ -153,8 +153,17 @@ exports.createOrder = async (req, res) => {
       discountAmount: cart.discountAmount, // Tiền giảm
       finalAmount: cart.finalTotal,      // Tiền khách phải trả
       status: 'pending',
-      paymentNote: `ORDER_${Date.now()}`
+      paymentNote: `Edupress_${Date.now()}`
     });
+
+    // Clear cart after creating order
+    cart.items = [];
+    cart.subTotal = 0;
+    cart.discountCode = null;
+    cart.discountAmount = 0;
+    cart.totalAmount = 0;
+    cart.finalTotal = 0;
+    await cart.save();
 
     return res.status(201).json({ 
       message: 'Tạo đơn hàng thành công', 

@@ -101,7 +101,7 @@ const CartPage = () => {
                   <div>
                     <h3 className="cart-item-title">{item.course.title}</h3>
                     <p className="cart-item-provider">
-                      Giảng viên: {item.course.provider?.name || 'N/A'}
+                      Giảng viên: {item.course?.provider?.fullName || 'N/A'}
                     </p>
                     <span className="cart-item-category">
                       {item.course.category}

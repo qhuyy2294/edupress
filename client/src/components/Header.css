@@ -1,14 +1,23 @@
 .header {
-  background-color: #ffffff;
+  background-color: transparent;
   padding: 0.5rem 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  position: sticky; /* Giữ cố định khi cuộn trang */
+  box-shadow: none;
+  position: sticky; /* giữ cố định khi cuộn trang */
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid transparent;
   height: 80px;
   display: flex;
   align-items: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Chuyển động mượt hơn */
+}
+
+.header.scrolled {
+  background-color: rgba(255, 255, 255, 0.85); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .header-container {
@@ -21,7 +30,6 @@
   align-items: center;
 }
 
-/* --- Logo --- */
 .logo {
   text-decoration: none;
   display: flex;
@@ -57,7 +65,7 @@
   transition: color 0.3s ease;
 }
 
-/* Hiệu ứng gạch chân (Chỉ hiện ở Desktop) */
+/* Hiệu ứng gạch chân (Desktop) */
 .nav-link::after {
   content: ''; /* Theo chiều dài của nội dung */
   position: absolute;
@@ -80,7 +88,6 @@
   transform-origin: bottom left;
 }
 
-/* Cart Link with Badge */
 .cart-link {
   display: flex;
   align-items: center;
@@ -102,7 +109,6 @@
   text-align: center;
 }
 
-/* --- Buttons --- */
 .btn01 {
   padding: 0.6rem 1.5rem;
   border: none;

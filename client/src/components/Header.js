@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaShoppingCart } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import cartService from '../services/cartService';
@@ -11,6 +11,32 @@ const Header = () => {
   
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+
+
+  // Effect for Handling Scroll and Path Changes:
+    // Hook này quản lý các hiệu ứng phụ liên quan đến việc cuộn và thay đổi đường dẫn.
+    useEffect(() => {
+        // Nếu không phải trang chủ, đặt navbar thành trạng thái đã cuộn ngay lập tức.
+        if (location.pathname !== '/') {
+            setIsScrolled(true);
+            return;
+        } else {
+            setIsScrolled(false);
+        }
+        // isScrolled(prev => location.pathname !== '/' ? true : prev)
+
+        // Hàm xử lý cuộn để cập nhật trạng thái isScrolled.
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+
+        // Thêm và xóa trình nghe sự kiện cuộn để tối ưu hóa hiệu suất.
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [location.pathname]); // Chạy lại hiệu ứng khi đường dẫn thay đổi.
+
 
   useEffect(() => {
     if (isAuthenticated && user?.role === 'customer') {
@@ -54,7 +80,7 @@ const Header = () => {
   };
 
   return (
-    <header className="header">
+    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
         
         <Link to="/" className="logo" onClick={closeMenu}>
@@ -75,7 +101,6 @@ const Header = () => {
       ></div>
 
         <nav className={`nav ${isMobileMenuOpen ? 'active' : ''}`}>
-          {/* Nút đóng menu (dấu X) bên trong sidebar */}
           <button className="close-menu-btn" onClick={closeMenu}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

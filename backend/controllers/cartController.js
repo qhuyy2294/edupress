@@ -2,14 +2,21 @@ const Cart = require('../models/cartModel');
 const Course = require('../models/courseModel');
 const Discount = require('../models/discountModel');
 const Enrollment = require('../models/enrollmentModel');
-const orderModel = require('../models/orderModel');
+
 
 // @desc    Get user's cart
 // @route   GET /api/cart
 // @access  Private
 exports.getCart = async (req, res) => {
   try {
-    let cart = await Cart.findOne({ user: req.user._id }).populate('items.course');
+    let cart = await Cart.findOne({ user: req.user._id })
+      .populate({
+        path: 'items.course',
+        populate: {
+          path: 'provider',
+          select: 'fullName'
+        }
+      });
     
     if (!cart) {
       cart = await Cart.create({ user: req.user._id, items: [] });
@@ -60,7 +67,7 @@ exports.addToCart = async (req, res) => {
 
     cart.subTotal = cart.items.reduce((total, item) => total + item.price, 0);
 
-    // Nếu chưa có mã giảm giá thì Giá cuối = Giá gốc
+    // Nếu chưa có mã giảm giá thì giá cuối = giá gốc
     if (!cart.discountCode) {
         cart.discountAmount = 0;
         cart.finalTotal = cart.subTotal;
@@ -68,7 +75,13 @@ exports.addToCart = async (req, res) => {
         cart.finalTotal = Math.max(0, cart.subTotal - (cart.discountAmount || 0));
     }
     await cart.save();
-    await cart.populate('items.course');
+    await cart.populate({
+      path: 'items.course',
+      populate: {
+        path: 'provider',
+        select: 'fullName'
+      }
+    });
 
     res.status(201).json(cart);
   } catch (error) {
@@ -90,7 +103,13 @@ exports.removeFromCart = async (req, res) => {
 
     cart.items = cart.items.filter(item => item.course.toString() !== courseId);
     await cart.save();
-    await cart.populate('items.course');
+    await cart.populate({
+      path: 'items.course',
+      populate: {
+        path: 'provider',
+        select: 'fullName'
+      }
+    });
 
     res.json(cart);
   } catch (error) {
@@ -137,7 +156,13 @@ exports.applyDiscountCode = async (req, res) => {
     const userId = req.user._id;
 
     // Lấy giỏ hàng
-    const cart = await Cart.findOne({ user: userId }).populate('items.course');
+    const cart = await Cart.findOne({ user: userId }).populate({
+      path: 'items.course',
+      populate: {
+        path: 'provider',
+        select: 'fullName'
+      }
+    });
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: 'Giỏ hàng trống' });
     }
