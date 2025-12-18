@@ -32,13 +32,13 @@ body {
 .admin-dashboard {
   min-height: 100vh;
   background-color: var(--bg-body);
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 
-.container {
+.container-admin-dash {
   max-width: 98%;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 4rem;
 }
 
 .dashboard-title {

@@ -1,14 +1,10 @@
-/**
- * CourseManagementPage Component
- * Admin page to manage all courses - view, search, filter, approve/reject
- */
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './CourseManagementPage.css';
+import { MdClass, MdPeople, MdStar } from 'react-icons/md';
 
 const CourseManagementPage = () => {
   const [courses, setCourses] = useState([]);
@@ -215,7 +211,7 @@ const CourseManagementPage = () => {
                 {course.thumbnailUrl ? (
                   <img src={course.thumbnailUrl} alt={course.title} />
                 ) : (
-                  <div className="image-placeholder">📚</div>
+                  <div className="image-placeholder"><MdClass /></div>
                 )}
                 <span className={`status-badge1 ${course.status}`}>
                   {course.status}
@@ -244,8 +240,8 @@ const CourseManagementPage = () => {
                 </div>
 
                 <div className="course-stats">
-                  <span>👥 {course.enrollmentCount || 0} học viên </span>
-                  <span>⭐ {course.averageRating?.toFixed(1) || 'N/A'}</span>
+                  <span><MdPeople className="stat-icon-1" /> {course.enrollmentCount || 0} học viên </span>
+                  <span><MdStar className="stat-icon-1 star" /> {course.averageRating?.toFixed(1) || 'N/A'}</span>
                 </div>
 
                 <div className="action-buttons">

@@ -138,7 +138,7 @@ const CourseReviewPage = () => {
 
   return (
     <div className="course-review-page">
-      <div className="container">
+      <div className="container-review">
         <div className="review-form-wrapper">
           <button
             className="btn-back"

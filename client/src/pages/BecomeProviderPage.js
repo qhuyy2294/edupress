@@ -17,7 +17,7 @@ const BecomeProviderPage = () => {
   if (user?.role === 'provider') {
     return (
       <div className="become-provider-page">
-        <div className="container center-content">
+        <div className="container-become-provider center-content">
           <div className="status-card success">
             <div className="status-icon"><FaCheckCircle /></div>
             <h2>Bạn đã là Nhà cung cấp!</h2>
@@ -34,7 +34,7 @@ const BecomeProviderPage = () => {
   if (user?.status === 'pending_provider' || pendingRequested) {
     return (
       <div className="become-provider-page">
-        <div className="container center-content">
+        <div className="container-become-provider center-content">
           <div className="status-card pending">
             <div className="status-icon"><FaHourglassHalf /></div>
             <h2>Yêu cầu đang chờ xử lý</h2>
@@ -70,7 +70,7 @@ const BecomeProviderPage = () => {
 
   return (
     <div className="become-provider-page">
-      <div className="container">
+      <div className="container-become-provider">
         <div className="page-header04">
           <h1>Trở thành Giảng viên</h1>
           <p>Chia sẻ kiến thức, truyền cảm hứng và tạo thu nhập thụ động bền vững.</p>

@@ -83,7 +83,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      <div className="container">
+      <div className="container-admin-dash">
         <h1 className="dashboard-title">Admin Dashboard</h1>
         <div className="quick-actions">
           <Link to="/admin/customers" className="action-btn">

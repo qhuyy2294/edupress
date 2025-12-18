@@ -164,19 +164,19 @@ const OrderManagementPage = () => {
           className={`filter-btn ${filter === 'pending' ? 'active' : ''}`}
           onClick={() => setFilter('pending')}
         >
-          <FaHourglass /> Chờ duyệt ({stats.pending})
+          <FaHourglass style={{marginRight: '2px'}} /> Chờ duyệt ({stats.pending})
         </button>
         <button
           className={`filter-btn ${filter === 'approved' ? 'active' : ''}`}
           onClick={() => setFilter('approved')}
         >
-          <FaCheckCircle /> Đã duyệt ({stats.approved})
+          <FaCheckCircle style={{marginRight: '2px'}} /> Đã duyệt ({stats.approved})
         </button>
         <button
           className={`filter-btn ${filter === 'rejected' ? 'active' : ''}`}
           onClick={() => setFilter('rejected')}
-        >
-          <FaTimesCircle /> Đã từ chối ({stats.rejected})
+        > 
+          <FaTimesCircle style={{marginRight: '2px'}} /> Đã từ chối ({stats.rejected})
         </button>
       </div>
 

@@ -84,7 +84,8 @@
 .page-header05 {
   display: flex;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  margin-top: -1rem;
   margin-left: 4rem;
   animation: fadeInDown 0.6s ease-out;
 }
@@ -97,7 +98,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  /* letter-spacing: -0.025em; */
+  letter-spacing: -0.025em;
 }
 
 .page-header05 p {
@@ -375,6 +376,16 @@
   gap: 0.4rem;
 }
 
+.stat-icon-1 { 
+  font-size: 1.1rem;
+  color: #4f46e5;
+  vertical-align: middle; 
+}
+
+.star { 
+  color: #fbbf24; 
+}
+
 .action-buttons {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(1px, 1fr));
@@ -407,8 +418,8 @@
   color: var(--text-main);
 }
 .btn-view1:hover {
-  background: #e2e8f0;
-  color: black;
+  background: #1559f8;
+  color: var(--card-bg);
 }
 
 .btn-approve2 {

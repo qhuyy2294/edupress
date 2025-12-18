@@ -91,7 +91,7 @@ const MyCoursesPage = () => {
 
   return (
     <div className="my-courses-page">
-      <div className="container">
+      <div className="container-my-course">
         <div className="page-header06">
           <div>
             <h1>
