@@ -241,13 +241,13 @@ const CreateCoursePage = () => {
               <div className="form-actions">
                 <button
                   type="button"
-                  className="btn-cancel"
+                  className="btn-cancel02"
                   onClick={() => navigate('/my-courses')}
                   disabled={loading}
                 >
                   Hủy
                 </button>
-                <button type="submit" className="btn-submit" disabled={loading}>
+                <button type="submit" className="btn-submit02" disabled={loading}>
                   {loading
                     ? 'Saving...'
                     : isEditMode

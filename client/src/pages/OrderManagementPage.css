@@ -318,7 +318,7 @@
   margin-top: 1rem;
 }
 
-.btn-cancel {
+.btn-cancel03 {
   flex: 1;
   padding: 0.75rem;
   background: white;
@@ -329,7 +329,7 @@
   font-weight: 600;
 }
 
-.btn-cancel:hover {
+.btn-cancel03:hover {
   background: #f5f5f5;
 }
 

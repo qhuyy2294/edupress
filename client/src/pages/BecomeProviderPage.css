@@ -14,6 +14,7 @@
   --radius-card: 24px;
 }
 
+
 .become-provider-page {
   min-height: 100vh;
   padding: 60px 0;
@@ -327,13 +328,14 @@
   align-items: center;
   min-height: 60vh;
 }
+
 .status-card {
   background: white;
   padding: 40px;
   border-radius: 20px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  max-width: 500px;
+  max-width: 450px;
 }
 .status-icon {
   font-size: 4rem;

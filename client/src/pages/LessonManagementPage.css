@@ -134,6 +134,8 @@
 .btn-cancel {
   background-color: #e9ecef;
   color: #495057;
+  height: 50px;
+  margin-top: 25px;
 }
 
 .btn-cancel:hover:not(:disabled) {

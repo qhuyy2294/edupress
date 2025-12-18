@@ -157,7 +157,7 @@ const LessonManagementPage = () => {
 
         <div className="page-header03">
           <div>
-            <h1>📝 Manage Lessons</h1>
+            <h1>Manage Lessons</h1>
             <p className="course-title02">{course?.title}</p>
           </div>
           <button className="btn-add-lesson" onClick={handleAddLesson}>
@@ -238,6 +238,9 @@ const LessonManagementPage = () => {
               </div>
 
               <div className="form-actions">
+                <button type="submit" className="btn-submit" disabled={submitting}>
+                  {submitting ? 'Saving...' : editingLesson ? 'Update' : 'Create'}
+                </button>
                 <button
                   type="button"
                   className="btn-cancel"
@@ -245,9 +248,6 @@ const LessonManagementPage = () => {
                   disabled={submitting}
                 >
                   Cancel
-                </button>
-                <button type="submit" className="btn-submit" disabled={submitting}>
-                  {submitting ? 'Saving...' : editingLesson ? 'Update' : 'Create'}
                 </button>
               </div>
             </form>
@@ -270,7 +270,7 @@ const LessonManagementPage = () => {
                     <h4>{lesson.title}</h4>
                     <p className="lesson-meta">
                       {lesson.duration} min
-                      {lesson.videoUrl && ' • Has video'}
+                      {lesson.videoUrl && 'Has video'}
                     </p>
                     {lesson.description && (
                       <p className="lesson-desc">{lesson.description}</p>

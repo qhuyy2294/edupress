@@ -303,7 +303,7 @@ const OrderManagementPage = () => {
             />
             <div className="reject-modal-actions">
               <button
-                className="btn-cancel"
+                className="btn-cancel03"
                 onClick={() => setShowRejectModal(false)}
               >
                 Hủy
