@@ -95,7 +95,7 @@ export default function Header() {
 
                   <li>
                     <Link className="dropdown-item" to="/notifications">
-                      🔔 Thông báo
+                      Thông báo
                     </Link>
                   </li>
 

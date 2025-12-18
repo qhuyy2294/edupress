@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaCheckCircle, FaHourglassHalf, FaMoneyBillWave, FaLayerGroup, FaUsers, FaChartLine, FaClock, FaGem, FaArrowLeft, FaArrowRight, FaStream } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import api from '../services/api';
-// import Message from '../components/Message';
 import './BecomeProviderPage.css';
 
 const BecomeProviderPage = () => {
@@ -14,17 +14,16 @@ const BecomeProviderPage = () => {
   const [error, setError] = useState('');
   const [pendingRequested, setPendingRequested] = useState(false);
 
-  // Check if already provider or pending
   if (user?.role === 'provider') {
     return (
       <div className="become-provider-page">
-        <div className="container">
+        <div className="container center-content">
           <div className="status-card success">
-            <div className="icon">✅</div>
-            <h2>Bạn đã là Nhà cung cấp rồi!</h2>
-            <p>Bắt đầu tạo và quản lý khóa học của bạn.</p>
+            <div className="status-icon"><FaCheckCircle /></div>
+            <h2>Bạn đã là Nhà cung cấp!</h2>
+            <p>Bắt đầu hành trình chia sẻ kiến thức của bạn ngay hôm nay.</p>
             <button onClick={() => navigate('/my-courses')} className="btn btn-primary">
-              Đi đến Khóa học của tôi
+              Đi đến Khóa học của tôi <FaArrowRight />
             </button>
           </div>
         </div>
@@ -35,14 +34,13 @@ const BecomeProviderPage = () => {
   if (user?.status === 'pending_provider' || pendingRequested) {
     return (
       <div className="become-provider-page">
-        <div className="container">
+        <div className="container center-content">
           <div className="status-card pending">
-            <div className="icon">⏳</div>
+            <div className="status-icon"><FaHourglassHalf /></div>
             <h2>Yêu cầu đang chờ xử lý</h2>
-            <p>Yêu cầu trở thành nhà cung cấp của bạn đang được nhóm quản trị của chúng tôi xem xét.</p>
-            <p>Bạn sẽ được thông báo khi yêu cầu của bạn được chấp thuận.</p>
+            <p>Hồ sơ của bạn đang được đội ngũ quản trị viên xem xét. <br/>Chúng tôi sẽ thông báo ngay khi có kết quả.</p>
             <button onClick={() => navigate('/')} className="btn btn-secondary">
-              Trở lại trang chủ
+              <FaArrowLeft /> Trở lại trang chủ
             </button>
           </div>
         </div>
@@ -51,17 +49,14 @@ const BecomeProviderPage = () => {
   }
 
   const handleSubmit = async () => {
-    if (!window.confirm('Bạn có chắc chắn muốn trở thành nhà cung cấp khóa học không? Việc này cần được quản trị viên phê duyệt..')) {
+    if (!window.confirm('Bạn có chắc chắn muốn gửi yêu cầu trở thành nhà cung cấp không?')) {
       return;
     }
-
     try {
       setLoading(true);
       setError('');
       setSuccess('');
-
       const response = await api.post('/users/request-provider');
-
       if (response.data.success) {
         setSuccess('Đang chờ phê duyệt');
         setPendingRequested(true);
@@ -77,111 +72,109 @@ const BecomeProviderPage = () => {
     <div className="become-provider-page">
       <div className="container">
         <div className="page-header04">
-          <h1>🎓 Trở thành nhà cung cấp khóa học</h1>
-          <p>Chia sẻ kiến ​​thức của bạn và kiếm tiền bằng cách tạo các khóa học trực tuyến</p>
+          <h1>Trở thành Giảng viên</h1>
+          <p>Chia sẻ kiến thức, truyền cảm hứng và tạo thu nhập thụ động bền vững.</p>
         </div>
 
-        {/* {error && <Message type="error">{error}</Message>}
-        {success && <Message type="success">{success}</Message>} */}
-
         <div className="content-grid">
-          {/* Benefits Section */}
-          <div className="benefits-card">
-            <h2>✨ Lợi ích của nhà cung cấp</h2>
+          <div className="content-card benefits-card">
+            <h2>Lợi ích tham gia</h2>
             <ul className="benefits-list">
               <li>
-                <span className="icon">💰</span>
+                <div className="icon-box"><FaMoneyBillWave /></div>
                 <div>
-                  <strong>Kiếm tiền</strong>
-                  <p>Được trả tiền cho mỗi học viên đăng ký khóa học của bạn</p>
+                  <strong>Thu nhập hấp dẫn</strong>
+                  <p>Nhận doanh thu chia sẻ cao trên mỗi lượt đăng ký khóa học.</p>
                 </div>
               </li>
               <li>
-                <span className="icon">📚</span>
+                <div className="icon-box"><FaLayerGroup /></div>
                 <div>
-                  <strong>Tạo khóa học không giới hạn</strong>
-                  <p>Chia sẻ chuyên môn của bạn về nhiều chủ đề</p>
+                  <strong>Không giới hạn khóa học</strong>
+                  <p>Tự do sáng tạo và xuất bản không giới hạn.</p>
                 </div>
               </li>
               <li>
-                <span className="icon">👥</span>
+                <div className="icon-box"><FaUsers /></div>
                 <div>
-                  <strong>Xây dựng đối tượng của bạn</strong>
-                  <p>Tiếp cận hàng ngàn sinh viên trên toàn thế giới</p>
+                  <strong>Mở rộng tầm ảnh hưởng</strong>
+                  <p>Tiếp cận hàng nghìn học viên tiềm năng trên toàn hệ thống.</p>
                 </div>
               </li>
               <li>
-                <span className="icon">📊</span>
+                <div className="icon-box"><FaChartLine /></div>
                 <div>
-                  <strong>Theo dõi thành công của bạn</strong>
-                  <p>Truy cập phân tích chi tiết và báo cáo doanh thu</p>
+                  <strong>Báo cáo chi tiết</strong>
+                  <p>Hệ thống phân tích doanh thu và hiệu quả giảng dạy trực quan.</p>
                 </div>
               </li>
               <li>
-                <span className="icon">🎯</span>
+                <div className="icon-box"><FaClock /></div>
                 <div>
-                  <strong>Lịch trình linh hoạt</strong>
-                  <p>Tạo và quản lý các khóa học theo tốc độ của riêng bạn</p>
+                  <strong>Linh hoạt thời gian</strong>
+                  <p>Làm chủ thời gian, giảng dạy bất cứ khi nào bạn muốn.</p>
                 </div>
               </li>
               <li>
-                <span className="icon">💎</span>
+                <div className="icon-box"><FaGem /></div>
                 <div>
-                  <strong>Tính năng cao cấp</strong>
-                  <p>Truy cập các công cụ quản lý khóa học nâng cao</p>
+                  <strong>Công cụ chuyên nghiệp</strong>
+                  <p>Hỗ trợ các công cụ tạo bài giảng, quiz và quản lý học viên.</p>
                 </div>
               </li>
             </ul>
           </div>
 
-          {/* Requirements Section */}
-          <div className="requirements-card">
-            <h2>📋 Yêu cầu</h2>
-            <div className="requirement-item">
-              <span className="check">✓</span>
-              <p>Tài khoản đang hoạt động và có uy tín tốt</p>
+          <div className="content-card">
+            <h2>Điều kiện cần thiết</h2>
+            <div className="req-list">
+              <div className="requirement-item">
+                <FaCheckCircle className="check-icon" />
+                <p>Tài khoản đã được xác thực email</p>
+              </div>
+              <div className="requirement-item">
+                <FaCheckCircle className="check-icon" />
+                <p>Có chuyên môn sâu về lĩnh vực giảng dạy</p>
+              </div>
+              <div className="requirement-item">
+                <FaCheckCircle className="check-icon" />
+                <p>Cam kết chất lượng nội dung chuẩn HD</p>
+              </div>
+              <div className="requirement-item">
+                <FaCheckCircle className="check-icon" />
+                <p>Tuân thủ chính sách cộng đồng</p>
+              </div>
+              <div className="requirement-item">
+                <FaCheckCircle className="check-icon" />
+                <p>Có tài khoản ngân hàng để nhận thanh toán</p>
+              </div>
             </div>
-            <div className="requirement-item">
-              <span className="check">✓</span>
-              <p>Chuyên môn trong môn học giảng dạy của bạn</p>
-            </div>
-            <div className="requirement-item">
-              <span className="check">✓</span>
-              <p>Cam kết về nội dung chất lượng</p>
-            </div>
-            <div className="requirement-item">
-              <span className="check">✓</span>
-              <p>Cần có sự chấp thuận của quản trị viên</p>
-            </div>
+          </div>
 
-            <h2 style={{ marginTop: '30px' }}>⚙️ Nó hoạt động như thế nào</h2>
-            <div className="steps">
-              <div className="step">
-                <div className="step-number">1</div>
-                <div className="step-content">
-                  <h3>Gửi yêu cầu</h3>
-                  <p>Nhấp vào nút bên dưới để yêu cầu quyền truy cập của nhà cung cấp</p>
+          <div className="content-card steps-card">
+            <h3><FaStream style={{color: '#6366f1'}}/> Quy trình hoạt động</h3>
+            <div className="steps-container-horizontal">
+              <div className="steps">
+                <div className="step">
+                  <div className="step-number">1</div>
+                  <div className="step-content">
+                    <h3>Gửi yêu cầu</h3>
+                    <p>Nhấn nút đăng ký bên dưới để gửi hồ sơ.</p>
+                  </div>
                 </div>
-              </div>
-              <div className="step">
-                <div className="step-number">2</div>
-                <div className="step-content">
-                  <h3>Đánh giá của quản trị viên</h3>
-                  <p>Nhóm của chúng tôi sẽ xem xét yêu cầu của bạn trong vòng 1-2 ngày làm việc</p>
+                <div className="step">
+                  <div className="step-number">2</div>
+                  <div className="step-content">
+                    <h3>Xét duyệt</h3>
+                    <p>Admin sẽ xem xét trong 1-2 ngày làm việc.</p>
+                  </div>
                 </div>
-              </div>
-              <div className="step">
-                <div className="step-number">3</div>
-                <div className="step-content">
-                  <h3>Được chấp thuận</h3>
-                  <p>Sau khi được chấp thuận, bạn có thể bắt đầu tạo khóa học ngay lập tức</p>
-                </div>
-              </div>
-              <div className="step">
-                <div className="step-number">4</div>
-                <div className="step-content">
-                  <h3>Bắt đầu giảng dạy</h3>
-                  <p>Tạo khóa học đầu tiên của bạn và bắt đầu kiếm tiền</p>
+                <div className="step">
+                  <div className="step-number">3</div>
+                  <div className="step-content">
+                    <h3>Bắt đầu dạy</h3>
+                    <p>Được duyệt? Tạo khóa học và kiếm tiền ngay!</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -189,13 +182,17 @@ const BecomeProviderPage = () => {
             <div className="cta-section">
               <button
                 onClick={handleSubmit}
-                className="btn btn-primary btn-large"
+                className="btn btn-primary btn-large btn-block"
                 disabled={loading}
               >
-                {loading ? 'Đang gửi...' : 'Yêu cầu quyền truy cập của nhà cung cấp'}
+                {loading ? (
+                  <><span>Đang xử lý...</span></>
+                ) : (
+                  <><span>Đăng ký làm Giảng viên ngay</span></>
+                )}
               </button>
               <p className="note">
-                Bằng cách gửi, bạn đồng ý tuân theo hướng dẫn về nội dung và điều khoản dịch vụ của chúng tôi.
+                Bằng cách đăng ký, bạn đồng ý với <span>Điều khoản & Chính sách</span> của chúng tôi.
               </p>
             </div>
           </div>

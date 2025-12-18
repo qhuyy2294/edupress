@@ -1,13 +1,9 @@
-/**
- * MyCoursesPage Component
- * Shows enrolled courses for customers or created courses for providers
- */
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FaBook, FaChalkboardTeacher, FaPlus, FaChartLine, FaCheckCircle, FaClock, FaTimesCircle, FaFileAlt, FaSearch, FaLayerGroup, FaUserGraduate, FaEdit, FaTrash, FaCog, FaPlay, FaExclamationCircle } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import courseService from '../services/courseService';
-import progressService from '../services/progressService'
+import progressService from '../services/progressService';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import CourseCard from '../components/CourseCard';
@@ -27,16 +23,13 @@ const MyCoursesPage = () => {
     try {
       setLoading(true);
       setError('');
-
       let response;
+      
       if (isProvider()) {
         response = await courseService.getMyCourses();
         setCourses(response.data);
-        
       } else if (isCustomer()) {
-
         const enrolledResponse = await courseService.getEnrolledCourses();
-        
         let initialCourses = enrolledResponse.data.map(enrollment => ({
             ...enrollment.course,
             enrollmentDate: enrollment.enrollmentDate,
@@ -69,7 +62,6 @@ const MyCoursesPage = () => {
     if (!window.confirm('Bạn có chắc chắn muốn xóa khóa học này không?')) {
       return;
     }
-
     try {
       await courseService.deleteCourse(courseId);
       setCourses(courses.filter(course => course._id !== courseId));
@@ -78,27 +70,24 @@ const MyCoursesPage = () => {
     }
   };
 
-  if (loading) return <Loader message="Đang tải dữ liệu..." />;
-
-  // Render Status Badge for Provider
   const renderStatusBadge = (status) => {
     const statusMap = {
-      approved: { label: 'Đã duyệt', class: 'approved' },
-      pending: { label: 'Đang chờ', class: 'pending' },
-      rejected: { label: 'Từ chối', class: 'rejected' },
-      draft: { label: 'Nháp', class: 'draft' }
+      approved: { label: 'Đã duyệt', class: 'approved', icon: <FaCheckCircle /> },
+      pending: { label: 'Đang chờ', class: 'pending', icon: <FaClock /> },
+      rejected: { label: 'Từ chối', class: 'rejected', icon: <FaTimesCircle /> },
+      draft: { label: 'Nháp', class: 'draft', icon: <FaFileAlt /> }
     };
     const info = statusMap[status] || statusMap.pending;
     
     return (
       <div className={`status-badge status-${info.class}`}>
-        {info.label}
+        <span className="badge-icon">{info.icon}</span>
+        <span>{info.label}</span>
       </div>
     );
   };
-  // if (loading) {
-  //   return <Loader message="Đang tải khóa học của bạn..." />;
-  // }
+
+  if (loading) return <Loader message="Đang tải dữ liệu..." />;
 
   return (
     <div className="my-courses-page">
@@ -106,23 +95,18 @@ const MyCoursesPage = () => {
         <div className="page-header06">
           <div>
             <h1>
-              {isProvider() ? '📚 Các khóa học của tôi' : 'Các khóa học đã đăng ký'}
+              {isProvider() ?  <span>Kho tàng khóa học</span> : <span>Khóa học của tôi</span> }
             </h1>
             <p className="page-subtitle">
               {isProvider()
-                ? 'Quản lý các khóa học của bạn và theo dõi hiệu suất của chúng'
-                : 'Tiếp tục học từ nơi bạn dừng lại'}
+                ? 'Quản lý, theo dõi hiệu suất và cập nhật nội dung giảng dạy.'
+                : 'Tiếp tục hành trình chinh phục tri thức của bạn.'}
             </p>
           </div>
           {isProvider() && (
             <div className="provider-actions">
-              {/*
-              <Link to="/provider/revenue" className="btn btn-secondary">
-                📊 Xem doanh thu
-              </Link>
-              */}
               <Link to="/course/create" className="btn btn-primary">
-                + Tạo khóa học mới
+                <FaPlus /> Tạo khóa học mới
               </Link>
             </div>
           )}
@@ -133,21 +117,21 @@ const MyCoursesPage = () => {
         {courses.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">
-              {isProvider() ? '📝' : '🎯'}
+              {isProvider() ? <FaChalkboardTeacher /> : <FaSearch />}
             </div>
             <h2>
-              {isProvider() ? 'Chưa có khóa học nào' : 'Không có khóa học nào được đăng ký'}
+              {isProvider() ? 'Chưa có khóa học nào' : 'Bạn chưa đăng ký khóa học nào'}
             </h2>
             <p>
               {isProvider()
-                ? 'Bắt đầu tạo khóa học đầu tiên của bạn để chia sẻ kiến ​​thức'
-                : 'Khám phá danh mục khóa học của chúng tôi và bắt đầu học ngay hôm nay'}
+                ? 'Hãy bắt đầu tạo khóa học đầu tiên để chia sẻ kiến thức.'
+                : 'Khám phá hàng trăm khóa học hấp dẫn và bắt đầu học ngay hôm nay.'}
             </p>
             <Link
               to={isProvider() ? '/create-course' : '/'}
               className="btn btn-primary"
             >
-              {isProvider() ? 'Tạo khóa học' : 'Duyệt các khóa học'}
+              {isProvider() ? <><FaPlus /> Tạo khóa học ngay</> : <><FaSearch /> Tìm khóa học</>}
             </Link>
           </div>
         ) : (
@@ -156,8 +140,9 @@ const MyCoursesPage = () => {
               <div className="stat-card01">
                 <div className="stat-number01">{courses.length}</div>
                 <div className="stat-label">
-                  {isProvider() ? 'Tổng số khóa học' : 'Khóa học đã đăng ký'}
+                  {isProvider() ? 'Tổng khóa học' : 'Đã đăng ký'}
                 </div>
+                <div className="stat-icon-bg"><FaBook /></div>
               </div>
               {isProvider() && (
                 <>
@@ -166,18 +151,21 @@ const MyCoursesPage = () => {
                       {courses.filter(c => c.status === 'approved').length}
                     </div>
                     <div className="stat-label">Đã duyệt</div>
+                    <div className="stat-icon-bg success"><FaCheckCircle /></div>
                   </div>
                   <div className="stat-card01">
                     <div className="stat-number01">
                       {courses.filter(c => c.status === 'pending').length}
                     </div>
                     <div className="stat-label">Đang chờ</div>
+                    <div className="stat-icon-bg warning"><FaClock /></div>
                   </div>
                   <div className="stat-card01">
                     <div className="stat-number01">
                       {courses.reduce((sum, c) => sum + (c.enrollmentCount || 0), 0)}
                     </div>
-                    <div className="stat-label">Tổng số học viên</div>
+                    <div className="stat-label">Học viên</div>
+                    <div className="stat-icon-bg info"><FaUserGraduate /></div>
                   </div>
                 </>
               )}
@@ -186,51 +174,48 @@ const MyCoursesPage = () => {
             <div className="courses-grid">
                 {courses.map(course => (
                   <div key={course._id} className="course-item">
-                    {/* Sử dụng completionPercentage */}
                     {isCustomer() && course.completionPercentage !== undefined && (
                       <div className="progress-badge">
-                        {course.completionPercentage}% Hoàn thành
+                        <FaChartLine style={{ marginRight: '4px' }}/> {course.completionPercentage}%
                       </div>
                     )}
-                    {isProvider() && (
-                      <div className={`status-badge status-${course.status}`}>
-                        {course.status}
-                      </div>
-                    )}
+                
+                    {isProvider() && renderStatusBadge(course.status)}
+
                     <CourseCard course={course} />
+                    
                     {isProvider() && (
                       <div className="course-actions">
-                        {/* Nút Quản lý khóa học (Full width) */}
                         <Link
                           to={`/course/${course._id}/lessons`}
                           className="btn btn-primary btn-sm"
                         >
-                          Quản lý khóa học
+                          <FaCog /> Quản lý khóa học
                         </Link>
-                        {/* Nhóm Chỉnh sửa và Xóa (Căn phải) */}
                         <div className="edit-delete-group">
                             <Link
                               to={`/course/${course._id}/edit`}
                               className="btn btn-secondary btn-sm"
                             >
-                              Chỉnh sửa
+                              <FaEdit /> Sửa
                             </Link>
                             <button
                               onClick={() => handleDelete(course._id)}
                               className="btn btn-danger btn-sm"
                             >
-                              Xóa
+                              <FaTrash /> Xóa
                             </button>
                         </div>
                       </div>
                     )}
+
                     {!isProvider() && course.lessons && course.lessons.length > 0 && (
                       <div className="course-actions">
                         <Link
                           to={`/courses/${course._id}/lessons/${course.lessons[0]._id}`}
                           className="btn btn-primary btn-sm"
                         >
-                          Tiếp tục học →
+                          <FaPlay /> Tiếp tục học
                         </Link>
                       </div>
                     )}

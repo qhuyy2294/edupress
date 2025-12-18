@@ -1,8 +1,3 @@
-/**
- * ProfilePage Component
- * User profile management - view and update personal information
- */
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
@@ -10,6 +5,8 @@ import authService from '../services/authService';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './ProfilePage.css';
+import { FaUser, FaEnvelope, FaLock, FaCamera, FaSave, FaTrashAlt, FaShieldAlt, FaCalendarAlt, FaUserTag } from 'react-icons/fa';
+import { MdAdminPanelSettings, MdVerified } from 'react-icons/md';
 
 const ProfilePage = () => {
   const { user, updateProfile, logout } = useAuth();
@@ -22,7 +19,6 @@ const ProfilePage = () => {
     newPassword: '',
     confirmPassword: '',
     avatarUrl: '',
-    createdAt: '',
   });
   
   const [loading, setLoading] = useState(false);
@@ -38,18 +34,12 @@ const ProfilePage = () => {
         newPassword: '',
         confirmPassword: '',
         avatarUrl: user.avatarUrl || '',
-        createdAt: user.createdAt || '',
       });
     }
-    console.log("user data:", user);
-    
   }, [user]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -58,7 +48,6 @@ const ProfilePage = () => {
     setError('');
     setSuccess('');
 
-    // Validate passwords if changing
     if (formData.newPassword) {
       if (formData.newPassword.length < 6) {
         setError('Mật khẩu mới phải có ít nhất 6 ký tự');
@@ -66,7 +55,7 @@ const ProfilePage = () => {
         return;
       }
       if (formData.newPassword !== formData.confirmPassword) {
-        setError('Mật khẩu mới không khớp');
+        setError('Mật khẩu xác nhận không khớp');
         setLoading(false);
         return;
       }
@@ -78,7 +67,6 @@ const ProfilePage = () => {
         avatarUrl: formData.avatarUrl,
       };
 
-      // Only include password if user wants to change it
       if (formData.newPassword) {
         updateData.password = formData.newPassword;
       }
@@ -86,14 +74,13 @@ const ProfilePage = () => {
       const result = await updateProfile(updateData);
       
       if (result.success) {
-        setSuccess('Hồ sơ đã được cập nhật thành công!');
-        // Clear password fields
-        setFormData({
-          ...formData,
+        setSuccess('Cập nhật hồ sơ thành công!');
+        setFormData(prev => ({
+          ...prev,
           currentPassword: '',
           newPassword: '',
           confirmPassword: '',
-        });
+        }));
       } else {
         setError(result.message || 'Không cập nhật được hồ sơ');
       }
@@ -105,14 +92,13 @@ const ProfilePage = () => {
   };
 
   const handleDeleteAccount = async () => {
-    if (!window.confirm('Bạn có chắc chắn muốn xóa tài khoản của mình không? Thao tác này không thể hoàn tác.')) {
+    if (!window.confirm('CẢNH BÁO: Hành động này không thể hoàn tác. Bạn chắc chắn muốn xóa tài khoản?')) {
       return;
     }
 
     try {
       setLoading(true);
       await authService.deleteAccount();
-      alert('Tài khoản của bạn đã bị vô hiệu hóa. Bạn sẽ bị đăng xuất.');
       logout();
       navigate('/');
     } catch (err) {
@@ -121,166 +107,170 @@ const ProfilePage = () => {
     }
   };
 
-  if (!user) {
-    return <Loader message="Loading profile..." />;
-  }
+  const renderRoleBadge = (role) => {
+    switch(role) {
+      case 'admin': return <span className="badge badge-admin"><MdAdminPanelSettings /> Quản trị viên</span>;
+      case 'provider': return <span className="badge badge-provider"><FaUserTag /> Nhà cung cấp</span>;
+      default: return <span className="badge badge-student"><FaUser /> Học viên</span>;
+    }
+  };
+
+  if (!user) return <Loader message="Đang tải hồ sơ..." />;
 
   return (
     <div className="profile-page">
-      <div className="container">
-        <div className="profile-header">
-          <h1>Hồ sơ của tôi</h1>
-          <p>Quản lý thông tin cá nhân và cài đặt tài khoản của bạn</p>
+      <div className="profile-container">
+        <div className="profile-header-mobile">
+          <h1>Hồ sơ cá nhân</h1>
         </div>
 
-        <div className="profile-content">
-          {/* Profile Info Card */}
-          <div className="profile-info-card">
-            <div className="avatar-section">
-              <div className="avatar-preview">
-                {formData.avatarUrl ? (
-                  <img src={formData.avatarUrl} alt="Avatar" />
-                ) : (
-                  <div className="avatar-placeholder">
-                    {user.fullName?.charAt(0)?.toUpperCase()}
-                  </div>
-                )}
+        <div className="profile-grid">
+          <div className="profile-sidebar">
+            <div className="user-card">
+              <div className="user-avatar-wrapper">
+                <div className="avatar-circle">
+                  {formData.avatarUrl ? (
+                    <img src={formData.avatarUrl} alt="Avatar" />
+                  ) : (
+                    <span className="avatar-initial">{user.fullName?.charAt(0)?.toUpperCase()}</span>
+                  )}
+                </div>
+                {/* <div className="avatar-edit-icon" title="Ảnh đại diện">
+                  <FaCamera />
+                </div> */}
               </div>
-              <div className="user-info">
-                <h2>{user.fullName}</h2>
-                <p className="user-email">{user.email}</p>
-                <span className={`user-role role-${user.role}`}>
-                  {user.role === 'customer' && 'Học viên'}
-                  {user.role === 'provider' && 'Nhà cung cấp'}
-                  {user.role === 'admin' && 'Quản lý'}
-                </span>
-                <span className={`user-status status-${user.status}`}>
-                  {user.status === 'active' && 'Hoạt động'}
-                  {user.status === 'pending_provider' && 'Đang chờ phê duyệt của nhà cung cấp'}
-                  {user.status === 'inactive' && 'Không hoạt động'}
+              
+              <h2 className="user-name">{user.fullName}</h2>
+              <p className="user-email-text">{user.email}</p>
+              
+              <div className="user-badges">
+                {renderRoleBadge(user.role)}
+                <span className={`badge status-${user.status}`}>
+                  <MdVerified /> {user.status === 'active' ? 'Đã kích hoạt' : user.status}
                 </span>
               </div>
-            </div>
 
-            <div className="account-stats">
-              <div className="stat-item">
-                <span className="stat-label01">Thành viên từ</span>
-                <span className="stat-value">
-                  {user.createdAt 
-                    ? new Date(user.createdAt).toLocaleDateString('vi-VN', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                    })
-                  : 'Chưa cập nhật'}
-                </span>
+              <div className="user-meta">
+                <div className="meta-item">
+                  <FaCalendarAlt />
+                  <span>Tham gia: {new Date(user.createdAt).toLocaleDateString('vi-VN')}</span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Edit Profile Form */}
-          <div className="profile-form-card">
-            <h3>Chỉnh sửa hồ sơ</h3>
-            
-            {error && <Message type="error">{error}</Message>}
-            {success && <Message type="success">{success}</Message>}
-
-            <form onSubmit={handleSubmit} className="profile-form">
-              <div className="form-group">
-                <label htmlFor="fullName">Tên đầy đủ *</label>
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  required
-                />
+          <div className="profile-content">
+            <div className="content-card">
+              <div className="card-header">
+                <h3>Cập nhật thông tin</h3>
+                <p>Quản lý thông tin cá nhân và bảo mật</p>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="email">Email *</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  disabled
-                  title="Email cannot be changed"
-                />
-                <small>Email không thể thay đổi</small>
-              </div>
+              {error && <Message type="error">{error}</Message>}
+              {success && <Message type="success">{success}</Message>}
 
-              <div className="form-group">
-                <label htmlFor="avatarUrl">Avatar URL</label>
-                <input
-                  type="url"
-                  id="avatarUrl"
-                  name="avatarUrl"
-                  value={formData.avatarUrl}
-                  onChange={handleChange}
-                  placeholder="https://example.com/avatar.jpg"
-                />
-              </div>
+              <form onSubmit={handleSubmit} className="modern-form">
+                <div className="form-section">
+                  <h4 className="section-title">Thông tin cơ bản</h4>
+                  
+                  <div className="form-group">
+                    <label>Họ và tên</label>
+                    <div className="input-wrapper">
+                      <input
+                        type="text"
+                        name="fullName"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        placeholder="Nhập họ tên của bạn"
+                        required
+                      />
+                    </div>
+                  </div>
 
-              <div className="form-divider">
-                <span>Đổi mật khẩu(Không bắt buộc)</span>
-              </div>
+                  <div className="form-group">
+                    <label>Email (Không thể thay đổi)</label>
+                    <div className="input-wrapper disabled">
+                      <input
+                        type="email"
+                        value={formData.email}
+                        disabled
+                      />
+                    </div>
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="newPassword">Mật khẩu mới</label>
-                <input
-                  type="password"
-                  id="newPassword"
-                  name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleChange}
-                  placeholder="Để trống để giữ mật khẩu hiện tại"
-                  minLength="6"
-                />
-              </div>
+                  <div className="form-group">
+                    <label>Avatar URL</label>
+                    <div className="input-wrapper">
+                      <input
+                        type="url"
+                        name="avatarUrl"
+                        value={formData.avatarUrl}
+                        onChange={handleChange}
+                        placeholder="https://example.com/avatar.jpg"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="confirmPassword">Xác nhận mật khẩu mới</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="Xác nhận mật khẩu mới của bạn"
-                  minLength="6"
-                />
-              </div>
+                <div className="form-divider"></div>
 
-              <div className="form-actions">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
+                <div className="form-section">
+                  <h4 className="section-title">Bảo mật</h4>
+                  <p className="section-desc">Để trống nếu bạn không muốn đổi mật khẩu</p>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Mật khẩu mới</label>
+                      <div className="input-wrapper">
+                        <input
+                          type="password"
+                          name="newPassword"
+                          value={formData.newPassword}
+                          onChange={handleChange}
+                          placeholder="Mật khẩu mới (tối thiểu 6 ký tự)"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label>Xác nhận mật khẩu</label>
+                      <div className="input-wrapper">
+                        <input
+                          type="password"
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          placeholder="Nhập lại mật khẩu mới"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-actions">
+                  <button type="submit" className="btn-save" disabled={loading}>
+                    {loading ? <span className="spinner"></span> : <><span>Lưu thay đổi</span></>}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {user.role !== 'admin' && (
+              <div className="danger-zone">
+                <div className="danger-info">
+                  <h3><FaTrashAlt /> Xóa tài khoản</h3>
+                  <p>Hành động này sẽ xóa vĩnh viễn dữ liệu của bạn và không thể khôi phục.</p>
+                </div>
+                <button 
+                  onClick={handleDeleteAccount} 
+                  className="btn-delete"
                   disabled={loading}
                 >
-                  {loading ? 'Updating...' : 'Cập nhật hồ sơ'}
+                  Xóa tài khoản
                 </button>
               </div>
-            </form>
+            )}
           </div>
-
-          {/* Danger Zone */}
-          {user.role !== 'admin' && (
-            <div className="danger-zone-card">
-              <h3> <span></span> Danger Zone</h3>
-              <p>
-                Một khi bạn đã xóa tài khoản, bạn sẽ không thể quay lại. Tài khoản của bạn sẽ bị vô hiệu hóa và bạn sẽ mất quyền truy cập vào tất cả các khóa học đã đăng ký.
-              </p>
-              <button
-                onClick={handleDeleteAccount}
-                className="btn btn-danger"
-                disabled={loading}
-              >
-                XÓA TÀI KHOẢN
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>

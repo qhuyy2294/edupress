@@ -1,8 +1,7 @@
-/* AdminDashboard.css - Modern Minimalist Style */
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #4f46e5; /* Indigo */
+  --primary-color: #4f46e5;
   --primary-hover: #4338ca;
   --bg-body: #f3f4f6;
   --bg-card: #ffffff;

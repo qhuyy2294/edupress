@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaShoppingCart } from 'react-icons/fa';
+import { FaBell, FaShoppingCart } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import cartService from '../services/cartService';
 import './Header.css';
@@ -22,17 +22,15 @@ const Header = () => {
         if (location.pathname !== '/') {
             setIsScrolled(true);
             return;
-        } else {
-            setIsScrolled(false);
         }
         // isScrolled(prev => location.pathname !== '/' ? true : prev)
-
+        
         // Hàm xử lý cuộn để cập nhật trạng thái isScrolled.
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
         };
 
-        // Thêm và xóa trình nghe sự kiện cuộn để tối ưu hóa hiệu suất.
+        // Lắng nghe sự kiện scroll
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, [location.pathname]); // Chạy lại hiệu ứng khi đường dẫn thay đổi.
@@ -165,7 +163,7 @@ const Header = () => {
               )}
 
               <Link to="/notifications" className="nav-link" onClick={closeMenu}>
-                🔔 Thông báo
+                <FaBell /> <span>Thông báo</span>
               </Link>
 
               <Link to="/profile" className="nav-link" onClick={closeMenu}>

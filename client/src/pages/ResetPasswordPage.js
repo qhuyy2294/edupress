@@ -57,8 +57,8 @@ const ResetPasswordPage = () => {
         } catch (err) {
             // Xử lý lỗi (token hết hạn, không hợp lệ)
             const errMsg = err.response && err.response.data && err.response.data.error 
-                         ? err.response.data.error 
-                         : 'Token không hợp lệ hoặc đã xảy ra lỗi.';
+                        ? err.response.data.error 
+                        : 'Token không hợp lệ hoặc đã xảy ra lỗi.';
             setError(errMsg);
             setIsLoading(false);
         }
