@@ -64,13 +64,13 @@ const HomePage = () => {
         <div className="glass-search-bar">
           <form onSubmit={handleSearch} className="search-form">
             <div className="input-group">
-                <FaSearch className="input-icon" /> 
-                <input
-                  type="text"
-                  placeholder="Bạn muốn học gì hôm nay?"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+              <FaSearch className="input-icon" /> 
+              <input
+                type="text"
+                placeholder="Bạn muốn học gì hôm nay?"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
             <button type="submit" className="btn-search">Tìm kiếm</button>
           </form>
@@ -124,7 +124,7 @@ const HomePage = () => {
           ) : (
             <>
               <div className="section-header">
-                  <h2 className="section-title">Khóa học nổi bật</h2>
+                  <h2 className="section-title-home">Khóa học nổi bật</h2>
                   <span className="course-count">{courses.length} kết quả</span>
               </div>
               <div className="courses-grid">

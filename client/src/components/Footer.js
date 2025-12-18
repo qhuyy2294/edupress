@@ -1,3 +1,4 @@
+/* cspell:disable-next-line */
 /**
  * Footer Component
  * Footer section for the application
@@ -13,17 +14,17 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-section">
-          <h3>Edupress</h3>
+          <h3><i>EDUPRESS</i></h3>
           <p>Cổng thông tin của bạn đến với sự xuất sắc trong học tập trực tuyến</p>
         </div>
 
         <div className="footer-section">
           <h4>Liên kết nhanh</h4>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/courses">Khóa học</a></li>
+            <li><a href="/">Trang chủ</a></li>
+            <li><a href="/">Khóa học <i>Edupress</i></a></li>
             <li><a href="/about">Giới thiệu về chúng tôi</a></li>
-            <li><a href="/contact">Liên hệ</a></li>
+            <li><a href="/contact">Thông tin liên hệ</a></li>
           </ul>
         </div>
 
@@ -39,16 +40,16 @@ const Footer = () => {
         <div className="footer-section">
           <h4>Kết nối với chúng tôi</h4>
           <div className="social-links">
-            <a href="" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <FontAwesomeIcon icon={faFacebookF} />
             </a>
-            <a href="" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
               <FontAwesomeIcon icon={faTwitter} />
             </a>
-            <a href="" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <FontAwesomeIcon icon={faLinkedinIn} />
             </a>
-            <a href="" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <FontAwesomeIcon icon={faInstagram} />
             </a>
           </div>

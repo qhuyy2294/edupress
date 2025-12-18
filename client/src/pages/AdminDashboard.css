@@ -46,10 +46,10 @@ body {
   font-weight: 700;
   color: var(--text-main);
   margin-bottom: 2rem;
+  padding-top: 20px;
   letter-spacing: -0.025em;
 }
 
-/* --- Quick Actions --- */
 .quick-actions {
   display: flex;
   gap: 1rem;
@@ -225,11 +225,12 @@ body {
 }
 
 .alert-icon {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
 }
 
 .alert-text {
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom: 3px;
 }
 
 /* Dashboard Sections & Tables */

@@ -330,7 +330,7 @@ const approveCourse = asyncHandler(async (req, res) => {
   await Notification.createNotification(
     course.provider._id,
     'course_approved',
-    'Khóa học đã được chấp thuận! ✅',
+    'Khóa học đã được chấp thuận!',
     `Khóa học "${course.title}" của bạn đã được phê duyệt và hiện đang hoạt động trên nền tảng!`,
     `/course/${course._id}`,
     course._id

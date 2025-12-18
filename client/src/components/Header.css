@@ -1,5 +1,7 @@
 .header {
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px);
   padding: 0.5rem 0;
   box-shadow: none;
   position: sticky; /* giữ cố định khi cuộn trang */
@@ -140,7 +142,7 @@
 }
 
 .btn-logout {
-  background-color: #ffeaea;
+  background-color: #f9ebebed;
   color: #e74c3c;
   margin-left: 0.5rem;
 }

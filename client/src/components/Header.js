@@ -82,7 +82,7 @@ const Header = () => {
       <div className="header-container">
         
         <Link to="/" className="logo" onClick={closeMenu}>
-          <h1>Edupress</h1>
+          <h1><i>EDUPRESS</i></h1>
         </Link>
 
         {/* Nút Hamburger cho giao diện Moblie */}

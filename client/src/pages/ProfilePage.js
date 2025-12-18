@@ -160,7 +160,7 @@ const ProfilePage = () => {
           </div>
 
           <div className="profile-content">
-            <div className="content-card">
+            <div className="content-card-pro">
               <div className="card-header">
                 <h3>Cập nhật thông tin</h3>
                 <p>Quản lý thông tin cá nhân và bảo mật</p>
@@ -215,7 +215,7 @@ const ProfilePage = () => {
                 <div className="form-divider"></div>
 
                 <div className="form-section">
-                  <h4 className="section-title">Bảo mật</h4>
+                  <h4 className="section-title">Đổi mật khẩu</h4>
                   <p className="section-desc">Để trống nếu bạn không muốn đổi mật khẩu</p>
 
                   <div className="form-row">
@@ -227,7 +227,7 @@ const ProfilePage = () => {
                           name="newPassword"
                           value={formData.newPassword}
                           onChange={handleChange}
-                          placeholder="Mật khẩu mới (tối thiểu 6 ký tự)"
+                          placeholder="Vui lòng nhập mật khẩu mới"
                         />
                       </div>
                     </div>

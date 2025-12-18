@@ -30,11 +30,10 @@ import NotificationsPage from '../pages/NotificationsPage';
 import RevenueReportPage from '../pages/RevenueReportPage';
 import DiscountManagementPage from '../pages/DiscountManagementPage';
 import ResetPasswordPage from '../pages/ResetPasswordPage';
-// [NEW] Cart & Order pages
 import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import OrderHistoryPage from '../pages/OrderHistoryPage';
-import OrderManagementPage from '../pages/OrderManagementPage'; 
+import OrderManagementPage from '../pages/OrderManagementPage';
 
 
 /**
@@ -120,7 +119,7 @@ const AppRouter = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            {/* [NEW] Route xử lý link đặt lại mật khẩu */}
+            
             <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
             <Route path="/course/:id" element={<CourseDetailPage />} />
 

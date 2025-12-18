@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUsers, FaBookOpen, FaUserGraduate, FaCoins } from 'react-icons/fa';
+import { FaUsers, FaBookOpen, FaUserGraduate, FaCoins, FaUser, FaFileAlt } from 'react-icons/fa';
 import adminService from '../services/adminService';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -85,8 +85,6 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <div className="container">
         <h1 className="dashboard-title">Admin Dashboard</h1>
-
-        {/* Quick Actions */}
         <div className="quick-actions">
           <Link to="/admin/customers" className="action-btn">
             <span><FaUsers size={20} /></span> Quản lý người dùng
@@ -163,15 +161,15 @@ const AdminDashboard = () => {
               <div className="pending-alerts">
                 {pendingProviders.length > 0 && (
                   <div className="alert alert-provider">
-                    <span className="alert-icon">👤</span>
+                    <span className="alert-icon"><FaUser /></span>
                     <span className="alert-text">
-                      {pendingProviders.length} yêu cầu của nhà cung cấp{pendingProviders.length > 1 ? 's' : ''} đang chờ được phê duyệt
+                      {pendingProviders.length} yêu cầu của nhà cung cấp{pendingProviders.length > 1 ? '' : ''} đang chờ được phê duyệt
                     </span>
                   </div>
                 )}
                 {pendingCourses.length > 0 && (
                   <div className="alert alert-course">
-                    <span className="alert-icon">📝</span>
+                    <span className="alert-icon"><FaFileAlt /></span>
                     <span className="alert-text">
                       {pendingCourses.length} khóa học{pendingCourses.length > 1 ? '' : ''} đang chờ được phê duyệt
                     </span>
