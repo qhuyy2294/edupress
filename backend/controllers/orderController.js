@@ -5,9 +5,7 @@ const Enrollment = require('../models/enrollmentModel');
 const Discount = require('../models/discountModel');
 const Notification = require('../models/notificationModel');
 
-// @desc    Create order from cart
-// @route   POST /api/orders
-// @access  Private
+
 
 // exports.createOrder = async (req, res) => {
 //   try {
@@ -111,6 +109,11 @@ const Notification = require('../models/notificationModel');
 // };
 
 
+
+
+// @desc    Create order from cart
+// @route   POST /api/orders
+// @access  Private
 exports.createOrder = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -121,10 +124,14 @@ exports.createOrder = async (req, res) => {
     }
 
     if (cart.discountCode) {
-      const discount = await Discount.findOne({ code: cart.discountCode, isActive: true });
+      const discount = await Discount.findOne({ code: cart.discountCode, active: true });
       const now = new Date();
       
-      if (!discount || discount.validUntil < now || (discount.maxUses && discount.currentUses >= discount.maxUses)) {
+      // Validate discount
+      if (!discount || 
+          discount.startDate > now || 
+          discount.endDate < now || 
+          (discount.maxUses && discount.usedCount >= discount.maxUses)) {
         // Reset Cart về giá ban đầu
         cart.discountCode = null;
         cart.discountAmount = 0;
@@ -136,7 +143,11 @@ exports.createOrder = async (req, res) => {
         });
       }
 
-      discount.currentUses += 1;
+      discount.usedCount += 1;
+      // Auto-deactivate if max uses reached
+      if (discount.maxUses && discount.usedCount >= discount.maxUses) {
+        discount.active = false;
+      }
       await discount.save();
     }
 

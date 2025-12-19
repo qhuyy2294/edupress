@@ -180,21 +180,29 @@ exports.applyDiscountCode = async (req, res) => {
 
     const discount = await Discount.findOne({ code: discountCode.toUpperCase(), active: true });
 
-    // // Validate cơ bản
+    // Validate discount
     // Check mã có hợp lệ không
     if (!discount) {
       return res.status(400).json({
         message: 'Mã giảm giá không đúng. Vui lòng nhập lại!' 
       }); 
     }
+    
+    const now = new Date();
+    // Check mã có bắt đầu chưa
+    if (discount.startDate > now) {
+      return res.status(400).json({
+        message: 'Mã giảm giá chưa có hiệu lực' 
+      });
+    }
     // Check mã có còn thời hạn không
-    if (discount.validUntil < new Date()) {
+    if (discount.endDate < now) {
       return res.status(400).json({
         message: 'Mã giảm giá đã hết hạn' 
       });
     } 
     // Check mã có còn lượt sử dụng không
-    if (discount.maxUses && discount.currentUses >= discount.maxUses) {
+    if (discount.maxUses && discount.usedCount >= discount.maxUses) {
       return res.status(400).json({
         message: 'Mã giảm giá đã hết lượt dùng' 
       });
