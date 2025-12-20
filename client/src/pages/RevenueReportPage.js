@@ -50,7 +50,7 @@ const RevenueReportPage = () => {
       const revenueData = await orderService.getRevenueStats();
       setRevenueStats(revenueData);
 
-      // Calculate total stats
+      // Calculate total stats (LOGIC CŨ: DOANH THU TIỀM NĂNG: enrollment * price)
       const stats = coursesData.reduce(
         (acc, course) => {
           acc.totalEnrollments += course.enrollmentCount || 0;
@@ -88,42 +88,39 @@ const RevenueReportPage = () => {
 
       {error && <Message type="error">{error}</Message>}
 
-      {/* Revenue Stats from Orders */}
+      {/* Revenue Stats from Orders - HIỂN THỊ LOGIC DOANH THU TIỀM NĂNG (từ totalStats) */}
       {revenueStats && (
         <div className="revenue-breakdown">
-          <h2>Thống kê doanh thu từ đơn hàng đã duyệt</h2>
+          <h2>Thống kê từ đơn hàng đã duyệt và Tiềm năng</h2>
           <div className="summary-grid">
+            
+            {/* Đã ĐỔI LOGIC: Sử dụng totalStats.totalRevenue (Doanh thu tiềm năng) */}
             <div className="summary-card card-revenue">
-              <div className="card-icon">
-                <span>{/* icon */}</span>
-              </div>
+              <div className="card-icon">💵</div>
               <div className="card-content">
-                <h3>Tổng doanh thu</h3>
-                <p className="stat-value">{formatVnd(revenueStats.totalRevenue)} ₫</p>
-                <span className="stat-detail">{revenueStats.totalOrders} đơn hàng</span>
+                <h3>Doanh thu tiềm năng</h3>
+                <p className="stat-value">{formatVnd(totalStats.totalRevenue)} ₫</p>
+                <span className="stat-detail">Dựa trên {totalStats.totalEnrollments} lượt đăng ký</span>
               </div>
             </div>
 
             <div className="summary-card card-provider">
-              <div className="card-icon">
-                <span>{/* icon */}</span>
-              </div>
+              <div className="card-icon">💰</div>
               <div className="card-content">
                 <h3>{user?.role === 'admin' ? 'Provider nhận (90%)' : 'Bạn nhận (90%)'}</h3>
+                {/* LOGIC NGUYÊN BẢN: revenueStats.providerRevenue (90% tổng tiền đơn hàng đã duyệt) */}
                 <p className="stat-value">{formatVnd(revenueStats.providerRevenue)} ₫</p>
-                <span className="stat-detail">90% tổng doanh thu</span>
+                <span className="stat-detail">90% Tổng doanh thu đã duyệt</span>
               </div>
             </div>
 
             {user?.role === 'admin' && (
               <div className="summary-card card-admin">
-                <div className="card-icon">
-                  <span>{/* icon */}</span>
-                </div>
+                <div className="card-icon">🏢</div>
                 <div className="card-content">
                   <h3>Hoa hồng Admin (10%)</h3>
                   <p className="stat-value">{formatVnd(revenueStats.adminCommission)} ₫</p>
-                  <span className="stat-detail">10% tổng doanh thu</span>
+                  <span className="stat-detail">10% Tổng doanh thu đã duyệt</span>
                 </div>
               </div>
             )}
@@ -134,9 +131,7 @@ const RevenueReportPage = () => {
       {/* Summary Cards */}
       <div className="summary-grid">
         <div className="summary-card card-courses">
-          <div className="card-icon">
-            <span>{/* icon */}</span>
-          </div>
+          <div className="card-icon">📚</div>
           <div className="card-content">
             <h3>Tổng số khóa học</h3>
             <p className="stat-value">{totalStats.totalCourses}</p>
@@ -144,29 +139,15 @@ const RevenueReportPage = () => {
         </div>
 
         <div className="summary-card card-students">
-          <div className="card-icon">
-            <span>{/* icon */}</span>
-          </div>
+          <div className="card-icon">👥</div>
           <div className="card-content">
             <h3>Tổng số học viên</h3>
             <p className="stat-value">{totalStats.totalEnrollments}</p>
           </div>
         </div>
 
-        <div className="summary-card card-revenue">
-          <div className="card-icon">
-            <span>{/* icon */}</span>
-          </div>
-          <div className="card-content">
-            <h3>Doanh thu tiềm năng</h3>
-            <p className="stat-value">{formatVnd(totalStats.totalRevenue)} ₫</p>
-          </div>
-        </div>
-
         <div className="summary-card card-rating">
-          <div className="card-icon">
-            <span>{/* icon */}</span>
-          </div>
+          <div className="card-icon">⭐</div>
           <div className="card-content">
             <h3>Đánh giá trung bình</h3>
             <p className="stat-value">{totalStats.averageRating.toFixed(1)}</p>
@@ -206,13 +187,13 @@ const RevenueReportPage = () => {
                         </div>
                       </td>
                       <td>
-                        <span className={`status-badge3 ${course.status}`}>
+                        <span className={`status-badge ${course.status}`}>
                           {course.status}
                         </span>
                       </td>
                       <td className="price-cell">
                         {course.price === 0 ? (
-                          <span className="free-badge">Miễn phí</span>
+                          <span className="free-badge">Free</span>
                         ) : (
                           `${formatVnd(course.price)} ₫`
                         )}
@@ -222,7 +203,7 @@ const RevenueReportPage = () => {
                       <td className="rating-cell">
                         {course.averageRating ? (
                           <>
-                            {course.averageRating.toFixed(1)}
+                            ⭐ {course.averageRating.toFixed(1)}
                           </>
                         ) : (
                           <span className="no-rating">N/A</span>
@@ -245,7 +226,7 @@ const RevenueReportPage = () => {
           <div className="top-performers-grid">
             {/* Most Students */}
             <div className="top-card">
-              <h3>Nhiều học viên nhất</h3>
+              <h3>🏆 Nhiều học viên nhất</h3>
               {courses
                 .sort((a, b) => (b.enrollmentCount || 0) - (a.enrollmentCount || 0))
                 .slice(0, 3)
@@ -258,9 +239,9 @@ const RevenueReportPage = () => {
                 ))}
             </div>
 
-            {/* Highest Revenue */}
+            {/* Highest Revenue - Dựa trên Doanh thu tiềm năng của từng khóa */}
             <div className="top-card">
-              <h3>Doanh thu cao nhất</h3>
+              <h3>💵 Doanh thu cao nhất</h3>
               {courses
                 .sort((a, b) => {
                   const revenueA = (a.enrollmentCount || 0) * (a.price || 0);
@@ -282,7 +263,7 @@ const RevenueReportPage = () => {
 
             {/* Best Rated */}
             <div className="top-card">
-              <h3>Đánh giá cao nhất</h3>
+              <h3>⭐ Đánh giá cao nhất</h3>
               {courses
                 .filter(c => c.averageRating > 0)
                 .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
